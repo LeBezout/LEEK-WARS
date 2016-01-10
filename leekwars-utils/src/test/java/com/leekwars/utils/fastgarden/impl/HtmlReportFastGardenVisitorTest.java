@@ -16,6 +16,7 @@ import com.leekwars.utils.wrappers.GardenStatsWrapper;
 public class HtmlReportFastGardenVisitorTest {
 
 	@Test
+	@org.junit.Ignore
 	public void testGenerate() throws LWException {
 		File output = new File("target/generated_junit.html");
 		File template = new File("src/main/resources/report_template.html");
@@ -58,9 +59,7 @@ public class HtmlReportFastGardenVisitorTest {
 		lVisitor.generate();
 	}
 	
-	
-	private
-	@org.junit.Ignore static Fight getFightFromLW(long pId) throws LWException {
+	private static Fight getFightFromLW(long pId) throws LWException {
 		Fight lFight = FightBuilder.fromId(pId);
 		String str = LWUtils.fightToString(lFight);
 		System.out.println(str);
