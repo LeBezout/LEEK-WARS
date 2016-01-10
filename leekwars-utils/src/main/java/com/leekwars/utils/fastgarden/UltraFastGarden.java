@@ -106,7 +106,6 @@ public class UltraFastGarden {
 				lEntityStats = new GardenStatsWrapper(currentEntityName);
 				lStats.put(currentEntityName, lEntityStats);
 			}
-			lEntityStats.incTotalFights();
 			// intérroger pour connaitre le résultat
 			//if (lFight.getFightId() > 0) {
 				lFightTmp = pConnector.getFight(lFight.getFightId());
@@ -124,6 +123,7 @@ public class UltraFastGarden {
 							 * ON_RESULT(UNKNOWN, lFight)
 							 */
 							pVisitor.onResult(lFightTmp, FightResult.UNKNOWN);
+							lEntityStats.incTotalFights();
 						}
 						break;
 					case DRAW : 
@@ -156,6 +156,7 @@ public class UltraFastGarden {
 				 * ON_RESULT(lResult, lFight)
 				 */
 				pVisitor.onResult(lFightTmp, lResult);
+				lEntityStats.incTotalFights();
 				LWUtils.sleepMS(500);
 			}
 		}
