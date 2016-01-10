@@ -1,0 +1,46 @@
+{"success":true,
+"leek":
+	{"id":18906,
+	"name":"CapitaineFlirt",
+	"farmer":{"id":16748,"name":"Bezout"},
+	"talent":2462,
+	"talent_more":-217,
+	"level":301,
+	"xp":48407103,
+	"up_xp":999999999,
+	"down_xp":30000000,
+	"remaining_xp":0,
+	"life":1840,
+	"strength":400,"wisdom":0,"agility":0,"resistance":0,"science":0,"magic":0,"tp":24,"mp":6,"frequency":100,
+	"victories":3174,"draws":581,"defeats":2728,"ratio":"1.16",
+	"chips":[{"template":18,"id":285093},{"template":22,"id":426842},{"template":29,"id":295429},{"template":34,"id":250281},{"template":35,"id":420531},{"template":96,"id":426843},{"template":59,"id":334327},{"template":75,"id":337407},{"template":79,"id":337903},{"template":74,"id":433311},{"template":78,"id":433310},{"template":84,"id":327195}],
+	"weapons":[{"template":43,"id":332802},{"template":107,"id":442035},{"template":44,"id":319256},{"template":47,"id":325150}],"ai":{"id":141850,"name":"IA_300+","level":61},
+	"max_weapons":4,
+	"max_chips":12,
+	"in_garden":true,
+	"fights":[
+		{"id":15442995,"date":1451312552,"type":2,"context":2,"status":1,"winner":1,"leek_team":2,"result":"defeat",
+			"leeks1":[{"id":"32175","name":"BatounouJr"},{"id":"33202","name":"NiteOwl"},{"id":"32734","name":"BatounouThe3rd"},{"id":"32305","name":"TheComedian"},{"id":"33544","name":"BatounouThe4th"},{"id":"27999","name":"DoctorManhattan"}],
+			"leeks2":[{"id":"18906","name":"CapitaineFlirt"},{"id":"21101","name":"WhiteMcWhammy"},{"id":"18534","name":"sectivum"},{"id":"19923","name":"armageddum"},{"id":"32417","name":"LeekUtilities"},{"id":"29802","name":"LeekTools"}],"team1":3126,"team2":2314,"team1_name":"IFR","team2_name":"spares-corp"},
+		{"id":15442295,"date":1451309070,"type":2,"context":2,"status":1,"winner":1,"leek_team":2,"result":"defeat",
+			"leeks1":[{"id":"30805","name":"LeekedMax"},{"id":"20254","name":"MinMax"},{"id":"34467","name":"LastMax"},{"id":"18122","name":"LeekMax"},{"id":"33348","name":"AnnabelLeek"},{"id":"22600","name":"Eleekartan"}],
+			"leeks2":[{"id":"18906","name":"CapitaineFlirt"},{"id":"21101","name":"WhiteMcWhammy"},{"id":"18534","name":"sectivum"},{"id":"19923","name":"armageddum"},{"id":"32417","name":"LeekUtilities"},{"id":"29802","name":"LeekTools"}],"team1":1269,"team2":2314,"team1_name":"La troupe","team2_name":"spares-corp"},
+		{"id":15440970,"date":1451302552,"type":0,"context":2,"status":1,"winner":1,"leek_team":2,"result":"defeat",
+			"leeks1":[{"id":"36693","name":"Alexis1"}],
+			"leeks2":[{"id":"18906","name":"CapitaineFlirt"}]},
+		{"id":15440055,"date":1451300465,"type":0,"context":3,"status":1,"winner":2,"leek_team":1,"result":"defeat",
+			"leeks1":[{"id":"18906","name":"CapitaineFlirt"}],
+			"leeks2":[{"id":"30805","name":"LeekedMax"}]},
+		{"id":15435070,"date":1451254832,"type":0,"context":2,"status":1,"winner":1,"leek_team":1,"result":"win",
+			"leeks1":[{"id":"18906","name":"CapitaineFlirt"}],
+			"leeks2":[{"id":"9174","name":"monPetitPoireau"}]}?
+		{"id":15435069,"date":1451254831,"type":0,"context":2,"status":1,"winner":0,"leek_team":1,"result":"draw",
+			"leeks1":[{"id":"18906","name":"CapitaineFlirt"}],
+			"leeks2":[{"id":"21711","name":"KingsPlan"}]}
+	],
+	"skin":12,"hat":7,"talent_history":[2507,2451,2456,2492,2442,2424,2510],
+	"tournaments":[{"id":26978,"date":1451300401},{"id":26952,"date":1451214001},{"id":26900,"date":1451041201},{"id":26872,"date":1450954801},{"id":26840,"date":1450868402},{"id":26808,"date":1450782001}]},
+	
+	"challenges":200
+	
+}
