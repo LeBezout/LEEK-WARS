@@ -1,5 +1,5 @@
 # LEEK-WARS
-Leek Wars Utilities
+Leek Wars JAVA Utilities for Farmer
 
 ## Liens
   * URL du site Leek Wars : http://leekwars.com
