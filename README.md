@@ -1,12 +1,12 @@
 # LEEK-WARS
-Leek Wars JAVA Utilities for Farmer
+Leek Wars JAVA Utilities for Farmers
 
 ## Liens
   * URL du site Leek Wars : http://leekwars.com
   * URL racine de l'API Leek Wars : http://leekwars.com/api
   * URL de l'aide de l'API Leek Wars : http://leekwars.com/help/api
 
-## Elements de l'API utilisés
+## Eléments de l'API utilisés
   * Connexion, récupération du token : <tt>farmer/login-token/[name]/[password]</tt>
   * Invalidation du token : <tt>farmer/disconnect/[token]</tt>
   * Récupération du potager : <tt>garden/get/[token]</tt>
