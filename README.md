@@ -8,10 +8,10 @@ Leek Wars Utilities
 
 ## Elements de l'API utilisés
   * Connexion, récupération du token : <tt>farmer/login-token/[name]/[password]</tt>
-  * Invalidation du token : ''farmer/disconnect/[token]''
-  * Récupération du potager : ''garden/get/[token]''
-  * Inscription aux tournois éléveurs : ''farmer/register-tournament/[token]''
-  * Inscription aux tournois solos : ''leek/register-tournament/[leek_id]/[token]''
-  * Lancement d'un combat éleveur : ''garden/start-farmer-fight/[target_id]/[token]''
-  * Lancement d'un combat solo : ''garden/start-solo-fight/[leek_id]/[target_id]/[token]''
-  * Récupération des infos d'un combat : ''fight/get/[fight_id]''
+  * Invalidation du token : <tt>farmer/disconnect/[token]</tt>
+  * Récupération du potager : <tt>garden/get/[token]</tt>
+  * Inscription aux tournois éléveurs : <tt>farmer/register-tournament/[token]</tt>
+  * Inscription aux tournois solos : <tt>leek/register-tournament/[leek_id]/[token]</tt>
+  * Lancement d'un combat éleveur : <tt>garden/start-farmer-fight/[target_id]/[token]</tt>
+  * Lancement d'un combat solo : <tt>garden/start-solo-fight/[leek_id]/[target_id]/[token]</tt>
+  * Récupération des infos d'un combat : <tt>fight/get/[fight_id]</tt>
