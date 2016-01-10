@@ -15,3 +15,9 @@ Leek Wars JAVA Utilities for Farmers
   * Lancement d'un combat éleveur : <tt>garden/start-farmer-fight/[target_id]/[token]</tt>
   * Lancement d'un combat solo : <tt>garden/start-solo-fight/[leek_id]/[target_id]/[token]</tt>
   * Récupération des infos d'un combat : <tt>fight/get/[fight_id]</tt>
+
+### Infos développeurs
+  * Workspace en UTF-8
+  * Maven 3
+  * Java 7
+  * Libs : JUnit 4,  log4j, google gson
