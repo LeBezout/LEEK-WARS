@@ -39,7 +39,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	private Farmer mFarmer;
 	private List<String> mWarnings = new LinkedList<>();
 	
+	// membres pour la gestion interne
 	private boolean tableOpened;
+	private int mCount;
 	
 	/**
 	 * Constructeur avec files
@@ -111,6 +113,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	
 	@Override
 	public void onEntityChange(EntityType pEntityType, String pEntityName) {
+		mCount = 0;
 		if (tableOpened) {
 			tableOpened = false;
 			addBodyLine("</table>"); 
@@ -122,7 +125,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				));
 		addBodyLine(String.format("<table style=\"width:%d%%\">", TABLE_PERCENT_WIDTH));
 		addBodyLine("\t<tr class=\"header\">");
-		addBodyLine("\t\t<th>Id</th><th>Visualisation</th><th>Flag</th><th>Contre</th><th>Nombre de tours</th>");
+		addBodyLine("\t\t<th>Numéro</th><th>Id</th><th>Visualisation</th><th>Flag</th><th>Contre</th><th>Nombre de tours</th>");
 		addBodyLine("\t</tr>");
 		tableOpened = true;
 	}
@@ -132,7 +135,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onResult(final Fight pFight, final FightResult pResult) {
+		mCount++;
 		addBodyLine(String.format("\t<tr class=\"%s\">", toCSS(pResult)));
+		addBodyLine(String.format("\t\t<td>%d</td>", mCount));
 		addBodyLine(String.format("\t\t<td>%d</td>", pFight.getId()));
 		addBodyLine(String.format("\t\t<td><a href=\"http://leekwars.com/fight/%d\">Combat</a> | <a href=\"http://leekwars.com/report/%d\">Rapport</a></td>", pFight.getId(), pFight.getId()));
 		mBody.append("\t\t<td>");
@@ -201,12 +206,14 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			addBodyLine("<h2>"+getIcon("gearing", 22, 22)+" Messages</h2>");
 			addBodyLine(String.format("<table style=\"width:%d%%\">", TABLE_PERCENT_WIDTH));
 			addBodyLine("\t<tr class=\"header\">");
-			addBodyLine("\t\t<th width=\"20%\">Type</th><th width=\"80%\" style=\"text-align:left\">Message</th>");
+			addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"20%\">Type</th><th width=\"70%\" style=\"text-align:left\">Message</th>");
 			addBodyLine("\t</tr>");
+			int num = 1;
 			for (String lMsg : mWarnings) {
 				addBodyLine("\t<tr>");
-				addBodyLine(String.format("\t\t<td>%s</td><td style=\"text-align:left\">%s</td>", "WARNING", lMsg));
+				addBodyLine(String.format("\t\t<td>%d</td><td>%s</td><td style=\"text-align:left\">%s</td>", num, "WARNING", lMsg));
 				addBodyLine("\t</tr>");
+				num++;
 			}
 			addBodyLine("</table>");
 		}
