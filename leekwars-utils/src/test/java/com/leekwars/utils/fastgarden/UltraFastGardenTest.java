@@ -19,7 +19,7 @@ public class UltraFastGardenTest {
 	public void testUltraFastGarden() throws LWException {
 		final File output = new File("target/reports", TIMESTAMP + "_TODO.html");
 		HtmlReportFastGardenVisitor lReport = new HtmlReportFastGardenVisitor(HTML_TEMPLATE_FILE, output);
-		UltraFastGarden.fastGarden(new DefaultLeekWarsConnector("TODO", "TODO"), lReport);
+		UltraFastGarden.forAll(new DefaultLeekWarsConnector("TODO", "TODO"), lReport);
 		lReport.generate();
 	}
 }

@@ -28,9 +28,9 @@ public class LWUtilsTest {
 
 	@Test
 	public void testAcceptTalent() {
-		System.out.println(LWUtils.acceptTalent(2462, 2100));
-		System.out.println(LWUtils.acceptTalent(2462, 2666));
-		System.out.println(LWUtils.acceptTalent(2462, 3005));
+		System.out.println(LWUtils.acceptTalent(2462, 2100, 20));
+		System.out.println(LWUtils.acceptTalent(2462, 2666, 20));
+		System.out.println(LWUtils.acceptTalent(2462, 3005, 20));
 	}
 	
 	@Test

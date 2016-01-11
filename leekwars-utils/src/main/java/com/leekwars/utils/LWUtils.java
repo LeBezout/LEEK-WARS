@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import com.leekwars.utils.enums.FightContext;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.enums.FightType;
+import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.model.Identity;
@@ -19,9 +20,6 @@ import com.leekwars.utils.model.LeekSummary;
  */
 public final class LWUtils {
 	private LWUtils() {}
-	
-	/** Seuil d'acception en pourcentage d'un talent pour déterminer si l'on peut combattre l'adversaire */
-	public static final int TALENT_DIFF_ACCEPTANCE = 20; // 20% .. à affiner si besoin plus tard
 	
 	/**
 	 * Attente en secondes
@@ -99,16 +97,36 @@ public final class LWUtils {
 	 * Détermine si le talent de l'adversaire n'est pas trop élevé
 	 * @param pRefTalent
 	 * @param pOtherTalent
+	 * @param pAcceptance pourcentage accepté d'écart entre 2 talents
 	 * @return true si ok
-	 * @see #TALENT_DIFF_ACCEPTANCE
 	 */
-	public static boolean acceptTalent(final int pRefTalent, final int pOtherTalent) {
+	public static boolean acceptTalent(final int pRefTalent, final int pOtherTalent, final int pAcceptance) {
 		// calcul borne max (pas de min ;) )
-		final long diff = Math.round((float)pRefTalent * TALENT_DIFF_ACCEPTANCE / 100f);
+		final long diff = Math.round((float)pRefTalent * pAcceptance / 100f);
 		final long lMax = pRefTalent + diff;
 		// regarde si le talent adverse est en dessous
 		return pOtherTalent <= lMax;
 	}
+	
+	/**
+	 * Récupère les infos d'un poireau depuis son nom
+	 * @param pFarmer eleveur récupéré lors du login
+	 * @param pLeekName nom dui poireau recherché
+	 * @return LeekSummary
+	 * @throws LWException si non trouvé ou paramètres invalides
+	 */
+	public static LeekSummary getLeekFromName(final Farmer pFarmer, final String pLeekName) throws LWException {
+		if (pFarmer == null || pLeekName == null) {
+			throw new LWException("Parameters are mandatory");
+		}
+		for (LeekSummary lLeek : pFarmer.getLeeks().values()) {
+			if (pLeekName.equals(lLeek.getName())) {
+				return lLeek;
+			}
+		}
+		throw new LWException(String.format("Leek %s doesn't exists for farmer %s.", pLeekName, pFarmer.getName()));
+	}
+	
 	
 	/**
 	 * Détermine le résultat d'un combat par rapport à un éléveur donné 
@@ -175,21 +193,21 @@ public final class LWUtils {
 	public static String getTargetEnemyName(final Farmer pFarmer, final Fight pFight) {
 		switch (getFightType(pFight)) {
 			case SOLO : 
-				if (isFarmer1(pFarmer, pFight)) {
+				if (isFarmer1(pFarmer, pFight)) { // si on est farmer1 alors ennemi = leek2
 					return pFight.getLeeks2().length > 0 ? pFight.getLeeks2()[0].getName() : "?";
 				} else {
 					return pFight.getLeeks1().length > 0 ? pFight.getLeeks1()[0].getName() : "?";
 				}
 			case FARMER :
-				if (isFarmer1(pFarmer, pFight)) {
-					Identity farmer = pFight.getFarmers1().get(String.valueOf(pFarmer.getId()));
-					return farmer == null ? "?" : farmer.getName();
-				} else {
+				if (isFarmer1(pFarmer, pFight)) { // si on est farmer1 alors ennemi = farmer2
 					Identity farmer = pFight.getFarmers2().get(String.valueOf(pFarmer.getId()));
 					return farmer == null ? "?" : farmer.getName();
+				} else {
+					Identity farmer = pFight.getFarmers1().get(String.valueOf(pFarmer.getId()));
+					return farmer == null ? "?" : farmer.getName();
 				}
-			case TEAM :
-				return isFarmer1(pFarmer, pFight) ? pFight.getTeam1_name() : pFight.getTeam2_name();
+			case TEAM : // si on est farmer1 alors ennemi = Team2
+				return isFarmer1(pFarmer, pFight) ? pFight.getTeam2_name() : pFight.getTeam1_name();
 			default : 
 				return "?";
 		}

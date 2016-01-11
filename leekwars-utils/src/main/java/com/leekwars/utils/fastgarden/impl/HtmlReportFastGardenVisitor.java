@@ -26,22 +26,22 @@ import com.leekwars.utils.wrappers.GardenStatsWrapper;
 public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	private static final String VERSION = "1.0";
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-	// PARAMETRAGE HTML
 	private static final Map<String, String> MAP_ICONS = initIconsMap();
-	private static final int TABLE_PERCENT_WIDTH = 60;
 	// MEMBRES
 	final File mTemplateFile;
 	final File mOutputFile;
-	
-	private boolean canGenerate;
-	private String mTitle;
 	private StringBuilder mBody;
 	private Farmer mFarmer;
 	private List<String> mWarnings = new LinkedList<>();
-	
 	// membres pour la gestion interne
+	private boolean canGenerate;
 	private boolean tableOpened;
 	private int mCount;
+	// membres pour le paramétrage du rendu HTML
+	private String mTemplateCharset = "UTF-8";
+	private String mReportCharset = "UTF-8";
+	private String mHeadTitle;
+	private String mPageTitle = "Rapport de combats \"Fast Garden\"";
 	
 	/**
 	 * Constructeur avec files
@@ -52,6 +52,38 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		mTemplateFile = pTemplate;
 		mOutputFile = pOutput;
 	}
+	
+	// ------ POUR CHANGER LE PARAMETRAGE PAR DEFAUT ------
+	
+	/**
+	 * Offre la possibilité de changer le charset du fichier template (UTF-8 par défaut)
+	 * @param pCS
+	 * @return this pour chainage
+	 */
+	public HtmlReportFastGardenVisitor setTemplateCharset(final String pCS) {
+		mTemplateCharset = pCS;
+		return this;
+	}
+	/**
+	 * Offre la possibilité de changer le charset de la page générée (UTF-8 par défaut)
+	 * @param pCS
+	 * @return this pour chainage
+	 */
+	public HtmlReportFastGardenVisitor setReportCharset(final String pCS) {
+		mReportCharset = pCS;
+		return this;
+	}
+	/**
+	 * Offre la possibilité de changer le titre de la page ({@code <h1>})
+	 * @param pTitle
+	 * @return this pour chainage
+	 */
+	public HtmlReportFastGardenVisitor setPageTitle(final String pTitle) {
+		mPageTitle = pTitle;
+		return this;
+	}
+	
+	// ------ GESTION INTERNE ------
 	
 	private HtmlReportFastGardenVisitor addBodyLine(final String pLine) {
 		mBody.append(pLine).append(LINE_SEPARATOR);
@@ -80,8 +112,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	private static Map<String, String> initIconsMap() {
 		Map<String, String> lMap = new HashMap<>();
-		lMap.put("perfect", "<img src=\"http://leekwars.com/static/image/fight_flag/perfect\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("static", "<img src=\"http://leekwars.com/static/image/fight_flag/static\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("perfect", "<img src=\"http://leekwars.com/static/image/fight_flag/perfect\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("static", "<img src=\"http://leekwars.com/static/image/fight_flag/static\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("dead", "<img src=\"http://leekwars.com/static/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("garden", "<img src=\"http://leekwars.com/static/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("fight", "<img src=\"http://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
@@ -93,15 +125,17 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		String value = MAP_ICONS.get(pKey);
 		return value == null ? pKey : String.format(value, width, height);
 	}
+	
+	// ------ EVENEMENTS LIES A L'IMPLEMENTATION DU VISITOR ------
 
 	@Override
 	public void onInit(Farmer pFarmer) {
 		canGenerate = false;
 		tableOpened = false;
-		mTitle = "Rapport FastGarden pour " + pFarmer.getName();
+		mHeadTitle = "Rapport FastGarden pour " + pFarmer.getName(); // TODO config
 		mBody = new StringBuilder(15 * 1024); // 15kio
 		mFarmer = pFarmer;
-		addBodyLine("<h1>Rapport de combats \"Fast Garden\"</h1>");
+		addBodyLine(String.format("<h1>%s</h1>", mPageTitle));
 		addBodyLine("<br/>");
 		addBodyLine("<div class=\"container\">");
 	}
@@ -123,7 +157,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				toString(pEntityType),
 				pEntityName
 				));
-		addBodyLine(String.format("<table style=\"width:%d%%\">", TABLE_PERCENT_WIDTH));
+		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
 		addBodyLine("\t\t<th>Numéro</th><th>Id</th><th>Visualisation</th><th>Flag</th><th>Contre</th><th>Nombre de tours</th>");
 		addBodyLine("\t</tr>");
@@ -176,7 +210,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		}
 		addBodyLine("<br/>");
 		addBodyLine("<h2>"+getIcon("ranking", 22, 22)+" Statistiques</h2>");
-		addBodyLine(String.format("<table style=\"width:%d%%\">", TABLE_PERCENT_WIDTH));
+		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
 		addBodyLine("\t\t<th>Entité</th><th>Taux de réussite</th><th>Ratio</th><th>Nb combats</th><th>Nb victoires</th><th>Nb nuls</th><th>Nb défaites</th>");
 		addBodyLine("\t</tr>");
@@ -204,7 +238,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<br/>");
 		if (!mWarnings.isEmpty()) {
 			addBodyLine("<h2>"+getIcon("gearing", 22, 22)+" Messages</h2>");
-			addBodyLine(String.format("<table style=\"width:%d%%\">", TABLE_PERCENT_WIDTH));
+			addBodyLine("<table class=\"result\">");
 			addBodyLine("\t<tr class=\"header\">");
 			addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"20%\">Type</th><th width=\"70%\" style=\"text-align:left\">Message</th>");
 			addBodyLine("\t</tr>");
@@ -226,6 +260,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				+ getIcon("fight", 12, 12)
 				+ "</div>");
 	}
+	
+	// ------ METHODE POUR GENERER LE RAPPORT FINAL ------
 
 	/**
 	 * Génère le rapport à partir de toute les données collectées
@@ -235,9 +271,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		if (canGenerate) {
 			try {
 				// Load template
-				String lTemplateHTML = new String(Files.readAllBytes(mTemplateFile.toPath()), "UTF-8");
+				String lTemplateHTML = new String(Files.readAllBytes(mTemplateFile.toPath()), mTemplateCharset);
 				// replace token TITLE
-				lTemplateHTML = lTemplateHTML.replace("{TITLE}", mTitle);
+				lTemplateHTML = lTemplateHTML.replace("{TITLE}", mHeadTitle);
 				// replace token BODY
 				lTemplateHTML = lTemplateHTML.replace("{BODY}", mBody.toString());
 				System.out.println("---DEBUG-- Taille body : " + mBody.length());
@@ -245,7 +281,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				mOutputFile.getParentFile().mkdirs();
 				FileOutputStream fout = new FileOutputStream(mOutputFile);
 				try {
-					fout.write(lTemplateHTML.getBytes("UTF-8"));
+					fout.write(lTemplateHTML.getBytes(mReportCharset));
 				} finally {
 					fout.close();
 				}

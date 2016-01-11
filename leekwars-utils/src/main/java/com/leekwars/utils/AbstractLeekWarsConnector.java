@@ -98,7 +98,7 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	
 	/**
-	 * Connexion via l'API
+	 * Connexion (récuparation du token et du php session id) via l'API
 	 * @throws LWException
 	 */
 	public final void connect() throws LWException {
@@ -113,6 +113,16 @@ public abstract class AbstractLeekWarsConnector {
 		LOGGER.debug("PHPSESSID=" + mPhpSessionId);
 		LOGGER.info("FARMER=" + mFarmer);
 		LOGGER.info("TEAM=" + mFarmer.getTeam());
+	}
+	
+	/**
+	 * Connexion (récuparation du token et du php session id) via l'API seulement si pas déjà connecté.
+	 * @throws LWException
+	 */
+	public final void connectIfNeeded() throws LWException {
+		if (mPhpSessionId == null || mToken == null) {
+			connect();
+		}
 	}
 	
 	/**
