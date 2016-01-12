@@ -200,10 +200,10 @@ public final class LWUtils {
 				}
 			case FARMER :
 				if (isFarmer1(pFarmer, pFight)) { // si on est farmer1 alors ennemi = farmer2
-					Identity farmer = pFight.getFarmers2().get(String.valueOf(pFarmer.getId()));
+					Identity farmer = pFight.getFarmers2().values().isEmpty() ? null : pFight.getFarmers2().values().iterator().next(); 
 					return farmer == null ? "?" : farmer.getName();
 				} else {
-					Identity farmer = pFight.getFarmers1().get(String.valueOf(pFarmer.getId()));
+					Identity farmer = pFight.getFarmers1().values().isEmpty() ? null : pFight.getFarmers1().values().iterator().next(); 
 					return farmer == null ? "?" : farmer.getName();
 				}
 			case TEAM : // si on est farmer1 alors ennemi = Team2
