@@ -1,0 +1,28 @@
+{
+	"success":true,
+	"farmer":{
+		"id":16748,
+		"login":"Bezout",
+		"team":{"id":2314,"name":"spares-corp","level":100,"emblem_changed":1417124221},
+		"name":"Bezout",
+		"talent":2937,
+		"leeks":
+			{"18906":
+				{"id":18906,"name":"CapitaineFlirt","color":"#000000","capital":0,"level":301,"talent":2493,"skin":12,"hat":7},
+			"21101":
+				{"id":21101,"name":"WhiteMcWhammy","color":"#000000","capital":0,"level":301,"talent":2270,"skin":12,"hat":null},
+			"23780":{
+				"id":23780,"name":"SergeKaramazov","color":"#000000","capital":0,"level":301,"talent":2387,"skin":12,"hat":null},
+			"29287":{
+				"id":29287,"name":"BenHurMarcel","color":"#000000","capital":0,"level":301,"talent":2294,"skin":12,"hat":null}},
+		"avatar_changed":1410895633,
+		"talent_more":383,
+		"victories":15151,
+		"fights":[{"id":15642645,"date":1452706274,"type":1,"context":3,"status":1,"winner":2,"farmer_team":1,"result":"defeat","farmer1":16748,"farmer2":15527,"farmer1_name":"Bezout","farmer2_name":"Phenolphtaleine"},{"id":15642263,"date":1452704603,"type":1,"context":3,"status":1,"winner":2,"farmer_team":2,"result":"win","farmer1":28474,"farmer2":16748,"farmer1_name":"Rufo","farmer2_name":"Bezout"},{"id":15630635,"date":1452638212,"type":1,"context":2,"status":1,"winner":2,"farmer_team":2,"result":"win","farmer1":34958,"farmer2":16748,"farmer1_name":"tagadanar","farmer2_name":"Bezout"},{"id":15630627,"date":1452638209,"type":1,"context":2,"status":1,"winner":2,"farmer_team":2,"result":"win","farmer1":34958,"farmer2":16748,"farmer1_name":"tagadanar","farmer2_name":"Bezout"},{"id":15629991,"date":1452634456,"type":1,"context":2,"status":1,"winner":2,"farmer_team":1,"result":"defeat","farmer1":16748,"farmer2":23299,"farmer1_name":"Bezout","farmer2_name":"lalooose"},{"id":15629990,"date":1452634455,"type":1,"context":2,"status":1,"winner":2,"farmer_team":1,"result":"defeat","farmer1":16748,"farmer2":23299,"farmer1_name":"Bezout","farmer2_name":"lalooose"}],"draws":2951,"defeats":13154,"ratio":"1.15","connected":true,"last_connection":1452722816,"register_date":1410895414,"tournaments":[{"id":27452,"date":1452704401},{"id":27426,"date":1452618001},{"id":27399,"date":1452531601},{"id":27371,"date":1452445201},{"id":27344,"date":1452358801},{"id":27314,"date":1452272402}],"admin":false,"moderator":false,"country":"fr","godfather":{"id":16448,"name":"doh"},"godsons":[{"id":36537,"name":"HeavyMental"},{"id":26503,"name":"SparesTest"},{"id":37083,"name":"EryonGaming"},{"id":38469,"name":"HurBenny"},{"id":19734,"name":"ireception"}],
+		"color":"",
+		"banned":0,
+		"won_solo_tournaments":53,
+		"won_farmer_tournaments":1,
+		"won_team_tournaments":0
+	}
+}
