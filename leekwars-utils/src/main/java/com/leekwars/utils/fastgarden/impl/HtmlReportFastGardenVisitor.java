@@ -159,7 +159,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				));
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
-		addBodyLine("\t\t<th>Numéro</th><th>Id</th><th>Visualisation</th><th>Flag</th><th>Contre</th><th>Nombre de tours</th>");
+		addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"10%\">Id</th><th width=\"25%\">Visualisation</th><th width=\"15%\">Flag</th><th width=\"30%\">Contre</th><th width=\"10%\">Nombre de tours</th>");
 		addBodyLine("\t</tr>");
 		tableOpened = true;
 	}
