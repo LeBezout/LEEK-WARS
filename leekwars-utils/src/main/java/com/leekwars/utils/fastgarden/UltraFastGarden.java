@@ -432,7 +432,7 @@ public class UltraFastGarden {
 			LOGGER.warn("**************************************************************");
 			LOGGER.warn(" FAMINE");
 			LOGGER.warn("**************************************************************");
-			pVisitor.onWarning(farmerName, "Famine : plus de combat à lancer");
+			pVisitor.onWarning(farmerName, "Famine : plus de combat à lancer : " + lFightCount + " combats lancés sur " + lInitialFightCount + " possibles");
 		}
 		
 		LOGGER.info(String.valueOf(lFightCount) + " combats lancés sur " + lInitialFightCount + " possibles pour " + farmerName);
