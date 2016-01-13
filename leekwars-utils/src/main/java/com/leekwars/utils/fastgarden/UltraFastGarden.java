@@ -540,12 +540,14 @@ public class UltraFastGarden {
 		LOGGER.info("-------------------------------------------------------------");
 		LOGGER.info(" STATISTIQUES ");
 		LOGGER.info("-------------------------------------------------------------");
+		GardenStatsWrapper lStat;
 		for (Map.Entry<String, GardenStatsWrapper> lEntry : lStats.entrySet()) {
-			LOGGER.info("\t" + lEntry.getValue());
+			lStat = lEntry.getValue();
+			LOGGER.info("\t" + lStat);
 			/*
-			 * ON_STAT(lEntry.getValue())
+			 * ON_STAT(lStat
 			 */
-			pVisitor.onStat(lEntry.getValue());
+			pVisitor.onStat(lStat);
 		}
 	}
 }

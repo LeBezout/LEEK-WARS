@@ -159,7 +159,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				));
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
-		addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"10%\">Id</th><th width=\"25%\">Visualisation</th><th width=\"15%\">Flag</th><th width=\"30%\">Contre</th><th width=\"10%\">Nombre de tours</th>");
+		addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"10%\">Id</th><th width=\"25%\">Visualisation</th><th width=\"15%\">Flag</th><th width=\"25%\">Contre</th><th width=\"15%\">Nombre de tours</th>");
 		addBodyLine("\t</tr>");
 		tableOpened = true;
 	}
@@ -212,14 +212,14 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<h2>"+getIcon("ranking", 22, 22)+" Statistiques</h2>");
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
-		addBodyLine("\t\t<th>Entité</th><th>Taux de réussite</th><th>Ratio</th><th>Nb combats</th><th>Nb victoires</th><th>Nb nuls</th><th>Nb défaites</th>");
+		addBodyLine("\t\t<th>Entité</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th>");//TODO Talent
 		addBodyLine("\t</tr>");
 	}
 
 	@Override
 	public void onStat(GardenStatsWrapper pStat) {
 		addBodyLine("\t<tr>");
-		addBodyLine(String.format("\t\t<td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td>",
+		addBodyLine(String.format("\t\t<td><b>%s</b></td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td>",
 				pStat.getEntityName(),
 				pStat.getVictoriesPercent(),
 				pStat.getRatio(),
@@ -227,6 +227,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				pStat.getVictories(),
 				pStat.getDraws(),
 				pStat.getDefeats()
+				//TODO Talent avant/après/diff
 				));
 		addBodyLine("\t</tr>");
 	}
