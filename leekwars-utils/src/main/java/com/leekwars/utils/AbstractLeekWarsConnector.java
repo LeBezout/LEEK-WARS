@@ -9,6 +9,7 @@ import com.leekwars.utils.http.HttpResponseWrapper;
 import com.leekwars.utils.http.HttpUtils;
 import com.leekwars.utils.io.FightJSONResponse;
 import com.leekwars.utils.io.GardenJSONResponse;
+import com.leekwars.utils.io.GetFarmerJSONResponse;
 import com.leekwars.utils.io.LoginJSONResponse;
 import com.leekwars.utils.io.StartFightJSONResponse;
 import com.leekwars.utils.model.Farmer;
@@ -239,7 +240,7 @@ public abstract class AbstractLeekWarsConnector {
 	
 	/**
 	 * Récupère les informations d'un combat, utile pour connaitre le resultat après avoir lancé le combat en asynchrone
-	 * @param pFightId
+	 * @param pFightId id du combat
 	 * @throws LWException
 	 */
 	public Fight getFight(final long pFightId) throws LWException {
@@ -251,4 +252,30 @@ public abstract class AbstractLeekWarsConnector {
 		final FightJSONResponse lFightResponse = validateResponse(lResponse, "Cannot get fight " + pFightId, FightJSONResponse.class);
 		return lFightResponse.getFight();
 	}
+	
+//	/**
+//	 * @param pFightId id du combat
+//	 * @throws LWException
+//	 */
+//	public void getFightLogs(final long pFightId) throws LWException {
+//		checkConnected();
+//		final String lUrl = LEEK_WARS_ROOT_URL + "fight/get-logs/" + pFightId + '/' + mToken;
+//		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+//		System.out.println("fight-logs : \n" + lResponse.getResponseText());
+//	}
+	
+	/**
+	 * Met à jour l'éleveur (et tous les poireaux).
+	 * Suite à déclenchement de combats par exemple (evolution du talent, level, ...)
+	 * @throws LWException
+	 */
+	public void updateFarmer() throws LWException {
+		checkConnected();
+		//	farmer/get/farmer_id → farmer
+		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/get/" + mFarmer.getId();
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final GetFarmerJSONResponse lFarmerResponse = validateResponse(lResponse, "Cannot update farmer", GetFarmerJSONResponse.class);
+		mFarmer = lFarmerResponse.getFarmer();
+	}
+	
 }
