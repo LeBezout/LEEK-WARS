@@ -2,21 +2,30 @@ package com.leekwars.utils.wrappers;
 
 import java.text.DecimalFormat;
 
+import com.leekwars.utils.enums.EntityType;
+import com.leekwars.utils.model.Entity;
+
 /**
  * Wrapper pour stoker les statisques de lancement des combats pour une entité : leek ou farmer
  * @author Bezout
  */
 public class GardenStatsWrapper {
 
-	private String entityName;
+	private Entity entity;
+	private EntityType type;
 	private int totalFight;
 	private int draws;
 	private int victories;
 	private int defeats;
 	
-	public GardenStatsWrapper(final String pEntityName) {
+	private int initialTalent;
+	private int finalTalent;
+	
+	public GardenStatsWrapper(final EntityType pType, final Entity pEntity) {
 		super();
-		entityName = pEntityName;
+		type = pType;
+		entity = pEntity;
+		initialTalent = pEntity.getTalent();
 	}
 	
 //	public GardenStatsWrapper(final String pEntityName, final int pTotalFight, final int pDraws, final int pSuccess) {
@@ -28,16 +37,12 @@ public class GardenStatsWrapper {
 	
 	@Override
 	public String toString() {
-		return entityName + " : " 
+		return entity +  "(" + type + ") : " 
 				+ victories + " victoires, "
 				+ draws + " nuls, "
 				+ defeats + " défaites"
 				+ " sur " + totalFight + " combats,"
 				+ " soit un ratio de " + new DecimalFormat("0.00").format(getRatio()) + " et " + getVictoriesPercent() + "% de réussite.";
-	}
-	
-	public int getDefeats() {
-		return defeats;
 	}
 	
 	public GardenStatsWrapper incTotalFights() {
@@ -71,12 +76,31 @@ public class GardenStatsWrapper {
 		//  Nombre victoires/Nombre défaites
 		return ((float)victories / (float)defeats);
 	}
+	
+	/**
+	 * @return defeats
+	 */
+	public int getDefeats() {
+		return defeats;
+	}
+	/**
+	 * @param pDefeats the defeats to set
+	 */
+	public void setDefeats(int pDefeats) {
+		defeats = pDefeats;
+	}
 
 	/**
-	 * @return the entityName
+	 * @return the entity
 	 */
-	public String getEntityName() {
-		return entityName;
+	public Entity getEntity() {
+		return entity;
+	}
+	/**
+	 * @return the entity
+	 */
+	public EntityType getEntityType() {
+		return type;
 	}
 
 	/**
@@ -116,5 +140,38 @@ public class GardenStatsWrapper {
 	 */
 	public void setVictories(int pSuccess) {
 		victories = pSuccess;
+	}
+
+	/**
+	 * @return the initialTalent
+	 */
+	public int getInitialTalent() {
+		return initialTalent;
+	}
+	/**
+	 * @param pInitialTalent the initialTalent to set
+	 */
+	public void setInitialTalent(int pInitialTalent) {
+		initialTalent = pInitialTalent;
+	}
+
+	/**
+	 * @return the finalTalent
+	 */
+	public int getFinalTalent() {
+		return finalTalent;
+	}
+	/**
+	 * @param pFinalTalent the finalTalent to set
+	 */
+	public void setFinalTalent(int pFinalTalent) {
+		finalTalent = pFinalTalent;
+	}
+	
+	/**
+	 * @return gain (+ ou -) en talent
+	 */
+	public int getTalentGain() {
+		return finalTalent > 0 ? (finalTalent - initialTalent) : 0;
 	}
 }

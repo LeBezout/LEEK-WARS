@@ -6,10 +6,9 @@ import java.util.Map;
  * Infos d'un éleveur
  * @author Bezout
  */
-public class Farmer extends Identity {
+public class Farmer extends Entity {
 	private String login;
 	private TeamSummary team;
-	private int talent;
 	private Map<String, LeekSummary> leeks;
 	private long avatar_changed;
 	private int talent_more;
@@ -65,18 +64,6 @@ public class Farmer extends Identity {
 	 */
 	public void setTeam(TeamSummary pTeam) {
 		team = pTeam;
-	}
-	/**
-	 * @return the talent
-	 */
-	public int getTalent() {
-		return talent;
-	}
-	/**
-	 * @param pTalent the talent to set
-	 */
-	public void setTalent(int pTalent) {
-		talent = pTalent;
 	}
 	/**
 	 * @return the avatar_changed

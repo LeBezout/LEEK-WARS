@@ -1,6 +1,7 @@
 package com.leekwars.utils.wrappers;
 
 import com.leekwars.utils.enums.EntityType;
+import com.leekwars.utils.model.Entity;
 
 /**
  * Wrapper pour infos réduites d'un combat.
@@ -9,22 +10,22 @@ import com.leekwars.utils.enums.EntityType;
 public class FightWrapper {
 	private long fightId;
 	private EntityType entityType = EntityType.LEEK;
-	private String entityName;
+	private Entity entity;
 	private String fightResult;
 	private String fightType;
 	private String enemyName;
 	private int turnCount;
 	
-	public FightWrapper(final String pEntityName, final String pType, final long pId, final String pEnemyName) {
+	public FightWrapper(final Entity pEntity, final String pFightType, final long pId, final String pEnemyName) {
 		fightId = pId;
-		entityName = pEntityName;
-		fightType = pType;
+		entity = pEntity;
+		fightType = pFightType;
 		enemyName = pEnemyName;
 	}
 	
 	@Override
 	public String toString() {
-		return "COMBAT " + fightType + " " + fightId + " [" + entityName + " vs " + enemyName + "]";
+		return "COMBAT " + fightType + " " + fightId + " [" + (entity == null? "?" : entity.getName()) + " vs " + enemyName + "]";
 	}
 	
 	/**
@@ -40,16 +41,16 @@ public class FightWrapper {
 		fightId = pFightId;
 	}
 	/**
-	 * @return the entityName
+	 * @return the entity
 	 */
-	public String getEntityName() {
-		return entityName;
+	public Entity getEntity() {
+		return entity;
 	}
 	/**
-	 * @param pEntityName the entityName to set
+	 * @param pEntity the entity to set
 	 */
-	public void setEntityName(String pEntityName) {
-		entityName = pEntityName;
+	public void setEntity(Entity pEntity) {
+		entity = pEntity;
 	}
 	/**
 	 * @return the fightResult

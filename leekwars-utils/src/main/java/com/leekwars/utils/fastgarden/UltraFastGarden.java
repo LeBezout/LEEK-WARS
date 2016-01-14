@@ -324,7 +324,8 @@ public class UltraFastGarden {
 		Garden lPotager = pConnector.getGarden();
 
 		final int lInitialFightCount = lPotager.getLeek_fights().get(String.valueOf(pId));
-		final String leekName = pConnector.getFarmer().getLeekFromId(pId).getName();
+		final LeekSummary leek = pConnector.getFarmer().getLeekFromId(pId);
+		final String leekName = leek.getName();
 		LOGGER.info("-------------------------------------------------------------");
 		LOGGER.info(" COMBATS POUR LE POIREAU " + pId + " - " +  leekName);
 		LOGGER.info(" NB DE COMBATS A LANCER : " + lInitialFightCount);
@@ -342,7 +343,7 @@ public class UltraFastGarden {
 				fightId = pConnector.startSoloFight(pId, lTargets[0].getId());
 				label = "COMBAT SOLO "+ fightId + " [" + leekName + " vs " + lTargets[0].getName() + "]";
 				LOGGER.info(">> " + label + " lancé");
-				lFightInfos = new FightWrapper(leekName, "SOLO", fightId, lTargets[0].getName());
+				lFightInfos = new FightWrapper(leek, "SOLO", fightId, lTargets[0].getName());
 				lFightInfos.setEntityType(EntityType.LEEK);
 				lFights.add(lFightInfos);
 				lFightCount++;
@@ -407,7 +408,7 @@ public class UltraFastGarden {
 							label = "COMBAT FARMER "+ fightId + " [" + farmerName + " vs " + lTargetFamer.getName() + "]";
 							LOGGER.info(">> "+ label + " lancé");
 							lFightCount++;
-							lFightInfos = new FightWrapper(farmerName, "FARMER", fightId, lTargetFamer.getName());
+							lFightInfos = new FightWrapper(pConnector.getFarmer(), "FARMER", fightId, lTargetFamer.getName());
 							lFightInfos.setEntityType(EntityType.FARMER);
 							lFights.add(lFightInfos);
 							lMapFights.put(lTargetFamer.getId(), Integer.valueOf(countForTarget.intValue() + 1));
@@ -469,8 +470,8 @@ public class UltraFastGarden {
 		String currentEntityName = "";
 		for (int i = 0; i < pFights.size(); i++) {
 			lFight = pFights.get(i);
-			if (!currentEntityName.equals(lFight.getEntityName())) {
-				currentEntityName = lFight.getEntityName();
+			if (!currentEntityName.equals(lFight.getEntity().getName())) {
+				currentEntityName = lFight.getEntity().getName();
 				/*
 				 * ON_ENTITY_CHANGE()
 				 */
@@ -479,7 +480,7 @@ public class UltraFastGarden {
 			
 			lEntityStats = lStats.get(currentEntityName);
 			if (lEntityStats == null) {
-				lEntityStats = new GardenStatsWrapper(currentEntityName);
+				lEntityStats = new GardenStatsWrapper(lFight.getEntityType(), lFight.getEntity());
 				lStats.put(currentEntityName, lEntityStats);
 			}
 			
@@ -540,10 +541,24 @@ public class UltraFastGarden {
 		LOGGER.info("-------------------------------------------------------------");
 		LOGGER.info(" STATISTIQUES ");
 		LOGGER.info("-------------------------------------------------------------");
+		// Mise à jour des infos (talent notamment) de l'eleveur et poireaux
+		pConnector.updateFarmer();
 		GardenStatsWrapper lStat;
 		for (Map.Entry<String, GardenStatsWrapper> lEntry : lStats.entrySet()) {
 			lStat = lEntry.getValue();
 			LOGGER.info("\t" + lStat);
+			// Récupération du talent final
+			switch (lStat.getEntityType()) {
+				case FARMER :
+					lStat.setFinalTalent(pConnector.getFarmer().getTalent());
+					break;
+				case LEEK :
+					lStat.setFinalTalent(pConnector.getFarmer().getLeekFromId(lStat.getEntity().getId()).getTalent());
+					break;
+				default : 
+					break;
+			}
+			
 			/*
 			 * ON_STAT(lStat
 			 */

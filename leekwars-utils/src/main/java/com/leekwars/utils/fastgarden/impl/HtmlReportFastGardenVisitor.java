@@ -212,22 +212,23 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<h2>"+getIcon("ranking", 22, 22)+" Statistiques</h2>");
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
-		addBodyLine("\t\t<th>Entité</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th>");//TODO Talent
+		addBodyLine("\t\t<th>Entité</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th><th>Talent</th>");//TODO Talent
 		addBodyLine("\t</tr>");
 	}
 
 	@Override
 	public void onStat(GardenStatsWrapper pStat) {
 		addBodyLine("\t<tr>");
-		addBodyLine(String.format("\t\t<td><b>%s</b></td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td>",
-				pStat.getEntityName(),
+		final int diffTalent = pStat.getTalentGain();
+		addBodyLine(String.format("\t\t<td><b>%s</b></td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%s</td>",
+				pStat.getEntity().getName(),
 				pStat.getVictoriesPercent(),
 				pStat.getRatio(),
 				pStat.getTotalFight(),
 				pStat.getVictories(),
 				pStat.getDraws(),
-				pStat.getDefeats()
-				//TODO Talent avant/après/diff
+				pStat.getDefeats(),
+				((diffTalent > 0 ? "+" : "") + diffTalent)
 				));
 		addBodyLine("\t</tr>");
 	}

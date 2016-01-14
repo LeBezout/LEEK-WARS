@@ -8,6 +8,7 @@ import com.leekwars.utils.LWUtils;
 import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.exceptions.LWException;
+import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.test.FightBuilder;
@@ -38,13 +39,23 @@ public class HtmlReportFastGardenVisitorTest {
 		lVisitor.onResult(getFightFromLW(15592522), FightResult.DRAW);
 		
 		lVisitor.onBeforeStat();
-		GardenStatsWrapper lStat = new GardenStatsWrapper("CapitaineFlirt_JUNIT");
+		
+		Entity lEntity = new Entity();
+		lEntity.setName("CapitaineFlirt_JUNIT");
+		lEntity.setTalent(2000);
+		GardenStatsWrapper lStat = new GardenStatsWrapper(EntityType.LEEK, lEntity);
+		lStat.setFinalTalent(2045);
 		lStat.setTotalFight(10);
 		lStat.setDraws(4);
 		lStat.incDefeats();
 		lStat.setVictories(5);
 		lVisitor.onStat(lStat);
-		lStat = new GardenStatsWrapper("Bezout_JUNIT");
+		
+		lEntity = new Entity();
+		lEntity.setName("Bezout_JUNIT");
+		lEntity.setTalent(2000);
+		lStat = new GardenStatsWrapper(EntityType.FARMER, lEntity);
+		lStat.setFinalTalent(1966);
 		lStat.setTotalFight(10);
 		lStat.setDraws(1);
 		lStat.setVictories(4);
