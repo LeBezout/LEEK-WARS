@@ -212,7 +212,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<h2>"+getIcon("ranking", 22, 22)+" Statistiques</h2>");
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
-		addBodyLine("\t\t<th>Entité</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th><th>Talent</th>");//TODO Talent
+		addBodyLine("\t\t<th>Entité</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th><th>Talent</th>");
 		addBodyLine("\t</tr>");
 	}
 
@@ -228,7 +228,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				pStat.getVictories(),
 				pStat.getDraws(),
 				pStat.getDefeats(),
-				((diffTalent > 0 ? "+" : "") + diffTalent)
+				String.format("%+d (%d &rarr; %d)", diffTalent, pStat.getInitialTalent(), pStat.getFinalTalent())
 				));
 		addBodyLine("\t</tr>");
 	}

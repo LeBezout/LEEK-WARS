@@ -82,4 +82,20 @@ public class HtmlReportFastGardenVisitorTest {
 	public void testGetFightFromLW() throws LWException {
 		getFightFromLW(15594444);
 	}
+	
+	@Test
+	public void testFormat() {
+		int initialTalent = 2000;
+		int finalTalent = 2035;
+		int diffTalent = finalTalent - initialTalent;
+		
+		String lStr = ((diffTalent > 0 ? "+" : "") + diffTalent + String.format("(%d -> %d)", initialTalent, finalTalent));
+		System.out.println(lStr);
+		
+		initialTalent = 2000;
+		finalTalent = 1966;
+		diffTalent = finalTalent - initialTalent;
+		lStr = String.format("%+d (%d -> %d)", diffTalent, initialTalent, finalTalent);
+		System.out.println(lStr);
+	}
 }
