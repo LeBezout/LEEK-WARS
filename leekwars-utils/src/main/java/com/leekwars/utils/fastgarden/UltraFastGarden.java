@@ -13,6 +13,7 @@ import com.leekwars.utils.LWUtils;
 import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.exceptions.LWException;
+import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.FarmerSummary;
 import com.leekwars.utils.model.Fight;
@@ -547,13 +548,16 @@ public class UltraFastGarden {
 		for (Map.Entry<String, GardenStatsWrapper> lEntry : lStats.entrySet()) {
 			lStat = lEntry.getValue();
 			LOGGER.info("\t" + lStat);
-			// Récupération du talent final
+			// Récupération du talent et level final
 			switch (lStat.getEntityType()) {
 				case FARMER :
 					lStat.setFinalTalent(pConnector.getFarmer().getTalent());
+					// pas de level pour le farmer
 					break;
 				case LEEK :
-					lStat.setFinalTalent(pConnector.getFarmer().getLeekFromId(lStat.getEntity().getId()).getTalent());
+					Entity leek = pConnector.getFarmer().getLeekFromId(lStat.getEntity().getId());
+					lStat.setFinalTalent(leek.getTalent());
+					lStat.getEntity().setLevel(leek.getLevel());
 					break;
 				default : 
 					break;
