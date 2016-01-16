@@ -22,6 +22,7 @@ public class HtmlReportFastGardenVisitorTest {
 		File output = new File("target/generated_junit.html");
 		File template = new File("src/main/resources/report_template.html");
 		HtmlReportFastGardenVisitor lVisitor = new HtmlReportFastGardenVisitor(template, output);
+		lVisitor.setLang("en");
 		Farmer farmer = new Farmer();
 		farmer.setId(16748);
 		farmer.setName("Bezout_JUNIT");
@@ -43,6 +44,7 @@ public class HtmlReportFastGardenVisitorTest {
 		Entity lEntity = new Entity();
 		lEntity.setName("CapitaineFlirt_JUNIT");
 		lEntity.setTalent(2000);
+		lEntity.setLevel(301);
 		GardenStatsWrapper lStat = new GardenStatsWrapper(EntityType.LEEK, lEntity);
 		lStat.setFinalTalent(2045);
 		lStat.setTotalFight(10);
@@ -78,7 +80,6 @@ public class HtmlReportFastGardenVisitorTest {
 	}
 	
 	@Test
-	@org.junit.Ignore
 	public void testGetFightFromLW() throws LWException {
 		getFightFromLW(15594444);
 	}
