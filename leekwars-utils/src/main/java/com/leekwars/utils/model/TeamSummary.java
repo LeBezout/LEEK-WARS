@@ -1,7 +1,7 @@
 package com.leekwars.utils.model;
 
 /**
- * Infos d'une equipe
+ * Infos minimales d'une equipe
  * @author Bezout
  */
 public class TeamSummary extends Identity {

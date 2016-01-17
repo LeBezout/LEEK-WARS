@@ -7,7 +7,7 @@ import com.leekwars.utils.model.SimpleJSONResponse;
  * Informations sur un combat suite à un appel à "fight/get".
  * @author Bezout
  */
-public class FightJSONResponse extends SimpleJSONResponse {
+public class GetFightJSONResponse extends SimpleJSONResponse {
 	private Fight fight;
 
 	/**

@@ -17,5 +17,9 @@ public enum EntityType {
 	 * Bulbe 
 	 */
 	BULB,
+	/**
+	 * Equipe
+	 */
+	TEAM,
 	;
 }

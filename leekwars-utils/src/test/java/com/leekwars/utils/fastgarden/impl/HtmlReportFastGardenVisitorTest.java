@@ -13,6 +13,7 @@ import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.test.FightBuilder;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
+import com.leekwars.utils.wrappers.MessageWrapper;
 
 public class HtmlReportFastGardenVisitorTest {
 
@@ -26,6 +27,7 @@ public class HtmlReportFastGardenVisitorTest {
 		Farmer farmer = new Farmer();
 		farmer.setId(16748);
 		farmer.setName("Bezout_JUNIT");
+		farmer.setTalent(2000);
 		lVisitor.onInit(farmer);
 		
 		lVisitor.onEntityChange(EntityType.LEEK, "CapitaineFlirt_JUNIT");
@@ -53,10 +55,10 @@ public class HtmlReportFastGardenVisitorTest {
 		lStat.setVictories(5);
 		lVisitor.onStat(lStat);
 		
-		lEntity = new Entity();
-		lEntity.setName("Bezout_JUNIT");
-		lEntity.setTalent(2000);
-		lStat = new GardenStatsWrapper(EntityType.FARMER, lEntity);
+//		lEntity = new Entity();
+//		lEntity.setName("Bezout_JUNIT");
+//		lEntity.setTalent(2000);
+		lStat = new GardenStatsWrapper(EntityType.FARMER, farmer);
 		lStat.setFinalTalent(1966);
 		lStat.setTotalFight(10);
 		lStat.setDraws(1);
@@ -64,12 +66,14 @@ public class HtmlReportFastGardenVisitorTest {
 		lStat.incDefeats().incDefeats().incDefeats();
 		lVisitor.onStat(lStat);
 		
-		lVisitor.onWarning("CapitaineFlirt_JUNIT", "test 1");
-		lVisitor.onWarning(null, "test 2");
-		lVisitor.onWarning("Bezout_JUNIT", "test 3");
+		lVisitor.onMessage(new MessageWrapper(farmer, "test fr", "test en"));
+		lVisitor.onMessage(new MessageWrapper(lEntity, "test fr", "test en"));
+		lVisitor.onMessage(new MessageWrapper(farmer, "test 3 fr", "test 3 en"));
+		lVisitor.onMessage(new MessageWrapper("test 4 fr", "test 4 en"));
 		
 		lVisitor.onEnd();
 		lVisitor.generate();
+		System.out.println(output.getAbsolutePath() + " generated.");
 	}
 	
 	private static Fight getFightFromLW(long pId) throws LWException {

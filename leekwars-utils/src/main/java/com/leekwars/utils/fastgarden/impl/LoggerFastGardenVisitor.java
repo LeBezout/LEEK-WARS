@@ -9,6 +9,7 @@ import com.leekwars.utils.fastgarden.FastGardenVisitor;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
+import com.leekwars.utils.wrappers.MessageWrapper;
 
 /**
  * Implementation de FastGardenVisitor qui loggue.
@@ -61,15 +62,12 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onWarning(java.lang.String, java.lang.String)
+	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onMessage(com.leekwars.utils.wrappers.MessageWrapper)
 	 */
 	@Override
-	public void onWarning(String pEntityName, String pMessage) {
-		if (pEntityName == null) {
-			mLogger.warn("GENERAL : " + pMessage);
-		} else {
-			mLogger.warn(pEntityName + " : " + pMessage);
-		}
+	public void onMessage(final MessageWrapper pMessage) {
+		String lEntityName = pMessage.getEntity() == null ? "GENERAL" : pMessage.getEntity().getName();
+		mLogger.warn(lEntityName + " : " + pMessage.getMessageFR());
 	}
 
 	/* (non-Javadoc)

@@ -18,6 +18,7 @@ import com.leekwars.utils.fastgarden.FastGardenVisitor;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
+import com.leekwars.utils.wrappers.MessageWrapper;
 
 /**
  * Implementation de FastGardenVisitor qui génère un rapport HTML complet.
@@ -32,7 +33,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	final File mOutputFile;
 	private StringBuilder mBody;
 	private Farmer mFarmer;
-	private List<String> mWarnings = new LinkedList<>();
+	private List<MessageWrapper> mMessages = new LinkedList<>();
 	// membres pour la gestion interne
 	private boolean canGenerate;
 	private boolean tableOpened;
@@ -165,8 +166,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 
 	@Override
-	public void onWarning(String pEntityName, String pMessage) {
-		mWarnings.add(pEntityName == null ? "GENERAL : " + pMessage : pEntityName + " : " + pMessage);
+	public void onMessage(final MessageWrapper pMessage) {
+		mMessages.add(pMessage);
 	}
 	
 	@Override
@@ -273,20 +274,22 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("</table>"); // table des stats
 		canGenerate = true;
 		addBodyLine("<br/>");
-		if (!mWarnings.isEmpty()) {
+		if (!mMessages.isEmpty()) {
 			addBodyLine("<h2>"+getIcon("gearing", 22, 22)+" Messages</h2>");
 			addBodyLine("<table class=\"result\">");
 			addBodyLine("\t<tr class=\"header\">");
 			if (isFR()) {
-				addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"20%\">Type</th><th width=\"70%\" style=\"text-align:left\">Message</th>");
+				addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"20%\">Type</th><th width=\"20%\">Entité</th><th width=\"50%\" style=\"text-align:left\">Message</th>");
 			} else {
-				addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"20%\">Type</th><th width=\"70%\" style=\"text-align:left\">Message</th>");
+				addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"20%\">Type</th><th width=\"20%\">Entity</th><th width=\"50%\" style=\"text-align:left\">Message</th>");
 			}
 			addBodyLine("\t</tr>");
 			int num = 1;
-			for (String lMsg : mWarnings) {
+			String lEntityName;
+			for (MessageWrapper lMsg : mMessages) {
+				lEntityName = lMsg.getEntity() == null ? "GENERAL" : lMsg.getEntity().getName();
 				addBodyLine("\t<tr>");
-				addBodyLine(String.format("\t\t<td>%d</td><td>%s</td><td style=\"text-align:left\">%s</td>", num, "WARNING", lMsg));
+				addBodyLine(String.format("\t\t<td>%d</td><td>%s</td><td>%s</td><td style=\"text-align:left\">%s</td>", num, lMsg.getType(), lEntityName, (isFR() ? lMsg.getMessageFR() : lMsg.getMessageEN())));
 				addBodyLine("\t</tr>");
 				num++;
 			}

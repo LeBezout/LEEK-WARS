@@ -6,6 +6,7 @@ import com.leekwars.utils.fastgarden.FastGardenVisitor;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
+import com.leekwars.utils.wrappers.MessageWrapper;
 
 /**
  * Implementation de FastGardenVisitor qui ne fait RIEN.
@@ -21,10 +22,10 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onWarning(java.lang.String, java.lang.String)
+	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onMessage(com.leekwars.utils.wrappers.MessageWrapper)
 	 */
 	@Override
-	public void onWarning(String pEntityName, String pMessage) {
+	public void onMessage(final MessageWrapper pMessage) {
 	}
 
 	/* (non-Javadoc)

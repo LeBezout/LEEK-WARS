@@ -19,6 +19,7 @@ public final class HttpUtils {
 	private static final String ENCODING = "UTF-8";
 	private HttpUtils() {}
 	
+	//TODO peut être lever des exceptions agnostiques ! (HttpException)
 	
 	/** ------- GET DATA ---------
 	 * @param pURL

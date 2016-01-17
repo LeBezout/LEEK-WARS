@@ -21,6 +21,7 @@ import com.leekwars.utils.model.Garden;
 import com.leekwars.utils.model.LeekSummary;
 import com.leekwars.utils.wrappers.FightWrapper;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
+import com.leekwars.utils.wrappers.MessageWrapper;
 
 /**
  * UltraFastGarden : lance tous les combats disponibles
@@ -70,7 +71,7 @@ public class UltraFastGarden {
 		if (lPotager.isFarmer_enabled()) {
 			List<FarmerSummary> lFamerEnemies = lPotager.getFarmer_enemies();
 			if (lFamerEnemies.isEmpty()) {
-				pVisitor.onWarning(lFarmer.getName(), "Aucun combat possible pour l'éleveur : aucun ennemi retourné");
+				pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : aucun ennemi retourné", "No fighting is possible for the farmer: no enemy returned"));
 				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : aucun ennemi");
 			} else {
 				LWUtils.sleep(1);
@@ -79,7 +80,7 @@ public class UltraFastGarden {
 			// Statistiques
 			computeStats(pConnector, lFights, pVisitor);
 		} else {
-			pVisitor.onWarning(lFarmer.getName(), "Aucun combat possible pour l'éleveur : plus de combats possibles");
+			pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : plus de combats possibles", "No fighting is possible for the farmer: no more fights"));
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : plus de combats possibles");
 		}
 		/*
@@ -109,7 +110,7 @@ public class UltraFastGarden {
 		// Pour chaque poireau de l'éléveur
 		if (lEnemies.isEmpty()) {
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR LES POIREAUX");
-			pVisitor.onWarning(null, "Aucun combat possible pour les poireaux");
+			pVisitor.onMessage(new MessageWrapper("Aucun combat possible pour les poireaux", "No more fights for leeks"));
 		} else {
 			for (LeekSummary lLeek : lFarmer.getLeeks().values()) {
 				LWUtils.sleep(1);
@@ -145,8 +146,8 @@ public class UltraFastGarden {
 		Map<String, LeekSummary[]> lEnemies = lPotager.getSolo_enemies();
 		// Pour chaque poireau de l'éléveur
 		if (lEnemies.isEmpty()) {
-			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR LES POIREAUX");
-			pVisitor.onWarning(null, "Aucun combat possible pour les poireaux");
+			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR LE POIREAU");
+			pVisitor.onMessage(new MessageWrapper("Aucun combat possible pour le poireau", "No more fights for leek"));
 		} else {
 			LWUtils.sleep(1);
 			fastGardenForLeek(pConnector, pLeekID, pVisitor);
@@ -181,7 +182,7 @@ public class UltraFastGarden {
 		// Pour chaque poireau de l'éléveur
 		if (lEnemies.isEmpty()) {
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR LES POIREAUX");
-			pVisitor.onWarning(null, "Aucun combat possible pour les poireaux");
+			pVisitor.onMessage(new MessageWrapper("Aucun combat possible pour les poireaux", "No more fights for leeks"));
 		} else {
 			for (LeekSummary lLeek : lFarmer.getLeeks().values()) {
 				LWUtils.sleep(1);
@@ -193,14 +194,14 @@ public class UltraFastGarden {
 		if (lPotager.isFarmer_enabled()) {
 			List<FarmerSummary> lFamerEnemies = lPotager.getFarmer_enemies();
 			if (lFamerEnemies.isEmpty()) {
-				pVisitor.onWarning(lFarmer.getName(), "Aucun combat possible pour l'éleveur : aucun ennemi retourné");
+				pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : aucun ennemi retourné", "No fighting is possible for the farmer: no enemy returned"));
 				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : aucun ennemi");
 			} else {
 				LWUtils.sleep(1);
 				lFights.addAll(fastGardenForFarmer(pConnector, pVisitor));
 			}
 		} else {
-			pVisitor.onWarning(lFarmer.getName(), "Aucun combat possible pour l'éleveur : plus de combats possibles");
+			pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : plus de combats possibles", "No fighting is possible for the farmer: no more fights"));
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : plus de combats possibles");
 		}
 
@@ -249,7 +250,7 @@ public class UltraFastGarden {
 //							retry++;
 //							LWUtils.waitFor(2); // on attend pour retenter notre chance
 //						} else {
-//							pVisitor.onWarning(currentEntityName, "Impossible de récupérer le résultat du combat " + lFight.getFightId());
+//							pVisitor.onMessage(currentEntityName, "Impossible de récupérer le résultat du combat " + lFight.getFightId());
 //							retry = 0; // reinit
 //							/*
 //							 * ON_RESULT(UNKNOWN, lFight)
@@ -349,7 +350,7 @@ public class UltraFastGarden {
 				lFights.add(lFightInfos);
 				lFightCount++;
 			} catch (LWException le) {
-				pVisitor.onWarning(leekName, "Impossible de lancer le combat. Cause :" + le.getMessage());
+				pVisitor.onMessage(new MessageWrapper(leek, "Impossible de lancer le combat. Cause :" + le.getMessage(), "Cannot start a fight. Cause :" + le.getMessage()));
 				fightId = -1;
 				label = "COMBAT SOLO IMPOSSIBLE A LANCER POUR " + leekName;
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
@@ -414,7 +415,7 @@ public class UltraFastGarden {
 							lFights.add(lFightInfos);
 							lMapFights.put(lTargetFamer.getId(), Integer.valueOf(countForTarget.intValue() + 1));
 						} catch (LWException le) {
-							pVisitor.onWarning(farmerName, "Impossible de lancer le combat. Cause :" + le.getMessage());
+							pVisitor.onMessage(new MessageWrapper(pConnector.getFarmer(), "Impossible de lancer le combat. Cause :" + le.getMessage(), "Cannot start a fight. Cause :" + le.getMessage()));
 							fightId = -1;
 							label = "COMBAT FARMER IMPOSSIBLE A LANCER POUR " + farmerName;
 							LOGGER.warn(">> "+ label + " : " + le.getMessage());
@@ -434,7 +435,9 @@ public class UltraFastGarden {
 			LOGGER.warn("**************************************************************");
 			LOGGER.warn(" FAMINE");
 			LOGGER.warn("**************************************************************");
-			pVisitor.onWarning(farmerName, "Famine : plus de combat à lancer : " + lFightCount + " combats lancés sur " + lInitialFightCount + " possibles");
+			pVisitor.onMessage(new MessageWrapper(pConnector.getFarmer(), 
+						"Famine : plus de combat à lancer : " + lFightCount + " combats lancés sur " + lInitialFightCount + " possibles",
+						"Starvation: no more possible fights : " + lFightCount + " fights launched on " + lInitialFightCount));
 		}
 		
 		LOGGER.info(String.valueOf(lFightCount) + " combats lancés sur " + lInitialFightCount + " possibles pour " + farmerName);
@@ -495,7 +498,9 @@ public class UltraFastGarden {
 						retry++;
 						LWUtils.waitFor(2); // on attend pour retenter notre chance
 					} else {
-						pVisitor.onWarning(currentEntityName, "Impossible de récupérer le résultat du combat " + lFight.getFightId());
+						pVisitor.onMessage(new MessageWrapper(lFight.getEntity(), 
+								"Impossible de récupérer le résultat du combat " + lFight.getFightId(), 
+								"Unable to retrieve result for fight " + lFight.getFightId()));
 						retry = 0; // reinit
 						/*
 						 * ON_RESULT(UNKNOWN, lFight)

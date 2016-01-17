@@ -7,7 +7,7 @@ import com.leekwars.utils.model.SimpleJSONResponse;
  * Informations du potager suite à un appel à "garden/get"
  * @author Bezout
  */
-public class GardenJSONResponse extends SimpleJSONResponse {
+public class GetGardenJSONResponse extends SimpleJSONResponse {
 	private Garden garden;
 
 	/**

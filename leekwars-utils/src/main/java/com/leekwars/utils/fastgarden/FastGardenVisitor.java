@@ -5,6 +5,7 @@ import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
+import com.leekwars.utils.wrappers.MessageWrapper;
 
 /**
  * Interface décrivant un visiteur pour le fast garden.
@@ -19,11 +20,10 @@ public interface FastGardenVisitor {
 	void onInit(final Farmer pFarmer);
 	
 	/**
-	 * Déclenché à chaque détection d'un message de warning
-	 * @param pEntityName nom de l'entité concerné (poireau ou éleveur) ou null
+	 * Déclenché à chaque détection d'un message
 	 * @param pMessage message
 	 */
-	void onWarning(final String pEntityName, final String pMessage);
+	void onMessage(final MessageWrapper pMessage);
 	
 	/**
 	 * Déclenché lorsque l'on change d'entité

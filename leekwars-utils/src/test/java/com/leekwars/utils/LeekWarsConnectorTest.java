@@ -14,9 +14,9 @@ public class LeekWarsConnectorTest {
 	}
 	
 	@Test
-	@org.junit.Ignore
+	//@org.junit.Ignore
 	public void testConnection() throws LWException {
-		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("TODO", "TODO");
+		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("Bezout", "BleLeek01");
 		
 		lConnector.connect();
 		System.out.println("[JUNIT] Connecté ...");
@@ -27,10 +27,12 @@ public class LeekWarsConnectorTest {
 		//lConnector.startSoloFight(18906, 18428);
 		//lConnector.startFarmerFight(693);
 		
-		Fight lFight = lConnector.getFight(15512269);
-		System.out.println(LWUtils.getFightResult(lConnector.getFarmer(), lFight));
+		//Fight lFight = lConnector.getFight(15512269);
+		//System.out.println(LWUtils.getFightResult(lConnector.getFarmer(), lFight));
 		
 		//lConnector.registerAllTournaments();
+		
+		lConnector.getTeam();
 		
 		System.out.println("[JUNIT] Fin ...");
 	}
