@@ -9,6 +9,8 @@ Leek Wars JAVA Utilities for Farmers
 ## Eléments de l'API utilisés
   * Connexion, récupération du token : <tt>farmer/login-token/[name]/[password]</tt>
   * Invalidation du token : <tt>farmer/disconnect/[token]</tt>
+  * Récupération/Mise à jour des infos de l'éleveur : <tt>farmer/get/[farmer_id]</tt>
+  * Récupération des infos de l'équipe : <tt>team/get/[team_id]</tt>
   * Récupération du potager : <tt>garden/get/[token]</tt>
   * Inscription aux tournois éléveurs : <tt>farmer/register-tournament/[token]</tt>
   * Inscription aux tournois solos : <tt>leek/register-tournament/[leek_id]/[token]</tt>
