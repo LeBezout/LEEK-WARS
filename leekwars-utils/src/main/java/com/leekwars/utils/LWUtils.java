@@ -1,5 +1,8 @@
 package com.leekwars.utils;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +55,22 @@ public final class LWUtils {
 		for (int i = pSeconds; i >= 0; i--) {
 			sleep(1);
 			System.out.println("...waiting.. " + i);
+		}
+	}
+	
+	/**
+	 * Permet d'ouvrir un fichier dans un browser
+	 * @param pFile
+	 * @throws LWException
+	 */
+	public static void openFileInDefaultBrowser(final File pFile) throws LWException {
+		if (!Desktop.isDesktopSupported()) {
+			throw new LWException("Desktop not Supported");
+		}
+		try {
+			Desktop.getDesktop().browse(pFile.toURI());
+		} catch (IOException e) {
+			throw new LWException(e);
 		}
 	}
 	
