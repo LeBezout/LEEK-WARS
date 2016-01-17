@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.fastgarden.FastGardenVisitor;
+import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
@@ -71,15 +72,15 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onEntityChange(com.leekwars.utils.enums.EntityType, java.lang.String)
+	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onEntityChange(com.leekwars.utils.enums.EntityType, com.leekwars.utils.model.Entity)
 	 */
 	@Override
-	public void onEntityChange(EntityType pEntityType, String pEntityName) {
+	public void onEntityChange(EntityType pEntityType, Entity pEntity) {
 		mLogger.log(mLevel, "-------------------------------------------------------------");
 		if (pEntityType == EntityType.FARMER) {
-			mLogger.log(mLevel, "Résultats pour l'éleveur " + pEntityName);
+			mLogger.log(mLevel, "Résultats pour l'éleveur " + pEntity.getName());
 		} else if (pEntityType == EntityType.LEEK) {
-			mLogger.log(mLevel, "Résultats pour le poireau " + pEntityName);
+			mLogger.log(mLevel, "Résultats pour le poireau " + pEntity.getName());
 		}
 		mLogger.log(mLevel, "-------------------------------------------------------------");
 	}

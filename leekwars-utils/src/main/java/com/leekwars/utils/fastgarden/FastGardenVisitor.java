@@ -2,6 +2,7 @@ package com.leekwars.utils.fastgarden;
 
 import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
+import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
@@ -28,9 +29,9 @@ public interface FastGardenVisitor {
 	/**
 	 * Déclenché lorsque l'on change d'entité
 	 * @param pEntityType le type (poireau ou éleveur)
-	 * @param pEntityName le nom
+	 * @param pEntity l'entité concerné
 	 */
-	void onEntityChange(final EntityType pEntityType, final String pEntityName);
+	void onEntityChange(final EntityType pEntityType, final Entity pEntity);
 	
 	/**
 	 * Déclenché lors de la récupération d'un résultat d'un combat

@@ -3,6 +3,7 @@ package com.leekwars.utils.fastgarden.impl;
 import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.fastgarden.FastGardenVisitor;
+import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
@@ -29,10 +30,10 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onEntityChange(com.leekwars.utils.enums.EntityType, java.lang.String)
+	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onEntityChange(com.leekwars.utils.enums.EntityType, com.leekwars.utils.model.Entity)
 	 */
 	@Override
-	public void onEntityChange(EntityType pEntityType, String pEntityName) {
+	public void onEntityChange(EntityType pEntityType, Entity pEntity) {
 	}
 
 	/* (non-Javadoc)

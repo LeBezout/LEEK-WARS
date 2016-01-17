@@ -24,30 +24,33 @@ public class HtmlReportFastGardenVisitorTest {
 		File template = new File("src/main/resources/report_template.html");
 		HtmlReportFastGardenVisitor lVisitor = new HtmlReportFastGardenVisitor(template, output);
 		lVisitor.setLang("en");
-		Farmer farmer = new Farmer();
-		farmer.setId(16748);
-		farmer.setName("Bezout_JUNIT");
-		farmer.setTalent(2000);
-		lVisitor.onInit(farmer);
 		
-		lVisitor.onEntityChange(EntityType.LEEK, "CapitaineFlirt_JUNIT");
+		Farmer lFarmerEntity = new Farmer();
+		lFarmerEntity.setId(16748);
+		lFarmerEntity.setName("Bezout_JUNIT");
+		lFarmerEntity.setTalent(2000);
+		
+		Entity lLeekEntity = new Entity();
+		lLeekEntity.setName("CapitaineFlirt_JUNIT");
+		lLeekEntity.setTalent(2000);
+		lLeekEntity.setLevel(301);
+		
+		lVisitor.onInit(lFarmerEntity);
+		
+		lVisitor.onEntityChange(EntityType.LEEK, lLeekEntity);
 		lVisitor.onResult(getFightFromLW(15592973), FightResult.DRAW);
 		lVisitor.onResult(getFightFromLW(15566926), FightResult.VICTORY);
 		lVisitor.onResult(getFightFromLW(15580334), FightResult.DEFEAT);
 		lVisitor.onResult(getFightFromLW(15594489), FightResult.UNKNOWN);
 		
-		lVisitor.onEntityChange(EntityType.FARMER, "Bezout_JUNIT");
+		lVisitor.onEntityChange(EntityType.FARMER, lFarmerEntity);
 		lVisitor.onResult(getFightFromLW(15594446), FightResult.VICTORY);
 		lVisitor.onResult(getFightFromLW(15594447), FightResult.DEFEAT);
 		lVisitor.onResult(getFightFromLW(15592522), FightResult.DRAW);
 		
 		lVisitor.onBeforeStat();
 		
-		Entity lEntity = new Entity();
-		lEntity.setName("CapitaineFlirt_JUNIT");
-		lEntity.setTalent(2000);
-		lEntity.setLevel(301);
-		GardenStatsWrapper lStat = new GardenStatsWrapper(EntityType.LEEK, lEntity);
+		GardenStatsWrapper lStat = new GardenStatsWrapper(EntityType.LEEK, lLeekEntity);
 		lStat.setFinalTalent(2045);
 		lStat.setTotalFight(10);
 		lStat.setDraws(4);
@@ -55,10 +58,7 @@ public class HtmlReportFastGardenVisitorTest {
 		lStat.setVictories(5);
 		lVisitor.onStat(lStat);
 		
-//		lEntity = new Entity();
-//		lEntity.setName("Bezout_JUNIT");
-//		lEntity.setTalent(2000);
-		lStat = new GardenStatsWrapper(EntityType.FARMER, farmer);
+		lStat = new GardenStatsWrapper(EntityType.FARMER, lFarmerEntity);
 		lStat.setFinalTalent(1966);
 		lStat.setTotalFight(10);
 		lStat.setDraws(1);
@@ -66,14 +66,15 @@ public class HtmlReportFastGardenVisitorTest {
 		lStat.incDefeats().incDefeats().incDefeats();
 		lVisitor.onStat(lStat);
 		
-		lVisitor.onMessage(new MessageWrapper(farmer, "test fr", "test en"));
-		lVisitor.onMessage(new MessageWrapper(lEntity, "test fr", "test en"));
-		lVisitor.onMessage(new MessageWrapper(farmer, "test 3 fr", "test 3 en"));
+		lVisitor.onMessage(new MessageWrapper(lFarmerEntity, "test fr", "test en"));
+		lVisitor.onMessage(new MessageWrapper(lLeekEntity, "test fr", "test en"));
+		lVisitor.onMessage(new MessageWrapper(lFarmerEntity, "test 3 fr", "test 3 en"));
 		lVisitor.onMessage(new MessageWrapper("test 4 fr", "test 4 en"));
 		
 		lVisitor.onEnd();
 		lVisitor.generate();
 		System.out.println(output.getAbsolutePath() + " generated.");
+		LWUtils.openFileInDefaultBrowser(output);
 	}
 	
 	private static Fight getFightFromLW(long pId) throws LWException {

@@ -479,7 +479,7 @@ public class UltraFastGarden {
 				/*
 				 * ON_ENTITY_CHANGE()
 				 */
-				pVisitor.onEntityChange(lFight.getEntityType(), currentEntityName);
+				pVisitor.onEntityChange(lFight.getEntityType(), lFight.getEntity());
 			}
 			
 			lEntityStats = lStats.get(currentEntityName);

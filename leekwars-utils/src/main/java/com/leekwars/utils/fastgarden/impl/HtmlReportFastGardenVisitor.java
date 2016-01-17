@@ -15,6 +15,7 @@ import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.fastgarden.FastGardenVisitor;
+import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
@@ -171,17 +172,18 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	
 	@Override
-	public void onEntityChange(EntityType pEntityType, String pEntityName) {
+	public void onEntityChange(EntityType pEntityType, Entity pEntity) {
 		mCount = 0;
 		if (tableOpened) {
 			tableOpened = false;
 			addBodyLine("</table>"); 
 		}
 		addBodyLine("<br/>");
-		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s %s</h2>", 
+		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s %s</h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
 				isFR() ? "Combats" : "Fights for",
 				toString(pEntityType),
-				pEntityName
+				pEntity.getName()
+				//pEntity.getTalent()
 				));
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
