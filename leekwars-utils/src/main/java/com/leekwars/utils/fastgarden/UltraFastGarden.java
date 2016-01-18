@@ -350,7 +350,7 @@ public class UltraFastGarden {
 				lFights.add(lFightInfos);
 				lFightCount++;
 			} catch (LWException le) {
-				pVisitor.onMessage(new MessageWrapper(leek, "Impossible de lancer le combat. Cause :" + le.getMessage(), "Cannot start a fight. Cause :" + le.getMessage()));
+				pVisitor.onMessage(new MessageWrapper(leek, "Impossible de lancer le combat. Cause : " + le.getMessage(), "Cannot start a fight. Cause : " + le.getMessage()));
 				fightId = -1;
 				label = "COMBAT SOLO IMPOSSIBLE A LANCER POUR " + leekName;
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
@@ -415,7 +415,7 @@ public class UltraFastGarden {
 							lFights.add(lFightInfos);
 							lMapFights.put(lTargetFamer.getId(), Integer.valueOf(countForTarget.intValue() + 1));
 						} catch (LWException le) {
-							pVisitor.onMessage(new MessageWrapper(pConnector.getFarmer(), "Impossible de lancer le combat. Cause :" + le.getMessage(), "Cannot start a fight. Cause :" + le.getMessage()));
+							pVisitor.onMessage(new MessageWrapper(pConnector.getFarmer(), "Impossible de lancer le combat. Cause : " + le.getMessage(), "Cannot start a fight. Cause : " + le.getMessage()));
 							fightId = -1;
 							label = "COMBAT FARMER IMPOSSIBLE A LANCER POUR " + farmerName;
 							LOGGER.warn(">> "+ label + " : " + le.getMessage());

@@ -42,7 +42,7 @@ public class FastGardenParam {
 		return maxRetryForFightResult;
 	}
 	/**
-	 * @param pMaxRetryForFightResult the maxRetryForFightResult to set
+	 * @param pMaxRetryForFightResult the maxRetryForFightResult to set. Defaults to 10.
 	 */
 	public void setMaxRetryForFightResult(int pMaxRetryForFightResult) {
 		maxRetryForFightResult = pMaxRetryForFightResult;
@@ -54,7 +54,7 @@ public class FastGardenParam {
 		return waitTimeToGetResults;
 	}
 	/**
-	 * @param pWaitTimeToGetResults the waitTimeToGetResults to set
+	 * @param pWaitTimeToGetResults the waitTimeToGetResults to set. Defaults to 10.
 	 */
 	public void setWaitTimeToGetResults(int pWaitTimeToGetResults) {
 		waitTimeToGetResults = pWaitTimeToGetResults;
@@ -66,7 +66,7 @@ public class FastGardenParam {
 		return maxFarmerAttacks;
 	}
 	/**
-	 * @param pMaxFarmerAttacks the maxFarmerAttacks to set
+	 * @param pMaxFarmerAttacks the maxFarmerAttacks to set. Defaults to 2.
 	 */
 	public void setMaxFarmerAttacks(int pMaxFarmerAttacks) {
 		maxFarmerAttacks = pMaxFarmerAttacks;
@@ -78,7 +78,7 @@ public class FastGardenParam {
 		return talentDiffAcceptance;
 	}
 	/**
-	 * @param pTalentDiffAcceptance the talentDiffAcceptance to set
+	 * @param pTalentDiffAcceptance the talentDiffAcceptance to set. Defaults to 20.
 	 */
 	public void setTalentDiffAcceptance(int pTalentDiffAcceptance) {
 		talentDiffAcceptance = pTalentDiffAcceptance;

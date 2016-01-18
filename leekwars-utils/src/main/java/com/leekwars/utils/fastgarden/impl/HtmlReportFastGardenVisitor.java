@@ -143,8 +143,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		lMap.put("fight", "<img src=\"http://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("ranking", "<img src=\"http://leekwars.com/static/image/icon/ranking.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("gearing", "<img src=\"http://leekwars.com/static/image/gearing_small_white.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("flag_fr", "<img src=\"http://leekwars.com/static/image/flag/32/fr.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("flag_en", "<img src=\"http://leekwars.com/static/image/flag/32/gb.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("flag_fr", "<img src=\"http://leekwars.com/static/image/flag/32/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("flag_en", "<img src=\"http://leekwars.com/static/image/flag/32/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
 		return Collections.unmodifiableMap(lMap);
 	}
 	private static String getIcon(final String pKey, int width, int height) {
@@ -188,9 +188,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
 		if (isFR()) {
-			addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"10%\">Id</th><th width=\"25%\">Visualisation</th><th width=\"15%\">Flag</th><th width=\"25%\">Contre</th><th width=\"15%\">Nombre de tours</th>");
+			addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"10%\">Id</th><th width=\"25%\">Visualisation</th><th width=\"15%\" colspan=\"2\">Flag</th><th width=\"25%\">Contre</th><th width=\"15%\">Nombre de tours</th>");
 		} else {
-			addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"10%\">Id</th><th width=\"25%\">View</th><th width=\"15%\">Flag</th><th width=\"25%\">Against</th><th width=\"15%\">Turns</th>");
+			addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"10%\">Id</th><th width=\"25%\">View</th><th width=\"15%\" colspan=\"2\">Flag</th><th width=\"25%\">Against</th><th width=\"15%\">Turns</th>");
 		}
 		addBodyLine("\t</tr>");
 		tableOpened = true;
@@ -213,7 +213,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			);
 		mBody.append("\t\t<td>");
 		final boolean isFamer1 = LWUtils.isFarmer1(mFarmer, pFight);
-		if (pResult != FightResult.UNKNOWN) {
+		if (pResult == FightResult.UNKNOWN) {
+			mBody.append("</td><td>");
+		} else {
 			String[] lFlags = isFamer1 ? pFight.getReport().getFlags1() : pFight.getReport().getFlags2();
 			if (lFlags != null && lFlags.length > 0) {
 				for (String lFlag : lFlags) {
@@ -223,7 +225,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	//		if (pResult == FightResult.DEFEAT) {
 	//			mBody.append(getIcon("dead"));
 	//		}
-			mBody.append(" | ");
+			mBody.append("</td><td>");
 			lFlags = isFamer1 ? pFight.getReport().getFlags2() : pFight.getReport().getFlags1();
 			if (lFlags != null && lFlags.length > 0) {
 				for (String lFlag : lFlags) {
@@ -250,9 +252,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
 		if (isFR()) {
-			addBodyLine("\t\t<th>Entité</th><th>Niveau</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th><th>Talent</th>");
+			addBodyLine("\t\t<th>Entité</th><th>Niveau</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th><th width=\"150px\">Talent</th>");
 		} else {
-			addBodyLine("\t\t<th>Entity</th><th>Level</th><th>Success rate</th><th>Ratio</th><th>Fights</th><th>Victories</th><th>Draws</th><th>Defeats</th><th>Talent</th>");
+			addBodyLine("\t\t<th>Entity</th><th>Level</th><th>Success rate</th><th>Ratio</th><th>Fights</th><th>Victories</th><th>Draws</th><th>Defeats</th><th width=\"150px\">Talent</th>");
 		}
 		addBodyLine("\t</tr>");
 	}

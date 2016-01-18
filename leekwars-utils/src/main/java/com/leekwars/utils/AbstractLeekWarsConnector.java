@@ -279,10 +279,10 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * Met à jour l'éleveur (et tous les poireaux).
 	 * Suite à déclenchement de combats par exemple (evolution du talent, level, ...)
+	 * ! CONNEXION NON NECESSAIRE !
 	 * @throws LWException
 	 */
 	public void updateFarmer() throws LWException {
-		checkConnected();
 		// farmer/get/farmer_id → farmer
 		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/get/" + mFarmer.getId();
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
