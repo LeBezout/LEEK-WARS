@@ -21,5 +21,9 @@ public enum EntityType {
 	 * Equipe
 	 */
 	TEAM,
+	/**
+	 * Composition d'équipe
+	 */
+	TEAMP_COMPO
 	;
 }

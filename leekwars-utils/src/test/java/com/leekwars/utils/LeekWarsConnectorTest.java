@@ -3,7 +3,6 @@ package com.leekwars.utils;
 import org.junit.Test;
 
 import com.leekwars.utils.exceptions.LWException;
-import com.leekwars.utils.model.Fight;
 
 public class LeekWarsConnectorTest {
 
@@ -14,7 +13,7 @@ public class LeekWarsConnectorTest {
 	}
 	
 	@Test
-	//@org.junit.Ignore
+	@org.junit.Ignore
 	public void testConnection() throws LWException {
 		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("Bezout", "BleLeek01");
 		
@@ -32,7 +31,7 @@ public class LeekWarsConnectorTest {
 		
 		//lConnector.registerAllTournaments();
 		
-		lConnector.getTeam();
+		//lConnector.getTeamCompositions();
 		
 		System.out.println("[JUNIT] Fin ...");
 	}

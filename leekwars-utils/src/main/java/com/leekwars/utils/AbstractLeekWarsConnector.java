@@ -7,10 +7,11 @@ import com.google.gson.GsonBuilder;
 import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.http.HttpResponseWrapper;
 import com.leekwars.utils.http.HttpUtils;
+import com.leekwars.utils.io.GetFarmerJSONResponse;
 import com.leekwars.utils.io.GetFightJSONResponse;
 import com.leekwars.utils.io.GetGardenJSONResponse;
-import com.leekwars.utils.io.GetFarmerJSONResponse;
 import com.leekwars.utils.io.GetTeamJSONResponse;
+import com.leekwars.utils.io.GetTeamPrivateJSONResponse;
 import com.leekwars.utils.io.LoginJSONResponse;
 import com.leekwars.utils.io.StartFightJSONResponse;
 import com.leekwars.utils.model.Farmer;
@@ -19,6 +20,8 @@ import com.leekwars.utils.model.Garden;
 import com.leekwars.utils.model.LeekSummary;
 import com.leekwars.utils.model.SimpleJSONResponse;
 import com.leekwars.utils.model.Team;
+import com.leekwars.utils.model.TeamComposition;
+import com.leekwars.utils.model.TeamPrivate;
 
 /**
  * Classe mère permettant d'effectuer tous les appels à l'API LW
@@ -38,7 +41,7 @@ public abstract class AbstractLeekWarsConnector {
 	private Farmer mFarmer;
 	private final Gson gson = new GsonBuilder().create();
 	
-	protected final String getUsername() {
+	public final String getUsername() {
 		return mUsername;
 	}
 	protected final String getPassword() {
@@ -198,10 +201,45 @@ public abstract class AbstractLeekWarsConnector {
 		return lTeam.getTeam();
 	}
 	
-	// TODO public void registerAllTeamCompositions() throws LWException {
-	// TODO team/register-tournament/composition_id/token
-	// TODO comment obtenir les id des compos
+	/**
+	 * Permet d'inscrire toutes les compositions de l'équipe aux prochains tournois
+	 * @throws LWException
+	 */
+	public void registerAllTeamCompositions() throws LWException {
+		final TeamPrivate lTeamData = getTeamCompositions();
+		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(" INSCRIPTION AUX TOURNOIS POUR L'EQUIPE " +  lTeamData.getName());
+		LOGGER.info("-------------------------------------------------------------");
+		String lUrl; // team/register-tournament/composition_id/token
+		HttpResponseWrapper lResponse;
+		boolean inscrit;
+		for (TeamComposition lCompo :  lTeamData.getCompositions()) {
+			// Si la compo contient au moins 4 membres
+			if (lCompo.getLeeks().length >= 4) {
+				lUrl = LEEK_WARS_ROOT_URL + "team/register-tournament/" + lCompo.getId() + '/' + mToken;
+				lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+				inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the team composition " + lCompo.getName());
+				LOGGER.info("Composition " + lCompo.getName() + (inscrit ? " inscrite" : " déjà inscrite") + " au tournoi");
+			} else {
+				LOGGER.warn("Composition " + lCompo.getName() + " ne peut être inscrite à un tournoi : " + lCompo.getLeeks().length + " poireau(x). 4 minimum attendus.");
+			}
+		}
+		LOGGER.info("-------------------------------------------------------------");
+	}
 	
+	/**
+	 * Récupération des informations privées (compositions par exemples) de l'équipe du farmer.
+	 * @return TeamPrivate
+	 * @throws LWException
+	 */
+	public TeamPrivate getTeamCompositions() throws LWException {
+		checkConnected();
+		// team/get-private/team_id/token
+		String lUrl = LEEK_WARS_ROOT_URL + "team/get-private/" + mFarmer.getTeam().getId() + '/' + mToken;
+		HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final GetTeamPrivateJSONResponse lTeam = validateResponse(lResponse, "Cannot obtain team private data", GetTeamPrivateJSONResponse.class);
+		return lTeam.getTeam();
+	}
 	
 	/*
 	 * Retourne l'id du combnat demandé ou lève une exception en cas d'erreur

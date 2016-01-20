@@ -19,7 +19,7 @@ public class GetTeamJSONResponse extends SimpleJSONResponse {
 	/**
 	 * @param pTeam the team to set
 	 */
-	public void setFarmer(Team pTeam) {
+	public void setTeam(Team pTeam) {
 		team = pTeam;
 	}
 }

@@ -1,7 +1,11 @@
 package com.leekwars.utils.model;
 
+/**
+ * Infos d'un tournoi
+ * @author Bezout
+ */
 public class Tournament extends Identity {
-	private long date; // TODO Date
+	private long date;
 
 	/**
 	 * @return the date
