@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.http.HttpResponseWrapper;
 import com.leekwars.utils.http.HttpUtils;
@@ -30,16 +31,18 @@ import com.leekwars.utils.model.TeamPrivate;
  */
 public abstract class AbstractLeekWarsConnector {
 	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
+	protected final Logger LOGGER_TRACE = Logger.getLogger("JSON_TRACE");
 
 	protected static final String LEEK_WARS_ROOT_URL = "http://leekwars.com/api/";
 	protected static final String ENCODING = "UTF-8";
 	
+	protected boolean mTrace;
 	private String mUsername;
 	private String mPassword;
 	private String mToken;
 	private String mPhpSessionId;
 	private Farmer mFarmer;
-	private final Gson gson = new GsonBuilder().create();
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	public final String getUsername() {
 		return mUsername;
@@ -49,6 +52,14 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	protected final String getToken() {
 		return mToken;
+	}
+	
+	/**
+	 * Permet d'axctiver les traces des flux JSON recues dans un logger dédié nommé JSON_TRACE
+	 * @param pActiveTrace
+	 */
+	public void setTrace(final boolean pActiveTrace) {
+		mTrace = pActiveTrace;
 	}
 	
 	/**
@@ -84,7 +95,16 @@ public abstract class AbstractLeekWarsConnector {
 //		// OK
 //	}
 	
-	private <T extends SimpleJSONResponse> T validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final Class<T> pType) throws LWException {
+	protected <T extends SimpleJSONResponse> T validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final Class<T> pType) throws LWException {
+		if (mTrace) {
+			try {
+				LOGGER_TRACE.info("--------------------------------------------------------------------------------------");
+				LOGGER_TRACE.info(pType.getCanonicalName());
+				LOGGER_TRACE.info(gson.toJson(new JsonParser().parse(pResponse.getResponseText())));
+			} catch (Exception e) {
+				LOGGER.error("Impossible d'effectuer la trace de " + pType.getCanonicalName());
+			}
+		}
 		T lResponse = gson.fromJson(pResponse.getResponseText(), pType);
 		if (!lResponse.isSuccess()) {
 			throw new LWException(lResponse.getError() == null ? pDefaultMessage : lResponse.getError());
@@ -255,7 +275,7 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * Démarre un combat d'éléveur et retourne son id si OK
 	 * @param pEnemyId
-	 * @return id
+	 * @return fight id
 	 * @throws LWException
 	 */
 	public long startFarmerFight(final long pEnemyId) throws LWException {
@@ -267,10 +287,25 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	
 	/**
+	 * Démarre un combat d'équipe et retourne son id si OK
+	 * @param pCompoId
+	 * @param pTargetTeamCompoId
+	 * @return fight id
+	 * @throws LWException
+	 */
+	public long startTeamFight(final long pCompoId, final long pTargetTeamCompoId) throws LWException {
+		checkConnected();
+		// garden/start-team-fight/composition_id/target_id/token → fight_id
+		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-team-fight/" + pCompoId + '/' + pTargetTeamCompoId + '/' + mToken;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		return genericStartFight(lResponse);
+	}
+	
+	/**
 	 * Démarre un combat de poireau et retourne son id si OK
 	 * @param pLeekId
 	 * @param pEnemyLeekId
-	 * @return id
+	 * @return fight id
 	 * @throws LWException
 	 */
 	public long startSoloFight(final long pLeekId, final long pEnemyLeekId) throws LWException {

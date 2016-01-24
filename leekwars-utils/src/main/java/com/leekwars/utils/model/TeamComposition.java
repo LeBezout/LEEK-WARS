@@ -1,7 +1,7 @@
 package com.leekwars.utils.model;
 
 /**
- * Infos d'une cmposition d'équipe
+ * Infos d'une composition d'équipe
  * @author Bezout
  */
 public class TeamComposition extends Entity {
@@ -66,5 +66,9 @@ public class TeamComposition extends Entity {
 	@Override
 	public int getLevel() {
 		return total_level;
+	}
+	@Override
+	public void setLevel(int pLevel) {
+		total_level = pLevel;
 	}
 }

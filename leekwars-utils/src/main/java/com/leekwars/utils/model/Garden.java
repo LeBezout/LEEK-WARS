@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Infos du potager
+ * Infos du potager [Solo, Eleveur , Equipe]
  * @author Bezout
  */
 public class Garden {
@@ -23,6 +23,9 @@ public class Garden {
 	private Map<String, LeekSummary[]> solo_enemies;
 	private List<FarmerSummary> farmer_enemies;
 	
+	private GardenFarmerTeamComposition[] my_compositions;
+	private Map<String/* id de notre compo*/, GardenEnemyTeamComposition[]> enemies_compositions;
+	
 	private Map<String, Integer> leek_fights;
 
 	/**
@@ -31,7 +34,6 @@ public class Garden {
 	public boolean isFarmer_enabled() {
 		return farmer_enabled;
 	}
-
 	/**
 	 * @param pFarmer_enabled the farmer_enabled to set
 	 */
@@ -45,7 +47,6 @@ public class Garden {
 	public boolean isTeam_enabled() {
 		return team_enabled;
 	}
-
 	/**
 	 * @param pTeam_enabled the team_enabled to set
 	 */
@@ -59,7 +60,6 @@ public class Garden {
 	public int getSolo_fights() {
 		return solo_fights;
 	}
-
 	/**
 	 * @param pSolo_fights the solo_fights to set
 	 */
@@ -73,7 +73,6 @@ public class Garden {
 	public int getSolo_total_fights() {
 		return solo_total_fights;
 	}
-
 	/**
 	 * @param pSolo_total_fights the solo_total_fights to set
 	 */
@@ -87,7 +86,6 @@ public class Garden {
 	public int getFarmer_fights() {
 		return farmer_fights;
 	}
-
 	/**
 	 * @param pFarmer_fights the farmer_fights to set
 	 */
@@ -101,7 +99,6 @@ public class Garden {
 	public int getFarmer_total_fights() {
 		return farmer_total_fights;
 	}
-
 	/**
 	 * @param pFarmer_total_fights the farmer_total_fights to set
 	 */
@@ -115,7 +112,6 @@ public class Garden {
 	public int getTeam_fights() {
 		return team_fights;
 	}
-
 	/**
 	 * @param pTeam_fights the team_fights to set
 	 */
@@ -129,7 +125,6 @@ public class Garden {
 	public int getTeam_total_fights() {
 		return team_total_fights;
 	}
-
 	/**
 	 * @param pTeam_total_fights the team_total_fights to set
 	 */
@@ -143,7 +138,6 @@ public class Garden {
 	public Map<String, LeekSummary[]> getSolo_enemies() {
 		return solo_enemies;
 	}
-
 	/**
 	 * @param pSolo_enemies the solo_enemies to set
 	 */
@@ -157,7 +151,6 @@ public class Garden {
 	public List<FarmerSummary> getFarmer_enemies() {
 		return farmer_enemies;
 	}
-
 	/**
 	 * @param pFarmer_enemies the farmer_enemies to set
 	 */
@@ -171,7 +164,6 @@ public class Garden {
 	public Map<String, Integer> getLeek_fights() {
 		return leek_fights;
 	}
-
 	/**
 	 * @param pLeek_fights the leek_fights to set
 	 */
@@ -179,4 +171,29 @@ public class Garden {
 		leek_fights = pLeek_fights;
 	}
 
+	/**
+	 * @return the my_compositions
+	 */
+	public GardenFarmerTeamComposition[] getMy_compositions() {
+		return my_compositions;
+	}
+	/**
+	 * @param pMy_compositions the my_compositions to set
+	 */
+	public void setMy_compositions(GardenFarmerTeamComposition[] pMy_compositions) {
+		my_compositions = pMy_compositions;
+	}
+
+	/**
+	 * @return the enemies_compositions
+	 */
+	public Map<String, GardenEnemyTeamComposition[]> getEnemies_compositions() {
+		return enemies_compositions;
+	}
+	/**
+	 * @param pEnemies_compositions the enemies_compositions to set
+	 */
+	public void setEnemies_compositions(Map<String, GardenEnemyTeamComposition[]> pEnemies_compositions) {
+		enemies_compositions = pEnemies_compositions;
+	}
 }

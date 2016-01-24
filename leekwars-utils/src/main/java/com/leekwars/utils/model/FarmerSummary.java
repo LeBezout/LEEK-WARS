@@ -4,24 +4,11 @@ package com.leekwars.utils.model;
  * Informations minimales d'un éleveur (par exemple dans le potager)
  * @author Bezout
  */
-public class FarmerSummary extends Identity {
+public class FarmerSummary extends Entity {
 	// "id":693,"name":"Foudge","avatar_changed":1403561524,"talent":2198,"total_level":1184,"leek_count":4
-	private int talent;
 	private int total_level;
 	private int leek_count;
 	
-	/**
-	 * @return the talent
-	 */
-	public int getTalent() {
-		return talent;
-	}
-	/**
-	 * @param pTalent the talent to set
-	 */
-	public void setTalent(int pTalent) {
-		talent = pTalent;
-	}
 	/**
 	 * @return the total_level
 	 */
