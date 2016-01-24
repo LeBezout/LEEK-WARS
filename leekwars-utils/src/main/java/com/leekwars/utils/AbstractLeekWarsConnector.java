@@ -55,7 +55,7 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	
 	/**
-	 * Permet d'axctiver les traces des flux JSON recues dans un logger dédié nommé JSON_TRACE
+	 * Permet d'activer les traces des flux JSON recus dans un logger dédié nommé JSON_TRACE
 	 * @param pActiveTrace
 	 */
 	public void setTrace(final boolean pActiveTrace) {
@@ -96,15 +96,7 @@ public abstract class AbstractLeekWarsConnector {
 //	}
 	
 	protected <T extends SimpleJSONResponse> T validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final Class<T> pType) throws LWException {
-		if (mTrace) {
-			try {
-				LOGGER_TRACE.info("--------------------------------------------------------------------------------------");
-				LOGGER_TRACE.info(pType.getCanonicalName());
-				LOGGER_TRACE.info(gson.toJson(new JsonParser().parse(pResponse.getResponseText())));
-			} catch (Exception e) {
-				LOGGER.error("Impossible d'effectuer la trace de " + pType.getCanonicalName());
-			}
-		}
+		trace(pResponse, pType);
 		T lResponse = gson.fromJson(pResponse.getResponseText(), pType);
 		if (!lResponse.isSuccess()) {
 			throw new LWException(lResponse.getError() == null ? pDefaultMessage : lResponse.getError());
@@ -114,6 +106,7 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	
 	private boolean validateRegisterTournamentResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
+		trace(pResponse, SimpleJSONResponse.class);
 		SimpleJSONResponse lBasicResponse = gson.fromJson(pResponse.getResponseText(), SimpleJSONResponse.class);
 		if (!lBasicResponse.isSuccess()) {
 			if (lBasicResponse.getError().equals("already_registered")) return false; // OK
@@ -121,6 +114,26 @@ public abstract class AbstractLeekWarsConnector {
 		}
 		// OK
 		return true;
+	}
+	
+	/**
+	 * @param pResponse flux JSON brut
+	 * @param pType type attendu en sortie (informatif)
+	 */
+	protected <T extends SimpleJSONResponse> void trace(final HttpResponseWrapper pResponse, final Class<T> pType) {
+		if (mTrace) {
+			try {
+				LOGGER_TRACE.info("--------------------------------------------------------------------------------------");
+				if (pResponse.getUrlCalled() == null) {
+					LOGGER_TRACE.info(pType.getCanonicalName());
+				} else {
+					LOGGER_TRACE.info(String.format("%s ==> %s :", pResponse.getUrlCalled(), pType.getCanonicalName()));
+				}
+				LOGGER_TRACE.info(gson.toJson(new JsonParser().parse(pResponse.getResponseText())));
+			} catch (Exception e) {
+				LOGGER.error("Impossible d'effectuer la trace de " + pType.getCanonicalName());
+			}
+		}
 	}
 	
 	/**

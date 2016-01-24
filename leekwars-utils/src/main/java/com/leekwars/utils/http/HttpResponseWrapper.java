@@ -8,19 +8,30 @@ import java.util.Map;
  * @author Bezout
  */
 public class HttpResponseWrapper {
+	private String urlCalled;
 	private int retCode;
 	private String responseText;
 	private Map<String, List<String>> headers;
 	
+	/** Constructeur
+	 * @param pUrl url appelée (informatif)
+	 * @param pCode
+	 * @param pHeaders
+	 * @param pResponse
+	 */
+	public HttpResponseWrapper(final String pUrl, final int pCode, final Map<String,List<String>> pHeaders, final String pResponse) {
+		urlCalled = pUrl;
+		retCode = pCode;
+		responseText = pResponse;
+		headers = pHeaders;
+	}
 	/** Constructeur
 	 * @param pCode
 	 * @param pHeaders
 	 * @param pResponse
 	 */
 	public HttpResponseWrapper(final int pCode, final Map<String,List<String>> pHeaders, final String pResponse) {
-		retCode = pCode;
-		responseText = pResponse;
-		headers = pHeaders;
+		this(null, pCode, pHeaders, pResponse);
 	}
 	
 	/**
@@ -58,7 +69,6 @@ public class HttpResponseWrapper {
 	public int getRetCode() {
 		return retCode;
 	}
-
 	/**
 	 * @param pRetCode the retCode to set
 	 */
@@ -72,7 +82,6 @@ public class HttpResponseWrapper {
 	public String getResponseText() {
 		return responseText;
 	}
-
 	/**
 	 * @param pResponseText the responseText to set
 	 */
@@ -86,11 +95,23 @@ public class HttpResponseWrapper {
 	public Map<String, List<String>> getHeaders() {
 		return headers;
 	}
-
 	/**
 	 * @param pHeaders the headers to set
 	 */
 	public void setHeaders(Map<String, List<String>> pHeaders) {
 		headers = pHeaders;
+	}
+
+	/**
+	 * @return the urlCalled
+	 */
+	public String getUrlCalled() {
+		return urlCalled;
+	}
+	/**
+	 * @param pUrlCalled the urlCalled to set
+	 */
+	public void setUrlCalled(String pUrlCalled) {
+		urlCalled = pUrlCalled;
 	}
 }

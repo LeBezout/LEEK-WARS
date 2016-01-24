@@ -40,7 +40,7 @@ public final class HttpUtils {
 		LOGGER.debug("HEADERS="+lConnection.getHeaderFields());
 		final String lResponse = readHttpResponse(lConnection);
 		LOGGER.debug("Recieving " + lResponse);
-		return new HttpResponseWrapper(lCode, lConnection.getHeaderFields(), lResponse.trim());
+		return new HttpResponseWrapper(pURL, lCode, lConnection.getHeaderFields(), lResponse.trim());
 	}
 	
 	/** ------- POST DATA ---------
@@ -82,7 +82,7 @@ public final class HttpUtils {
 		final String lResponse = readHttpResponse(lConnection);
 		// exemple d'erreur : {"success":false,"error":"missing_parameter","parameter":"login","module":"farmer","function":"login-token"}
 		LOGGER.debug("Recieving " + lResponse);
-		return new HttpResponseWrapper(lCode, lConnection.getHeaderFields(), lResponse.trim());
+		return new HttpResponseWrapper(pURL, lCode, lConnection.getHeaderFields(), lResponse.trim());
 	}
 
 	/**
@@ -106,10 +106,8 @@ public final class HttpUtils {
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setRequestProperty("Accept-Language", "fr,fr-FR");
-			//connection.setRequestProperty("Content-Type", "appplication/json");
 			if (pPHPSESSID != null) {
 				connection.addRequestProperty("Cookie", "PHPSESSID=" + pPHPSESSID);// + "; path=/; domain=leekwars.com; HttpOnly");
-				//connection.addRequestProperty("Cookie", "token=d2e5599072753a17c5c368b53be382127cdb55582641a70d4df0cdb8e9b232d4");//; path=/; domain=leekwars.com; HttpOnly");
 			}
 			return connection;
 		} catch (IOException e) {
