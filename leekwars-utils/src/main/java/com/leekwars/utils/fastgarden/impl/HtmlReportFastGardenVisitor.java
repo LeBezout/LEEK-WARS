@@ -145,6 +145,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		lMap.put("gearing", "<img src=\"http://leekwars.com/static/image/gearing_small_white.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("flag_fr", "<img src=\"http://leekwars.com/static/image/flag/32/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("flag_en", "<img src=\"http://leekwars.com/static/image/flag/32/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("leek", "<img src=\"http://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("farmer", "<img src=\"http://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		return Collections.unmodifiableMap(lMap);
 	}
 	private static String getIcon(final String pKey, int width, int height) {
@@ -179,9 +181,11 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			addBodyLine("</table>"); 
 		}
 		addBodyLine("<br/>");
-		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s %s</h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
-				isFR() ? "Combats" : "Fights for",
+		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s <a href=\"http://leekwars.com/%s/%d\">%s</a></h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
+				(isFR() ? "Combats" : "Fights for"),
 				toString(pEntityType),
+				(pEntityType == EntityType.FARMER ? "farmer" : "leek"),
+				pEntity.getId(),	
 				pEntity.getName()
 				//pEntity.getTalent()
 				));
@@ -263,7 +267,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	public void onStat(GardenStatsWrapper pStat) {
 		addBodyLine("\t<tr>");
 		final int diffTalent = pStat.getTalentGain();
-		addBodyLine(String.format("\t\t<td><b>%s</b></td><td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%+d (%d &rarr; %d)</td>",
+		addBodyLine(String.format("\t\t<td><b><a href=\"http://leekwars.com/%s/%d\">%s</a></b></td><td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%+d (%d &rarr; %d)</td>",
+				(pStat.getEntityType() == EntityType.FARMER ? "farmer" : "leek"),
+				pStat.getEntity().getId(),
 				pStat.getEntity().getName(),
 				pStat.getEntity().getLevel() > 0 ? String.valueOf(pStat.getEntity().getLevel()) : "&empty;",
 				pStat.getVictoriesPercent(),pStat.getRatio(),
