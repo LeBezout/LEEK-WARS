@@ -1,6 +1,7 @@
 package com.leekwars.utils.http;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -20,6 +21,20 @@ public final class HttpUtils {
 	private HttpUtils() {}
 	
 	//TODO peut être lever des exceptions agnostiques ! (HttpException)
+	
+	/**
+	 * Encode un paramètre ou élément de path d'URL
+	 * @param pValue
+	 * @return encoded value
+	 * @throws LWException
+	 */
+	public static String encodeUrlParam(final String pValue) throws LWException {
+		try {
+			return java.net.URLEncoder.encode(pValue, ENCODING);
+		} catch (UnsupportedEncodingException e) {
+			 throw new LWException(e);
+		}
+	}
 	
 	/** ------- GET DATA ---------
 	 * @param pURL
