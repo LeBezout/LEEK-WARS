@@ -85,6 +85,41 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
+	//-------------------- OUTILS
+	//---------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Recherche un poireau de l'éleveur par  son id.
+	 * @param pLeekId identifiant du poireau recherché
+	 * @return LeekSummary
+	 * @throws LWException si non connecté ou poireau non trouvé
+	 */
+	public LeekSummary getLeekById(final long pLeekId) throws LWException {
+		checkConnected();
+		for (LeekSummary lLeek : mFarmer.getLeeks().values()) {
+			if (lLeek.getId() == pLeekId) {
+				return lLeek;
+			}
+		}
+		throw new LWException(String.format("Leek %d not found", pLeekId));
+	}
+	/**
+	 * Recherche un poireau de l'éleveur par  son nom.
+	 * @param pLeekName nom du poireau recherché
+	 * @return LeekSummary
+	 * @throws LWException si non connecté ou poireau non trouvé
+	 */
+	public LeekSummary getLeekByName(final String pLeekName) throws LWException {
+		checkConnected();
+		for (LeekSummary lLeek : mFarmer.getLeeks().values()) {
+			if (lLeek.getName().equals(pLeekName)) {
+				return lLeek;
+			}
+		}
+		throw new LWException(String.format("Leek %s not found", pLeekName));
+	}
+	
+	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- GENERIQUE
 	//---------------------------------------------------------------------------------------------------------------------------------
 	
@@ -454,6 +489,10 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public void setRegister(final long pLeekId, final KeyValueCouple pRegister) throws LWException {
 		checkConnected();
+		// REGLE : 
+		//	- La clé, chaîne qui doit contenir 100 caractères au maximum
+		//	- La valeur, chaîne qui doit contenir 5000 caractères au maximum
+		pRegister.validateForRegister();
 		// leek/set-register/leek_id/key/value/token
 		final String lUrl = LEEK_WARS_ROOT_URL + "leek/set-register/" + pLeekId + '/' + HttpUtils.encodeUrlParam(pRegister.getKey()) + '/' + HttpUtils.encodeUrlParam(pRegister.getValue()) + '/' + mToken;
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
@@ -478,5 +517,20 @@ public abstract class AbstractLeekWarsConnector {
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		validateResponse(lResponse, "Cannot delete register", SimpleJSONResponse.class);
 		return lValue;
+	}
+	
+	/**
+	 * Suppression de tous les registres d'un poireau
+	 * @param pLeekId identifiant du poireau
+	 * @throws LWException
+	 */
+	public void deleteAllRegisters(final long pLeekId) throws LWException {
+		KeyValueCouple[] lRegisters = getRegisters(pLeekId);
+		final int len = lRegisters.length;
+		for (KeyValueCouple lRegister : lRegisters) {
+			deleteRegister(pLeekId, lRegister.getKey());
+			LOGGER.info("Registre " + lRegister + " supprimé");
+		}
+		LOGGER.info(String.valueOf(len) + " registres supprimés pour le poireau d'id " + pLeekId);
 	}
 }

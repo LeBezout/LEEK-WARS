@@ -27,7 +27,7 @@ import com.leekwars.utils.wrappers.MessageWrapper;
  * UltraFastGarden : lance tous les combats disponibles
  * @author Bezout
  */
-public class UltraFastGarden {
+public abstract class UltraFastGarden {
 	private static final Logger LOGGER = Logger.getLogger(UltraFastGarden.class.getName());
 	
 	private static FastGardenParam PARAMS = new FastGardenParam(); 
