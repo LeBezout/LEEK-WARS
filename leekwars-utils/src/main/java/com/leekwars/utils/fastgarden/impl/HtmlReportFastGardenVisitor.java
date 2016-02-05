@@ -223,8 +223,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			String[] lFlags = isFamer1 ? pFight.getReport().getFlags1() : pFight.getReport().getFlags2();
 			if (lFlags != null && lFlags.length > 0) {
 				for (String lFlag : lFlags) {
-					mBody.append(getIcon(lFlag, 20, 20));
+					mBody.append(' ').append(getIcon(lFlag, 20, 20));
 				}
+				mBody.append(' ');
 			}
 	//		if (pResult == FightResult.DEFEAT) {
 	//			mBody.append(getIcon("dead"));
@@ -233,8 +234,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			lFlags = isFamer1 ? pFight.getReport().getFlags2() : pFight.getReport().getFlags1();
 			if (lFlags != null && lFlags.length > 0) {
 				for (String lFlag : lFlags) {
-					mBody.append(getIcon(lFlag, 20, 20));
+					mBody.append(' ').append(getIcon(lFlag, 20, 20));
 				}
+				mBody.append(' ');
 			}
 		}
 		addBodyLine("</td>");

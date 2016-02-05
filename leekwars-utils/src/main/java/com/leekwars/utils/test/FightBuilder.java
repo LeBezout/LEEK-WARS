@@ -194,12 +194,12 @@ public class FightBuilder {
 	
 	/**
 	 * Se connecte à LW et récupère les infos d'un combat (fight/get)
-	 * @param pId
+	 * @param pId du combat
 	 * @return instance
 	 * @throws LWException
 	 */
 	public static Fight fromId(long pId) throws LWException {
-		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("Test", "Test");
-		return lConnector.getFight(pId);
+		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector();
+		return lConnector.getFight(pId); // l'appel de ce service ne necessite pas de connexion
 	}
 }
