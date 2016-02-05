@@ -37,7 +37,9 @@ public class DefaultRegistersVisitor implements RegistersVisitor {
 
 	@Override
 	public void onOverflow(LeekSummary pLeek) throws LWException {
-		LOGGER.error(pLeek + " : ATTENTION dépassement du seuil acceptable de registres. Action à prévoir avant d'atteindre 100 registres.");
+		LOGGER.error("*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*");
+		LOGGER.error(pLeek + " : ATTENTION dépassement de taille acceptable des registres. Action à prévoir avant d'atteindre 100 registres.");
+		LOGGER.error("*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*");
 	}
 
 	@Override
