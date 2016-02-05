@@ -18,6 +18,7 @@ Leek Wars JAVA Utilities for Farmers
   * Inscription aux tournois d'équipe : <tt>team/register-tournament/[compo_id]/[token]</tt>
   * Lancement d'un combat éleveur : <tt>garden/start-farmer-fight/[target_id]/[token]</tt>
   * Lancement d'un combat solo : <tt>garden/start-solo-fight/[leek_id]/[target_id]/[token]</tt>
+  * Lancement d'un combat d'équipe : <tt>garden/start-team-fight/[compo_id]/[target_id]/[token]</tt>
   * Récupération des infos d'un combat : <tt>fight/get/[fight_id]</tt>
 
 ## Infos développeurs
