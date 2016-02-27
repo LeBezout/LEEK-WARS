@@ -6,7 +6,7 @@ package com.leekwars.utils.model;
  */
 public class TeamTournament {
 	private boolean registered;
-	private Tournament current;
+	private int current;
 	
 	/**
 	 * @return the registered
@@ -23,13 +23,13 @@ public class TeamTournament {
 	/**
 	 * @return the current
 	 */
-	public Tournament getCurrent() {
+	public int getCurrent() {
 		return current;
 	}
 	/**
 	 * @param pCurrent the current to set
 	 */
-	public void setCurrent(Tournament pCurrent) {
+	public void setCurrent(int pCurrent) {
 		current = pCurrent;
 	}
 }
