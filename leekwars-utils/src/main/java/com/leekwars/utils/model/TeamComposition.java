@@ -9,7 +9,7 @@ public class TeamComposition extends Entity {
 	private LeekSummary[] leeks;
 	private TeamTournament tournament;
 	private LeekSummary[] unengaged_leeks;
-	
+	private long teamId; // ajout bezout (pas dans le JSON)
 	
 	/**
 	 * @return the total_level
@@ -70,5 +70,18 @@ public class TeamComposition extends Entity {
 	@Override
 	public void setLevel(int pLevel) {
 		total_level = pLevel;
+	}
+	
+	/**
+	 * @return the teamId
+	 */
+	public long getTeamId() {
+		return teamId;
+	}
+	/**
+	 * @param pTeamId the teamId to set
+	 */
+	public void setTeamId(long pTeamId) {
+		teamId = pTeamId;
 	}
 }

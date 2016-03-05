@@ -178,6 +178,22 @@ public class Garden {
 		return my_compositions;
 	}
 	/**
+	 * Accès direct à une compo du tableau my_compositions
+	 * @param pId
+	 * @return compo
+	 */
+	public GardenFarmerTeamComposition getMyComposition(long pId) {
+		if (my_compositions == null) {
+			return null;
+		}
+		for (GardenFarmerTeamComposition lCompo : my_compositions) {
+			if (lCompo.getId() == pId) {
+				return lCompo;
+			}
+		}
+		return null;
+	}
+	/**
 	 * @param pMy_compositions the my_compositions to set
 	 */
 	public void setMy_compositions(GardenFarmerTeamComposition[] pMy_compositions) {

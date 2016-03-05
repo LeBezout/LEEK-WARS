@@ -9,6 +9,14 @@ public class GardenEnemyTeamComposition extends Entity {
 	private Entity team;
 	
 	/**
+	 * @return the name
+	 */
+	@Override
+	public String getName() {
+		return team == null ? "?" : team.getName();
+	}
+	
+	/**
 	 * @return the total_level
 	 */
 	public int getTotal_level() {
@@ -31,5 +39,10 @@ public class GardenEnemyTeamComposition extends Entity {
 	 */
 	public void setTeam(Entity pTeam) {
 		team = pTeam;
+	}
+	
+	@Override
+	public String toString() {
+		return "[" + getId() + "] " + getName();
 	}
 }
