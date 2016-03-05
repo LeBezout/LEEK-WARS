@@ -8,12 +8,10 @@ public class FastGardenParam {
 
 	/**
 	 * Nombre de tentatives maximales pour récupérer le résultat d'un combat
-	 * GET_FIGHT_RESULT_MAX_RETRY
 	 */
 	private int maxRetryForFightResult = 10;
 	/**
 	 * Nombre de secondes à attendre pour laisser les combats se terminer 
-	 * WAIT_TIME_BEFORE_RESULTS
 	 */
 	private int waitTimeToGetResults = 10;
 	/**
@@ -23,10 +21,13 @@ public class FastGardenParam {
 	/**
 	 * Seuil d'acception en pourcentage d'un talent pour déterminer si l'on peut combattre l'adversaire
 	 * => pourcentage accepté d'écart entre 2 talents
-	 * TALENT_DIFF_ACCEPTANCE
 	 */
 	private int talentDiffAcceptance = 20;
 	
+	/**
+	 * Pour eviter les boucles infinies, nombres d'erreurs maximum tolérées (par entité)
+	 */
+	private int maxStartFightErrors = 20;
 	
 	/**
 	 * Constructeur
@@ -83,4 +84,17 @@ public class FastGardenParam {
 	public void setTalentDiffAcceptance(int pTalentDiffAcceptance) {
 		talentDiffAcceptance = pTalentDiffAcceptance;
 	}
+	/**
+	 * @return the maxStartFightErrors
+	 */
+	public int getMaxStartFightErrors() {
+		return maxStartFightErrors;
+	}
+	/**
+	 * @param pMaxStartFightErrors the maxStartFightErrors to set
+	 */
+	public void setMaxStartFightErrors(int pMaxStartFightErrors) {
+		maxStartFightErrors = pMaxStartFightErrors;
+	}
+	
 }
