@@ -22,4 +22,14 @@ public class UltraFastGardenTest {
 		UltraFastGarden.forAll(new DefaultLeekWarsConnector("TODO", "TODO"), lReport);
 		lReport.generate();
 	}
+	
+	@Test
+	public void testTeamFastGarden() throws LWException {
+		final File output = new File("target/reports", TIMESTAMP + "_TEAM.html");
+		HtmlReportFastGardenVisitor lReport = new HtmlReportFastGardenVisitor(HTML_TEMPLATE_FILE, output);
+		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("TODO", "TODO");
+		//lConnector.setTrace(true);
+		UltraFastGarden.forTeam(lConnector, lReport);
+		lReport.generate();
+	}
 }

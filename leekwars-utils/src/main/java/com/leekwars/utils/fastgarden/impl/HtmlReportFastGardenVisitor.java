@@ -18,6 +18,7 @@ import com.leekwars.utils.fastgarden.FastGardenVisitor;
 import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
+import com.leekwars.utils.model.TeamComposition;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
 import com.leekwars.utils.wrappers.MessageWrapper;
 
@@ -115,12 +116,15 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	private String toString(final EntityType pEntityType) {
 		switch (pEntityType) {
-			case BULB :
-				return isFR() ? "bulbe" : "bulb";
 			case FARMER :
 				return isFR() ? "éleveur" : "farmer";
 			case LEEK :
 				return isFR() ? "poireau" : "leek";
+			case TEAM :
+			case TEAMP_COMPO :
+				return isFR() ? "équipe" : "team";
+			case BULB :
+				return isFR() ? "bulbe" : "bulb";
 			default:
 				return "?";
 		}
@@ -135,18 +139,19 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		}
 	}
 	private static Map<String, String> initIconsMap() {
-		Map<String, String> lMap = new HashMap<>();
+		Map<String, String> lMap = new HashMap<>(12, 1);
 		lMap.put("perfect", "<img src=\"http://leekwars.com/static/image/fight_flag/perfect\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("static", "<img src=\"http://leekwars.com/static/image/fight_flag/static\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("dead", "<img src=\"http://leekwars.com/static/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("garden", "<img src=\"http://leekwars.com/static/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("fight", "<img src=\"http://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("static", 	"<img src=\"http://leekwars.com/static/image/fight_flag/static\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("dead", 	"<img src=\"http://leekwars.com/static/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("garden", 	"<img src=\"http://leekwars.com/static/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("fight", 	"<img src=\"http://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("ranking", "<img src=\"http://leekwars.com/static/image/icon/ranking.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("gearing", "<img src=\"http://leekwars.com/static/image/gearing_small_white.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("flag_fr", "<img src=\"http://leekwars.com/static/image/flag/32/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("flag_en", "<img src=\"http://leekwars.com/static/image/flag/32/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("leek", "<img src=\"http://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("farmer", "<img src=\"http://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("leek", 	"<img src=\"http://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("farmer", 	"<img src=\"http://leekwars.com/static/image/trophy/artist.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("team", 	"<img src=\"http://leekwars.com/static/image/icon/team.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		return Collections.unmodifiableMap(lMap);
 	}
 	private static String getIcon(final String pKey, int width, int height) {
@@ -184,8 +189,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s <a href=\"http://leekwars.com/%s/%d\">%s</a></h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
 				(isFR() ? "Combats" : "Fights for"),
 				toString(pEntityType),
-				(pEntityType == EntityType.FARMER ? "farmer" : "leek"),
-				pEntity.getId(),	
+				(pEntityType == EntityType.FARMER ? "farmer" : (pEntityType == EntityType.TEAMP_COMPO ? "team" : "leek")),
+				(pEntity instanceof TeamComposition ? ((TeamComposition)pEntity).getTeamId() : pEntity.getId()),	
 				pEntity.getName()
 				//pEntity.getTalent()
 				));
@@ -270,8 +275,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("\t<tr>");
 		final int diffTalent = pStat.getTalentGain();
 		addBodyLine(String.format("\t\t<td><b><a href=\"http://leekwars.com/%s/%d\">%s</a></b></td><td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%+d (%d &rarr; %d)</td>",
-				(pStat.getEntityType() == EntityType.FARMER ? "farmer" : "leek"),
-				pStat.getEntity().getId(),
+				(pStat.getEntityType() == EntityType.FARMER ? "farmer" : (pStat.getEntityType() == EntityType.TEAMP_COMPO ? "team" : "leek")),
+				(pStat.getEntity() instanceof TeamComposition ? ((TeamComposition)pStat.getEntity()).getTeamId() : pStat.getEntity().getId()),	
 				pStat.getEntity().getName(),
 				pStat.getEntity().getLevel() > 0 ? String.valueOf(pStat.getEntity().getLevel()) : "&empty;",
 				pStat.getVictoriesPercent(),pStat.getRatio(),
