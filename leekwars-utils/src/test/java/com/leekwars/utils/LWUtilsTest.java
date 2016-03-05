@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
+import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.model.Fight;
 
@@ -43,5 +44,16 @@ public class LWUtilsTest {
 		Fight lFight = lConnector.getFight(lID);
 		boolean result = LWUtils.isFarmer1(lConnector.getFarmer(), lFight);
 		System.out.println("Combat " + lID + " Farmer1 : " + result + ", Result = " + LWUtils.getFightResult(lConnector.getFarmer(), lFight));
+	}
+	
+	@Test
+	@org.junit.Ignore
+	public void testGetFightResult_Team() throws LWException {
+		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("TODO", "TODO");
+		lConnector.connect();
+		final long lFightId = 16311083;
+		Fight lFight = lConnector.getFight(lFightId);
+		FightResult lResult = LWUtils.getFightResult(lConnector.getFarmer(), lFight);
+		System.out.println(lResult);
 	}
 }
