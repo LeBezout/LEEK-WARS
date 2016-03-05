@@ -21,6 +21,29 @@ public class MessageWrapper {
 	private String mMessageEN;
 	
 	/**
+	 * Builder MESSAGE_TYPE_INFO sans entité
+	 * @param pMessageFR
+	 * @param pMessageEN
+	 * @return new instance
+	 */
+	public static MessageWrapper info(final String pMessageFR, final String pMessageEN) {
+		final MessageWrapper lMsg = new MessageWrapper(pMessageFR, pMessageEN);
+		lMsg.setType(MESSAGE_TYPE_INFO);
+		return lMsg;
+	}
+	/**
+	 * Builder MESSAGE_TYPE_ERROR sans entité
+	 * @param pMessageFR
+	 * @param pMessageEN
+	 * @return new instance
+	 */
+	public static MessageWrapper error(final String pMessageFR, final String pMessageEN) {
+		final MessageWrapper lMsg = new MessageWrapper(pMessageFR, pMessageEN);
+		lMsg.setType(MESSAGE_TYPE_ERROR);
+		return lMsg;
+	}
+	
+	/**
 	 * Constructeur par défaut
 	 */
 	public MessageWrapper() {
