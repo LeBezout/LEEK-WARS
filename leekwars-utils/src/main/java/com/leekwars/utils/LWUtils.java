@@ -75,7 +75,7 @@ public final class LWUtils {
 	}
 	
 	/**
-	 * Convertion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
+	 * Conversion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
 	 * @param pValue
 	 * @return Date
 	 */
@@ -83,7 +83,7 @@ public final class LWUtils {
 		return new Date(1000 * pValue);
 	}
 	/**
-	 * Convertion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
+	 * Conversion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
 	 * @param pValue
 	 * @return Calendar
 	 */
@@ -233,7 +233,7 @@ public final class LWUtils {
 	}
 	
 	/**
-	 * Convertion d'un code en FightContext
+	 * Conversion d'un code en FightContext
 	 * @param pCode
 	 * @return FightContext
 	 */
@@ -256,7 +256,7 @@ public final class LWUtils {
 	}
 	
 	/**
-	 * Convertion d'un code en FightType
+	 * Conversion d'un code en FightType
 	 * @param pCode
 	 * @return FightType
 	 */

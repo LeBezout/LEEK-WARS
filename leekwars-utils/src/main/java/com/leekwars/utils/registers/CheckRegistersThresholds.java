@@ -7,7 +7,7 @@ import com.leekwars.utils.model.KeyValueCouple;
 import com.leekwars.utils.model.LeekSummary;
 
 /**
- * Classe outils pour détections des de remplissages des registres. Pour info :<ul>
+ * Classe outils pour détections le remplissages des registres. Pour info :<ul>
  * <li>Les registres sont limités à 100 éléments.</li>
  * <li>La clé, chaîne qui doit contenir 100 caractères au maximum.</li>
  * <li>La valeur, chaîne qui doit contenir 5000 caractères au maximum.</li>
@@ -16,9 +16,11 @@ import com.leekwars.utils.model.LeekSummary;
  */
 public abstract class CheckRegistersThresholds {
 	
-	public static final int REGISTERS_THRESHOLD = 100;
+	/** capacité maximul des registres pour 1 poireau */
+	public static final int REGISTERS_MAX_CAPACITY = 100;
 
 	/**
+	 * Méthode de parcours des registres de tous les poireaux de l'eleveur concerné
 	 * @param pConnector
 	 * @param pVisitor
 	 * @throws LWException
@@ -34,7 +36,7 @@ public abstract class CheckRegistersThresholds {
 			for (LeekSummary lLeek : lFarmer.getLeeks().values()) {
 				lRegisters = pConnector.getRegisters(lLeek.getId());
 				pVisitor.onRegisters(lLeek, lRegisters);
-				if ((REGISTERS_THRESHOLD - lRegisters.length) < pVisitor.getLeniency()) {
+				if ((REGISTERS_MAX_CAPACITY - lRegisters.length) < pVisitor.getLeniency()) {
 					pVisitor.onOverflow(lLeek);
 				}
 			}
