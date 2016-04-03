@@ -7,7 +7,7 @@ import com.leekwars.utils.model.KeyValueCouple;
 import com.leekwars.utils.model.LeekSummary;
 
 /**
- * Classe outils pour détections des de remplissages des registres. Pour info :<ul>
+ * Classe outils pour détections des remplissages des registres. Pour info :<ul>
  * <li>Les registres sont limités à 100 éléments.</li>
  * <li>La clé, chaîne qui doit contenir 100 caractères au maximum.</li>
  * <li>La valeur, chaîne qui doit contenir 5000 caractères au maximum.</li>

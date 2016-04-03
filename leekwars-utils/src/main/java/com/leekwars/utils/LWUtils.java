@@ -150,7 +150,7 @@ public final class LWUtils {
 	/**
 	 * Détermine le résultat d'un combat par rapport à un éléveur donné 
 	 * NE FONCTIONNE QUE POUR LES POIREAUX DU FARMER EN PARAMETRE
-	 * @param pFarmerId
+	 * @param pFarmer eleveur récupéré lors du login
 	 * @param pFight
 	 * @return FightResult
 	 */

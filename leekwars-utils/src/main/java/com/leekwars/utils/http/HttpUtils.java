@@ -62,7 +62,7 @@ public final class HttpUtils {
 	 * @param pURL
 	 * @param pData
 	 * @param pPHPSESSID
-	 * @return
+	 * @return wrapper
 	 * @throws LWException
 	 */
 	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID) throws LWException {
@@ -133,7 +133,7 @@ public final class HttpUtils {
 	/**
 	 * Lecture du flux de réponse HTTP
 	 * @param connection
-	 * @return
+	 * @return réponse texte
 	 * @throws LWException
 	 */
 	public static String readHttpResponse(final HttpURLConnection connection) throws LWException {

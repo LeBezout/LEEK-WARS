@@ -303,7 +303,7 @@ public abstract class UltraFastGarden {
 			} catch (LWException le) {
 				pVisitor.onMessage(new MessageWrapper(pCompo, MessageWrapper.MESSAGE_TYPE_ERROR, "Impossible de lancer le combat contre " + lCompoEnemies[0] + ". Cause : " + le.getMessage(), "Cannot start a fight against " + lCompoEnemies[0] + ". Cause: " + le.getMessage()));
 				fightId = -1;
-				label = "COMBAT TEAM IMPOSSIBLE A LANCER POUR " + pCompo + " CONTRE " + lCompoEnemies[0];
+				label = "COMBAT TEAM IMPOSSIBLE A LANCER POUR " + pCompo + " CONTRE " + lCompoEnemies[0] + " (Index=" + (lFightCount+1) + ")";
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
 			}
@@ -358,7 +358,7 @@ public abstract class UltraFastGarden {
 			} catch (LWException le) {
 				pVisitor.onMessage(new MessageWrapper(leek, MessageWrapper.MESSAGE_TYPE_ERROR, "Impossible de lancer le combat contre "+ lTargets[0] +". Cause : " + le.getMessage(), "Cannot start a fight against "+ lTargets[0] +". Cause : " + le.getMessage()));
 				fightId = -1;
-				label = "COMBAT SOLO IMPOSSIBLE A LANCER POUR " + leekName + " CONTRE " + lTargets[0];
+				label = "COMBAT SOLO IMPOSSIBLE A LANCER POUR " + leekName + " CONTRE " + lTargets[0] + " (Index=" + (lFightCount+1) + ")";
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
 			}
@@ -424,7 +424,7 @@ public abstract class UltraFastGarden {
 						} catch (LWException le) {
 							pVisitor.onMessage(new MessageWrapper(pConnector.getFarmer(), MessageWrapper.MESSAGE_TYPE_ERROR, "Impossible de lancer le combat contre "+ lTargetFamer +". Cause : " + le.getMessage(), "Cannot start a fight against "+ lTargetFamer +". Cause: " + le.getMessage()));
 							fightId = -1;
-							label = "COMBAT FARMER IMPOSSIBLE A LANCER POUR " + farmerName + " CONTRE " + lTargetFamer;
+							label = "COMBAT FARMER IMPOSSIBLE A LANCER POUR " + farmerName + " CONTRE " + lTargetFamer + " (Index=" + (lFightCount+1) + ")";
 							LOGGER.warn(">> "+ label + " : " + le.getMessage());
 							lErrorCount++;
 						}

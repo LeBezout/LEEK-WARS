@@ -29,7 +29,7 @@ import com.leekwars.utils.model.TeamPrivate;
 /**
  * Classe mère permettant d'effectuer tous les appels à l'API LW
  * @author Bezout
- * @see http://leekwars.com/help/api
+ * @see <a href="http://leekwars.com/help/api">API</a>
  */
 public abstract class AbstractLeekWarsConnector {
 	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
@@ -78,7 +78,7 @@ public abstract class AbstractLeekWarsConnector {
 		mUsername = pUsername;
 	}
 	/**
-	 * @param mPassword
+	 * @param pPassword
 	 */
 	protected final void setPassword(final String pPassword) {
 		mPassword = pPassword;
