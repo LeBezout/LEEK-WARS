@@ -46,12 +46,21 @@ public abstract class AbstractLeekWarsConnector {
 	private Farmer mFarmer;
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
+	/**
+	 * @return login du compte LW
+	 */
 	public final String getUsername() {
 		return mUsername;
 	}
+	/**
+	 * @return mot de passe en clair du compte LW
+	 */
 	protected final String getPassword() {
 		return mPassword;
 	}
+	/**
+	 * @return token en clair lu lors de l'appel à farmer/login-token
+	 */
 	protected final String getToken() {
 		return mToken;
 	}
@@ -214,7 +223,7 @@ public abstract class AbstractLeekWarsConnector {
 	public final void invalidateToken() throws LWException {
 		checkConnected();
 		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/disconnect/" + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.post(lUrl, "", mPhpSessionId);
+		final HttpResponseWrapper lResponse = HttpUtils.post(lUrl, "", mPhpSessionId); //TODO valider post/get
 		validateResponse(lResponse, "Bad token", SimpleJSONResponse.class);
 		// OK
 		mToken = null;
@@ -335,7 +344,7 @@ public abstract class AbstractLeekWarsConnector {
 		return lGargen.getGarden();
 	}
 	/*
-	 * Retourne l'id du combnat demandé ou lève une exception en cas d'erreur
+	 * Retourne l'id du combat demandé ou lève une exception en cas d'erreur
 	 * @param pResponse
 	 * @return id
 	 * @throws LWException
@@ -384,18 +393,10 @@ public abstract class AbstractLeekWarsConnector {
 	public long startSoloFight(final long pLeekId, final long pEnemyLeekId) throws LWException {
 		checkConnected();
 		// garden/start-solo-fight/leek_id/target_id/token → fight_id
-//		return startSoloFight_GET(pLeekId, pEnemyLeekId);
-//	}
-//	private long startSoloFight_GET(final long pLeekId, final long pEnemyLeekId) throws LWException {
 		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-solo-fight/" + pLeekId + '/' + pEnemyLeekId + '/' + mToken;
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		return genericStartFight(lResponse);
 	}
-//	private long startSoloFight_POST(final long pLeekId, final long pEnemyLeekId) throws LWException {
-//		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-solo-fight";
-//		final HttpResponse lResponse = HttpUtils.post(lUrl, "leek_id="+pLeekId+"&target_id="+pEnemyLeekId+"&token="+mToken, mPhpSessionId);
-//		return genericStartFight(lResponse);
-//	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- COMBATS

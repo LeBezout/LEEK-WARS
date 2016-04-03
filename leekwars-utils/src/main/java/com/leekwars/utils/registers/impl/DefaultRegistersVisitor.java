@@ -6,6 +6,7 @@ import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.KeyValueCouple;
 import com.leekwars.utils.model.LeekSummary;
+import com.leekwars.utils.registers.CheckRegistersThresholds;
 import com.leekwars.utils.registers.RegistersVisitor;
 
 /**
@@ -38,7 +39,7 @@ public class DefaultRegistersVisitor implements RegistersVisitor {
 	@Override
 	public void onOverflow(LeekSummary pLeek) throws LWException {
 		LOGGER.error("*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*");
-		LOGGER.error(pLeek + " : ATTENTION dépassement de taille acceptable des registres. Action à prévoir avant d'atteindre 100 registres.");
+		LOGGER.error(pLeek + " : ATTENTION dépassement de taille acceptable des registres. Action à prévoir avant d'atteindre " + CheckRegistersThresholds.REGISTERS_MAX_CAPACITY + " registres.");
 		LOGGER.error("*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*");
 	}
 

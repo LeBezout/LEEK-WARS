@@ -15,7 +15,7 @@ public class DefaultLeekWarsConnector extends AbstractLeekWarsConnector {
 	}
 	
 	/**
-	 * Constructeur utilisable pour appeler des services qui necessite la récuparation du token d'authentification
+	 * Constructeur utilisable pour appeler des services qui necessitent la récuparation du token d'authentification
 	 * @param pLogin
 	 * @param pPassword
 	 */
@@ -23,5 +23,4 @@ public class DefaultLeekWarsConnector extends AbstractLeekWarsConnector {
 		setUsername(pLogin);
 		setPassword(pPassword);
 	}
-
 }
