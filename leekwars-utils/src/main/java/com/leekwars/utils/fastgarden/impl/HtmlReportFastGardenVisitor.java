@@ -35,11 +35,12 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	final File mOutputFile;
 	private StringBuilder mBody;
 	private Farmer mFarmer;
-	private List<MessageWrapper> mMessages = new LinkedList<>();
+	private LinkedList<MessageWrapper> mMessages = new LinkedList<>();
 	// membres pour la gestion interne
 	private boolean canGenerate;
 	private boolean tableOpened;
 	private int mCount;
+	private int mTotalCount;
 	// membres pour le paramétrage du rendu HTML
 	private String mLang;
 	private String mTemplateCharset = "UTF-8";
@@ -211,6 +212,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	@Override
 	public void onResult(final Fight pFight, final FightResult pResult) {
 		mCount++;
+		mTotalCount++;
 		addBodyLine(String.format("\t<tr class=\"%s\">", toCSS(pResult)));
 		addBodyLine(String.format("\t\t<td>%d</td>", mCount));
 		addBodyLine(String.format("\t\t<td>%d</td>", pFight.getId()));
@@ -291,29 +293,28 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("</table>"); // table des stats
 		canGenerate = true;
 		addBodyLine("<br/>");
-		if (!mMessages.isEmpty()) {
-			addBodyLine("<h2>"+getIcon("gearing", 22, 22)+" Messages</h2>");
-			addBodyLine("<table class=\"result\">");
-			addBodyLine("\t<tr class=\"header\">");
-			if (isFR()) {
-				addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"20%\">Type</th><th width=\"20%\">Entité</th><th width=\"50%\" style=\"text-align:left\">Message</th>");
-			} else {
-				addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"20%\">Type</th><th width=\"20%\">Entity</th><th width=\"50%\" style=\"text-align:left\">Message</th>");
-			}
-			addBodyLine("\t</tr>");
-			int num = 1;
-			String lEntityName;
-			for (MessageWrapper lMsg : mMessages) {
-				lEntityName = lMsg.getEntity() == null ? "GENERAL" : lMsg.getEntity().getName();
-				addBodyLine("\t<tr>");
-				addBodyLine(String.format("\t\t<td>%d</td><td>%s</td><td>%s</td><td style=\"text-align:left\">%s</td>", num, lMsg.getType(), lEntityName, (isFR() ? lMsg.getMessageFR() : lMsg.getMessageEN())));
-				addBodyLine("\t</tr>");
-				num++;
-			}
-			addBodyLine("</table>");
+		mMessages.addFirst(new MessageWrapper("Nombre total de combats lancés : " + mTotalCount, "Total fights count: " + mTotalCount));
+		addBodyLine("<h2>"+getIcon("gearing", 22, 22)+" Messages</h2>");
+		addBodyLine("<table class=\"result\">");
+		addBodyLine("\t<tr class=\"header\">");
+		if (isFR()) {
+			addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"20%\">Type</th><th width=\"20%\">Entité</th><th width=\"50%\" style=\"text-align:left\">Message</th>");
+		} else {
+			addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"20%\">Type</th><th width=\"20%\">Entity</th><th width=\"50%\" style=\"text-align:left\">Message</th>");
 		}
+		addBodyLine("\t</tr>");
+		int num = 1;
+		String lEntityName;
+		for (MessageWrapper lMsg : mMessages) {
+			lEntityName = lMsg.getEntity() == null ? "GENERAL" : lMsg.getEntity().getName();
+			addBodyLine("\t<tr>");
+			addBodyLine(String.format("\t\t<td>%d</td><td>%s</td><td>%s</td><td style=\"text-align:left\">%s</td>", num, lMsg.getType(), lEntityName, (isFR() ? lMsg.getMessageFR() : lMsg.getMessageEN())));
+			addBodyLine("\t</tr>");
+			num++;
+		}
+		addBodyLine("</table>"); // messages
 		addBodyLine("<br/>");
-		addBodyLine("</div>");
+		addBodyLine("</div>"); // container
 		addBodyLine("<div class=\"copyright\">");
 		addBodyLine("\t"
 			+ getIcon("fight", 12, 12)
@@ -324,7 +325,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			//+ " - <a href=\"http://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - Généré en Java depuis <a href=\"http://leekwars.com/help/api\">l'API Leek Wars</a> "
 			+ getIcon("fight", 12, 12)
 			);
-		addBodyLine("</div>");
+		addBodyLine("</div>"); // copyright
 	}
 	
 	// ------ METHODE POUR GENERER LE RAPPORT FINAL ------
@@ -335,6 +336,10 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	 */
 	public void generate() throws LWException {
 		if (canGenerate) {
+			if (mTotalCount == 0) {
+				// Aucun combat => pas de rapport. Evite les risques d'ecraser un rapport existant avec un rapport vide
+				throw new LWException("Cannot generate report, no data");
+			}
 			try {
 				// Load template
 				String lTemplateHTML = new String(Files.readAllBytes(mTemplateFile.toPath()), mTemplateCharset);
@@ -355,7 +360,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				throw new LWException("Cannot generate report, I/O error : " + ioe.getMessage(), ioe);
 			}
 		} else {
-			throw new LWException("Cannot generate report, not enough data");
+			throw new LWException("Cannot generate report, not processed");
 		}
 	}
 }
