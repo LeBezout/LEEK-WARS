@@ -292,7 +292,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("</table>"); // table des stats
 		canGenerate = true;
 		addBodyLine("<br/>");
-		mMessages.addFirst(new MessageWrapper("Nombre total de combats lancés : " + mTotalCount, "Total fights count: " + mTotalCount));
+		mMessages.addFirst(new MessageWrapper(null, MessageWrapper.MESSAGE_TYPE_INFO, "Nombre total de combats lancés : " + mTotalCount, "Total fights count: " + mTotalCount));
 		addBodyLine("<h2>"+getIcon("gearing", 22, 22)+" Messages</h2>");
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
