@@ -306,7 +306,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		String lEntityName;
 		for (MessageWrapper lMsg : mMessages) {
 			lEntityName = lMsg.getEntity() == null ? "GENERAL" : lMsg.getEntity().getName();
-			addBodyLine("\t<tr>");
+			addBodyLine("\t<tr class=\""+toCSS(lMsg)+">");
 			addBodyLine(String.format("\t\t<td>%d</td><td>%s</td><td>%s</td><td style=\"text-align:left\">%s</td>", num, lMsg.getType(), lEntityName, (isFR() ? lMsg.getMessageFR() : lMsg.getMessageEN())));
 			addBodyLine("\t</tr>");
 			num++;
@@ -321,10 +321,16 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			+ String.format(" - <a href=\"http://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - %s <a href=\"http://leekwars.com/help/api\">%s</a> ", 
 					(isFR() ? "Généré en Java depuis" : "Java Powered by"), 
 					(isFR() ? "l'API Leek Wars" : "Leek Wars API"))
-			//+ " - <a href=\"http://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - Généré en Java depuis <a href=\"http://leekwars.com/help/api\">l'API Leek Wars</a> "
 			+ getIcon("fight", 12, 12)
 			);
 		addBodyLine("</div>"); // copyright
+	}
+	private static String toCSS(final MessageWrapper pMsg) {
+		final String lType = pMsg.getType();
+		if (lType != null) {
+			return "msg" + lType.toLowerCase();
+		}
+		return "msg";
 	}
 	
 	// ------ METHODE POUR GENERER LE RAPPORT FINAL ------
