@@ -306,7 +306,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		String lEntityName;
 		for (MessageWrapper lMsg : mMessages) {
 			lEntityName = lMsg.getEntity() == null ? "GENERAL" : lMsg.getEntity().getName();
-			addBodyLine("\t<tr class=\""+toCSS(lMsg)+">");
+			addBodyLine("\t<tr class=\""+toCSS(lMsg)+"\">");
 			addBodyLine(String.format("\t\t<td>%d</td><td>%s</td><td>%s</td><td style=\"text-align:left\">%s</td>", num, lMsg.getType(), lEntityName, (isFR() ? lMsg.getMessageFR() : lMsg.getMessageEN())));
 			addBodyLine("\t</tr>");
 			num++;
