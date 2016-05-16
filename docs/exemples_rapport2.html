@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="icon" type="image/png" href="http://leekwars.com/static/image/favicon.png">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+	<style type="text/css">
+	body {
+		font-family: "Roboto",sans-serif;
+		font-size: 15px;
+		width: 100%;
+		height: 100%;
+		color: #111;
+		margin : 0px;
+		padding : 0px;
+		background-image: url("http://leekwars.com/static/image/background.png");
+		overflow-x : hidden;
+	}
+	.container {
+		width : 100%;
+		margin-left : 20px;
+	}
+	a, a:visited {
+		color: #111;
+	}
+	div {
+		width: 100%;
+	}
+	.defeat {
+		background-color: #FFB3AE;
+	}
+	.win {
+		background-color: #B6F182;
+	}
+	.draw {
+		background-color: #DCDCDC;
+	}
+	.unknown {
+		background-color: ivory;
+	}
+	table {
+		border-collapse: collapse;
+		table-layout: fixed;
+		width: 100%; 
+	}
+	table.result {
+		width : 80%;
+	}
+	th {
+		padding: 0px 5px;
+		font-weight: normal;
+		color: #222;
+		font-size: 18px;
+		border-bottom: 1px solid #FFF;
+		border-right: 1px solid #FFF;
+		text-align: center;
+	}
+	tr {
+		background-color: white;
+	}
+	td {
+		border-bottom: 1px solid #DDD;
+		border-right: 1px solid #DDD;
+		text-align: center;
+		padding: 4px;
+		color : #111;
+	}
+	tr.header {
+		background: #E5E5E5 none repeat scroll 0% 0%;
+		height: 38px;
+		text-align: center;
+	}
+	h1, h2, h3, h4 {
+		font-weight: 400;
+		margin: 0px;
+		color: #777;
+	}
+	h1 {
+		font-size: 25px;
+		line-height: 34px;
+		display: block;
+		height: 36px;
+		padding: 0px 15px;
+		color: #FFF;
+		position: relative;
+		background: #5FAD1B none repeat scroll 0% 0%;
+		text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2), 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.1);
+		border-top-left-radius: 3px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	h2 {
+		color: #EEE;
+		font-size: 19px;
+		display: inline-block;
+		height: 36px;
+		line-height: 36px;
+		background: rgba(150, 150, 150, 0.5) none repeat scroll 0% 0%;
+		padding: 0px 12px;
+		position: relative;
+		white-space: nowrap;
+		border-top-left-radius: 3px;
+	}
+	h2 a, h2 a:visited {
+		color: #EEE;
+		text-decoration : none;
+	}
+	.copyright {
+		color : lightgrey;
+		font-size : 8pt;
+		padding : 2px;
+		margin-left : 10px;
+	}
+	.copyright a, .copyright a:visited {
+		color : lightgrey;
+	}
+	.msg td, .msginfo td, .msgwarning td, .msgerror td {
+	}
+	.msgwarning td {
+		color : orange;
+		font-weight: bold;
+	}
+	.msgerror td {
+		color : red;
+		font-weight: bold;
+	}
+	</style>
+	<title>Rapport FastGarden pour Bezout</title>
+</head>
+<body>
+<h1 style="display:inline"><img src="http://leekwars.com/static/image/logo.png"/> Rapport de combats "Fast Garden" <img src="http://leekwars.com/static/image/flag/32/fr.png" title="Langue=FR" width="32px" height="32px"/></h1>
+<br/>
+<div class="container">
+<br/>
+<h2><img src="http://leekwars.com/static/image/icon/garden.png" width="22px" height="22px"/> Combats équipe <a href="http://leekwars.com/team/2314">spares-batch</a></h2>
+<table class="result">
+	<tr class="header">
+		<th width="10%">Numéro</th><th width="10%">Id</th><th width="25%">Visualisation</th><th width="15%" colspan="2">Flag</th><th width="25%">Contre</th><th width="15%">Nombre de tours</th>
+	</tr>
+	<tr class="win">
+		<td>1</td>
+		<td>17291018</td>
+		<td><a href="http://leekwars.com/fight/17291018">Combat</a> | <a href="http://leekwars.com/report/17291018">Rapport</a></td>
+		<td></td><td></td>
+		<td>(MachiaveLeeks)</td>
+		<td>24</td>
+	</tr>
+	<tr class="defeat">
+		<td>2</td>
+		<td>17291019</td>
+		<td><a href="http://leekwars.com/fight/17291019">Combat</a> | <a href="http://leekwars.com/report/17291019">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Team NDi Dev)</td>
+		<td>27</td>
+	</tr>
+	<tr class="draw">
+		<td>3</td>
+		<td>17291020</td>
+		<td><a href="http://leekwars.com/fight/17291020">Combat</a> | <a href="http://leekwars.com/report/17291020">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Cbl)</td>
+		<td>64</td>
+	</tr>
+	<tr class="defeat">
+		<td>4</td>
+		<td>17291021</td>
+		<td><a href="http://leekwars.com/fight/17291021">Combat</a> | <a href="http://leekwars.com/report/17291021">Rapport</a></td>
+		<td></td><td></td>
+		<td>(PoirOdyssée)</td>
+		<td>9</td>
+	</tr>
+	<tr class="defeat">
+		<td>5</td>
+		<td>17291022</td>
+		<td><a href="http://leekwars.com/fight/17291022">Combat</a> | <a href="http://leekwars.com/report/17291022">Rapport</a></td>
+		<td></td><td></td>
+		<td>(PoirOdyssée)</td>
+		<td>12</td>
+	</tr>
+	<tr class="win">
+		<td>6</td>
+		<td>17291023</td>
+		<td><a href="http://leekwars.com/fight/17291023">Combat</a> | <a href="http://leekwars.com/report/17291023">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Gowap Vinaigrette)</td>
+		<td>13</td>
+	</tr>
+	<tr class="win">
+		<td>7</td>
+		<td>17291024</td>
+		<td><a href="http://leekwars.com/fight/17291024">Combat</a> | <a href="http://leekwars.com/report/17291024">Rapport</a></td>
+		<td></td><td></td>
+		<td>(PoirOdyssée)</td>
+		<td>22</td>
+	</tr>
+	<tr class="defeat">
+		<td>8</td>
+		<td>17291025</td>
+		<td><a href="http://leekwars.com/fight/17291025">Combat</a> | <a href="http://leekwars.com/report/17291025">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Chess)</td>
+		<td>12</td>
+	</tr>
+	<tr class="win">
+		<td>9</td>
+		<td>17291026</td>
+		<td><a href="http://leekwars.com/fight/17291026">Combat</a> | <a href="http://leekwars.com/report/17291026">Rapport</a></td>
+		<td></td><td></td>
+		<td>(ENL)</td>
+		<td>19</td>
+	</tr>
+	<tr class="win">
+		<td>10</td>
+		<td>17291027</td>
+		<td><a href="http://leekwars.com/fight/17291027">Combat</a> | <a href="http://leekwars.com/report/17291027">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Puppet Master)</td>
+		<td>7</td>
+	</tr>
+</table>
+<br/>
+<h2><img src="http://leekwars.com/static/image/icon/garden.png" width="22px" height="22px"/> Combats équipe <a href="http://leekwars.com/team/2314">spares-core</a></h2>
+<table class="result">
+	<tr class="header">
+		<th width="10%">Numéro</th><th width="10%">Id</th><th width="25%">Visualisation</th><th width="15%" colspan="2">Flag</th><th width="25%">Contre</th><th width="15%">Nombre de tours</th>
+	</tr>
+	<tr class="win">
+		<td>1</td>
+		<td>17291028</td>
+		<td><a href="http://leekwars.com/fight/17291028">Combat</a> | <a href="http://leekwars.com/report/17291028">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Team NDi Dev)</td>
+		<td>37</td>
+	</tr>
+	<tr class="win">
+		<td>2</td>
+		<td>17291029</td>
+		<td><a href="http://leekwars.com/fight/17291029">Combat</a> | <a href="http://leekwars.com/report/17291029">Rapport</a></td>
+		<td></td><td></td>
+		<td>(LaTeamPoireau)</td>
+		<td>30</td>
+	</tr>
+	<tr class="defeat">
+		<td>3</td>
+		<td>17291030</td>
+		<td><a href="http://leekwars.com/fight/17291030">Combat</a> | <a href="http://leekwars.com/report/17291030">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Stakanovistes)</td>
+		<td>16</td>
+	</tr>
+	<tr class="win">
+		<td>4</td>
+		<td>17291031</td>
+		<td><a href="http://leekwars.com/fight/17291031">Combat</a> | <a href="http://leekwars.com/report/17291031">Rapport</a></td>
+		<td></td><td></td>
+		<td>(TeamRocket)</td>
+		<td>31</td>
+	</tr>
+	<tr class="win">
+		<td>5</td>
+		<td>17291032</td>
+		<td><a href="http://leekwars.com/fight/17291032">Combat</a> | <a href="http://leekwars.com/report/17291032">Rapport</a></td>
+		<td></td><td></td>
+		<td>(AxeAxePoireau)</td>
+		<td>21</td>
+	</tr>
+	<tr class="win">
+		<td>6</td>
+		<td>17291033</td>
+		<td><a href="http://leekwars.com/fight/17291033">Combat</a> | <a href="http://leekwars.com/report/17291033">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Cthuleeks)</td>
+		<td>18</td>
+	</tr>
+	<tr class="win">
+		<td>7</td>
+		<td>17291034</td>
+		<td><a href="http://leekwars.com/fight/17291034">Combat</a> | <a href="http://leekwars.com/report/17291034">Rapport</a></td>
+		<td></td><td></td>
+		<td>(IFR)</td>
+		<td>28</td>
+	</tr>
+	<tr class="win">
+		<td>8</td>
+		<td>17291035</td>
+		<td><a href="http://leekwars.com/fight/17291035">Combat</a> | <a href="http://leekwars.com/report/17291035">Rapport</a></td>
+		<td></td><td></td>
+		<td>(yoda0669)</td>
+		<td>10</td>
+	</tr>
+	<tr class="defeat">
+		<td>9</td>
+		<td>17291036</td>
+		<td><a href="http://leekwars.com/fight/17291036">Combat</a> | <a href="http://leekwars.com/report/17291036">Rapport</a></td>
+		<td></td><td></td>
+		<td>(Keorl)</td>
+		<td>32</td>
+	</tr>
+	<tr class="defeat">
+		<td>10</td>
+		<td>17291037</td>
+		<td><a href="http://leekwars.com/fight/17291037">Combat</a> | <a href="http://leekwars.com/report/17291037">Rapport</a></td>
+		<td></td><td></td>
+		<td>(PoirOdyssée)</td>
+		<td>7</td>
+	</tr>
+</table>
+<br/>
+<h2><img src="http://leekwars.com/static/image/icon/ranking.png" width="22px" height="22px"/> Statistiques</h2>
+<table class="result">
+	<tr class="header">
+		<th>Entité</th><th>Niveau</th><th>Taux de réussite</th><th>Ratio</th><th>Combats</th><th>Victoires</th><th>Nuls</th><th>Défaites</th><th width="150px">Talent</th>
+	</tr>
+	<tr>
+		<td><b><a href="http://leekwars.com/team/2314">spares-batch</a></b></td><td>1802</td><td>50%</td><td>1,25</td><td>10</td><td>5</td><td>1</td><td>4</td><td>+14 (1593 &rarr; 1607)</td>
+	</tr>
+	<tr>
+		<td><b><a href="http://leekwars.com/team/2314">spares-core</a></b></td><td>1775</td><td>70%</td><td>2,33</td><td>10</td><td>7</td><td>0</td><td>3</td><td>+50 (1557 &rarr; 1607)</td>
+	</tr>
+</table>
+<br/>
+<h2><img src="http://leekwars.com/static/image/gearing_small_white.png" width="22px" height="22px"/> Messages</h2>
+<table class="result">
+	<tr class="header">
+		<th width="10%">Numéro</th><th width="20%">Type</th><th width="20%">Entité</th><th width="50%" style="text-align:left">Message</th>
+	</tr>
+	<tr class="msginfo">
+		<td>1</td><td>INFO</td><td>GENERAL</td><td style="text-align:left">Nombre total de combats lancés : 20</td>
+	</tr>
+	<tr class="msgwarning">
+		<td>2</td><td>WARNING</td><td>spares-persistance</td><td style="text-align:left">Le potager de cette compo n'est pas accessible depuis l'éleveur Bezout</td>
+	</tr>
+	<tr class="msgwarning">
+		<td>3</td><td>WARNING</td><td>spares-test</td><td style="text-align:left">Le potager de cette compo n'est pas accessible depuis l'éleveur Bezout</td>
+	</tr>
+</table>
+<br/>
+</div>
+<div class="copyright">
+	<img src="http://leekwars.com/static/image/notif/fight.png" width="12px" height="12px"/> Version 1.0 - <a href="http://leekwars.com/farmer/16748">Bezout</a> (c) 2016 - Généré en Java depuis <a href="http://leekwars.com/help/api">l'API Leek Wars</a> <img src="http://leekwars.com/static/image/notif/fight.png" width="12px" height="12px"/>
+</div>
+
+</body>
+</html>
