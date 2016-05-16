@@ -140,8 +140,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	private static Map<String, String> initIconsMap() {
 		Map<String, String> lMap = new HashMap<>(12, 1);
-		lMap.put("perfect", "<img src=\"http://leekwars.com/static/image/fight_flag/perfect\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("static", 	"<img src=\"http://leekwars.com/static/image/fight_flag/static\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("perfect", "<img src=\"http://leekwars.com/static/image/fight_flag/perfect.png\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("static", 	"<img src=\"http://leekwars.com/static/image/fight_flag/static.png\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("dead", 	"<img src=\"http://leekwars.com/static/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("garden", 	"<img src=\"http://leekwars.com/static/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("fight", 	"<img src=\"http://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
