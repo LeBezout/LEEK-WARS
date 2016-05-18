@@ -15,7 +15,7 @@ public class LeekWarsConnectorTest {
 	@Test
 	@org.junit.Ignore
 	public void testConnection() throws LWException {
-		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("Bezout", "BleLeek01");
+		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("TODO", "TODO");
 		
 		lConnector.connect();
 		System.out.println("[JUNIT] Connecté ...");
