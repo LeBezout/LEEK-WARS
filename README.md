@@ -29,3 +29,10 @@ Leek Wars JAVA Utilities for Farmers
   * Maven 3
   * Java 7
   * Libs : JUnit 4,  log4j, google gson
+
+## Passage du site en HTTPS
+  * Récupérer les fichiers leekwars-utils/src/main/security/jssecacerts et leekwars-utils/src/main/security/lw.jks
+  * Les copiers dans un dossier. Exmple "res"
+  * Rajouter aux options de la JVM :
+   * -Djavax.net.ssl.keyStore=${APP_HOME}/res/lw.jks
+   * -Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts
