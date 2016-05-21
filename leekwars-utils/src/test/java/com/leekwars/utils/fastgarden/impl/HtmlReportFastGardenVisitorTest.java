@@ -85,6 +85,7 @@ public class HtmlReportFastGardenVisitorTest {
 	}
 	
 	@Test
+	@org.junit.Ignore
 	public void testGetFightFromLW() throws LWException {
 		getFightFromLW(15594444);
 	}

@@ -24,6 +24,7 @@ public class UltraFastGardenTest {
 	}
 	
 	@Test
+	@org.junit.Ignore
 	public void testTeamFastGarden() throws LWException {
 		final File output = new File("target/reports", TIMESTAMP + "_TEAM.html");
 		HtmlReportFastGardenVisitor lReport = new HtmlReportFastGardenVisitor(HTML_TEMPLATE_FILE, output);
