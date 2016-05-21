@@ -35,7 +35,7 @@ public abstract class AbstractLeekWarsConnector {
 	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
 	protected final Logger LOGGER_TRACE = Logger.getLogger("JSON_TRACE");
 
-	protected static final String LEEK_WARS_ROOT_URL = "http://leekwars.com/api/";
+	protected static final String LEEK_WARS_ROOT_URL = "https://leekwars.com/api/";
 	protected static final String ENCODING = "UTF-8";
 	
 	protected boolean mTrace;
