@@ -26,16 +26,15 @@ import com.leekwars.utils.wrappers.MessageWrapper;
  * @author Bezout
  */
 public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
-	private static final String VERSION = "1.0";
+	private static final String VERSION = "1.1";
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	private static final Map<String, String> MAP_ICONS = initIconsMap();
-	// MEMBRES
-	final File mTemplateFile;
-	final File mOutputFile;
+	// membres pour la gestion interne
+	private final File mTemplateFile;
+	private final File mOutputFile;
 	private StringBuilder mBody;
 	private Farmer mFarmer;
-	private LinkedList<MessageWrapper> mMessages = new LinkedList<>();
-	// membres pour la gestion interne
+	private final LinkedList<MessageWrapper> mMessages = new LinkedList<>();
 	private boolean canGenerate;
 	private boolean tableOpened;
 	private int mCount;
@@ -186,7 +185,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			addBodyLine("</table>"); 
 		}
 		addBodyLine("<br/>");
-		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s <a href=\"http://leekwars.com/%s/%d\">%s</a></h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
+		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s <a href=\"https://leekwars.com/%s/%d\">%s</a></h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
 				(isFR() ? "Combats" : "Fights for"),
 				toString(pEntityType),
 				(pEntityType == EntityType.FARMER ? "farmer" : (pEntityType == EntityType.TEAMP_COMPO ? "team" : "leek")),
@@ -215,7 +214,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine(String.format("\t<tr class=\"%s\">", toCSS(pResult)));
 		addBodyLine(String.format("\t\t<td>%d</td>", mCount));
 		addBodyLine(String.format("\t\t<td>%d</td>", pFight.getId()));
-		addBodyLine(String.format("\t\t<td><a href=\"http://leekwars.com/fight/%d\">%s</a> | <a href=\"http://leekwars.com/report/%d\">%s</a></td>", 
+		addBodyLine(String.format("\t\t<td><a href=\"https://leekwars.com/fight/%d\">%s</a> | <a href=\"https://leekwars.com/report/%d\">%s</a></td>",
 				pFight.getId(), 
 				isFR() ? "Combat" : "Fight",
 				pFight.getId(),
@@ -275,7 +274,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	public void onStat(GardenStatsWrapper pStat) {
 		addBodyLine("\t<tr>");
 		final int diffTalent = pStat.getTalentGain();
-		addBodyLine(String.format("\t\t<td><b><a href=\"http://leekwars.com/%s/%d\">%s</a></b></td><td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%+d (%d &rarr; %d)</td>",
+		addBodyLine(String.format("\t\t<td><b><a href=\"https://leekwars.com/%s/%d\">%s</a></b></td><td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%+d (%d &rarr; %d)</td>",
 				(pStat.getEntityType() == EntityType.FARMER ? "farmer" : (pStat.getEntityType() == EntityType.TEAMP_COMPO ? "team" : "leek")),
 				(pStat.getEntity() instanceof TeamComposition ? ((TeamComposition)pStat.getEntity()).getTeamId() : pStat.getEntity().getId()),	
 				pStat.getEntity().getName(),
@@ -318,7 +317,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("\t"
 			+ getIcon("fight", 12, 12)
 			+ " Version " + VERSION 
-			+ String.format(" - <a href=\"http://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - %s <a href=\"http://leekwars.com/help/api\">%s</a> ", 
+			+ String.format(" - <a href=\"https://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - %s <a href=\"https://leekwars.com/help/api\">%s</a> ",
 					(isFR() ? "Généré en Java depuis" : "Java Powered by"), 
 					(isFR() ? "l'API Leek Wars" : "Leek Wars API"))
 			+ getIcon("fight", 12, 12)
