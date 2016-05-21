@@ -2,9 +2,9 @@
 Leek Wars JAVA Utilities for Farmers
 
 ## Liens
-  * URL du site Leek Wars : http://leekwars.com
-  * URL racine de l'API Leek Wars : http://leekwars.com/api
-  * URL de l'aide de l'API Leek Wars : http://leekwars.com/help/api
+  * URL du site Leek Wars : https://leekwars.com
+  * URL racine de l'API Leek Wars : https://leekwars.com/api
+  * URL de l'aide de l'API Leek Wars : https://leekwars.com/help/api
 
 ## Eléments de l'API utilisés
   * Connexion, récupération du token : <tt>farmer/login-token/[name]/[password]</tt>
