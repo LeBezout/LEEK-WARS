@@ -1,0 +1,22 @@
+Exemple Linux :
+--------------------------------------------------
+
+APP_HOME=~/scripts/leekwars
+JAVA_OPTS="-Djavax.net.ssl.keyStore=${APP_HOME}/res/lw.jks -Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts -Xms128m -Xmx256m"
+CP=${APP_HOME}/res:${APP_HOME}/bin/*
+MAIN_CLASS=com.leekwars.TODO.MonMain
+
+java ${JAVA_OPTS} -cp ${CP} ${MAIN_CLASS} $*
+
+Exemple Windows  :
+--------------------------------------------------
+
+set APP_HOME=D:\DEV\DIVERS\leekwars-utils
+set JAVA_HOME=TODO
+set JAVA_OPTS=-Djavax.net.ssl.keyStore=%APP_HOME%\res\lw.jks -Djavax.net.ssl.trustStore=%APP_HOME%\res\jssecacerts -Xms128m -Xmx256m
+set CP=%APP_HOME%\res
+set CP=%CP%;%APP_HOME%\bin\*
+set MAIN_CLASS=com.leekwars.TODO.MonMain
+
+
+%JAVA_HOME%\bin\java %JAVA_OPTS% -cp %CP% %MAIN_CLASS% %*
