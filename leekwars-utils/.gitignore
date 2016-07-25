@@ -1,4 +1,11 @@
-/.settings
-/target
+/.settings/
+/target/
 /.classpath
 /.project
+/.idea/
+/out/
+*.iml
+*.tmp
+*.bak
+*.old
+Thumbs.db
