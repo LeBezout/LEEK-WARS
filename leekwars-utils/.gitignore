@@ -2,10 +2,11 @@
 /target/
 /.classpath
 /.project
-/.idea/*
+/.idea/
 /out/
 *.iml
 *.tmp
 *.bak
 *.old
+*.sav
 Thumbs.db
