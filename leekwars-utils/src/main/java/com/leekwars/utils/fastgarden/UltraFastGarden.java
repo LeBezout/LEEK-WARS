@@ -75,7 +75,7 @@ public abstract class UltraFastGarden {
 		// Combats d'éleveur (le potager est moins varié, il faut éviter de taper les talents trop élevés, et trop souvent les trop faibles)
 		if (lPotager.isFarmer_enabled()) {
 			final List<FightWrapper> lFights = new ArrayList<FightWrapper>(20);
-			if (lPotager.getFarmer_total_fights() == 0) {
+			if (lPotager.getFarmer_fights() == 0) {
 				pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : aucun ennemi retourné", "No more fight for the farmer: no enemy returned"));
 				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : aucun ennemi");
 			} else {
@@ -195,7 +195,7 @@ public abstract class UltraFastGarden {
 		// Combats d'éleveur (le potager est moins variés, il faut éviter de taper les talents trop élevés, et trop souvent les trop faibles)
 		lPotager = pConnector.getGarden(); // nouvel appel pour etre sur
 		if (lPotager.isFarmer_enabled()) {
-			if (lPotager.getFarmer_total_fights() == 0) {
+			if (lPotager.getFarmer_fights() == 0) {
 				pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur", "No more fight for the farmer"));
 				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : aucun ennemi");
 			} else {

@@ -19,7 +19,7 @@ public class Garden {
 	// FARMER
 	private boolean farmer_enabled;
 	private int farmer_fights;
-	private int farmer_total_fights;
+	//private int farmer_total_fights;
 	private int max_farmer_fights;
 
 	// TEAM
@@ -183,18 +183,18 @@ public class Garden {
 		farmer_fights = pFarmer_fights;
 	}
 
-	/**
-	 * @return the farmer_total_fights
-	 */
-	public int getFarmer_total_fights() {
-		return farmer_total_fights;
-	}
-	/**
-	 * @param pFarmer_total_fights the farmer_total_fights to set
-	 */
-	public void setFarmer_total_fights(int pFarmer_total_fights) {
-		farmer_total_fights = pFarmer_total_fights;
-	}
+//	/**
+//	 * @return the farmer_total_fights
+//	 */
+//	public int getFarmer_total_fights() {
+//		return farmer_total_fights;
+//	}
+//	/**
+//	 * @param pFarmer_total_fights the farmer_total_fights to set
+//	 */
+//	public void setFarmer_total_fights(int pFarmer_total_fights) {
+//		farmer_total_fights = pFarmer_total_fights;
+//	}
 
 	/**
 	 * @return the team_fights
