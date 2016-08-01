@@ -26,7 +26,7 @@ import com.leekwars.utils.wrappers.MessageWrapper;
  * @author Bezout
  */
 public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
-	private static final String VERSION = "1.1";
+	private static final String VERSION_TEMPLATE = "1.1";
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	private static final Map<String, String> MAP_ICONS = initIconsMap();
 	// membres pour la gestion interne
@@ -316,7 +316,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<div class=\"copyright\">");
 		addBodyLine("\t"
 			+ getIcon("fight", 12, 12)
-			+ " Version " + VERSION 
+			+ " Version " + VERSION_TEMPLATE
 			+ String.format(" - <a href=\"https://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - %s <a href=\"https://leekwars.com/help/api\">%s</a> ",
 					(isFR() ? "Généré en Java depuis" : "Java Powered by"), 
 					(isFR() ? "l'API Leek Wars" : "Leek Wars API"))
