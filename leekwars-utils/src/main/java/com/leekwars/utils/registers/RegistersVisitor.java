@@ -10,8 +10,8 @@ import com.leekwars.utils.model.LeekSummary;
  * Cas possibles :
  * onInit -> FIN
  * onInit -> onEnd -> FIN
- * onInit -> onEnd -> [ onLeek -> onRegisters ] -> FIN
- * onInit -> onEnd -> [ onLeek -> onRegisters -> onOverflow ] -> FIN
+ * onInit -> [ onLeek -> onRegisters ] -> onEnd -> FIN
+ * onInit -> [ onLeek -> onRegisters -> onOverflow ] -> onEnd -> FIN
  * @author Bezout
  */
 public interface RegistersVisitor {
