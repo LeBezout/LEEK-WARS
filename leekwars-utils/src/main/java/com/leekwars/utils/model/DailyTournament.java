@@ -1,8 +1,11 @@
 package com.leekwars.utils.model;
 
+/**
+ * Infos sur le prochain tournoi éleveur
+ * @author Bezout
+ */
 public class DailyTournament {
 	private boolean registered;
-	//private ? current;
 
 	/**
 	 * @return the registered

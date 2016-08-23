@@ -11,6 +11,10 @@ import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.http.HttpResponseWrapper;
 import com.leekwars.utils.http.HttpUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Classe mère permettant d'effectuer tous les appels à l'API LW
  * @author Bezout
@@ -31,6 +35,7 @@ public abstract class AbstractLeekWarsConnector {
 	private String mPhpSessionId;
 	private Farmer mFarmer;
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private String mLang = "fr";
 	
 	/**
 	 * @return login du compte LW
@@ -77,6 +82,12 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	protected final void setPassword(final String pPassword) {
 		mPassword = pPassword;
+	}
+	/**
+	 * @param pLang langue préférée (fr par défaut)
+	 */
+	public final void setLang(final String pLang) {
+		mLang = pLang;
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
@@ -504,15 +515,24 @@ public abstract class AbstractLeekWarsConnector {
 	}
 
 	/**
-	 * Récupère les infos conernant les trophées de l'éleveur connecté
+	 * Récupère les infos concernant les trophées obtenus par l'éleveur connecté
+	 * @return liste des trophées débloqués de l'éleveur connecté
 	 * @throws LWException
 	 */
-	public void getFarmerTrophies() throws LWException {
+	public List<Trophy> getUnlockedFarmerTrophies() throws LWException {
 		// trophy/get-farmer-trophies/farmer_id/lang/token → trophies
-		final String lUrl = LEEK_WARS_ROOT_URL + "trophy/get-farmer-trophies/" + mFarmer.getId() + "/fr/" + mToken; // TODO lang fr en dur
+		final String lUrl = LEEK_WARS_ROOT_URL + "trophy/get-farmer-trophies/" + mFarmer.getId() + '/' + mLang + '/' + mToken;
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		final GetFarmerTrophiesJSONResponse lTrophiesResponse = validateResponse(lResponse, "Cannot get farmer trophies", GetFarmerTrophiesJSONResponse.class);
-		//TODO a finir
+		final List<Trophy> lTrophies = new ArrayList<Trophy>(lTrophiesResponse.getCount());
+		Trophy lTrophy;
+		for (final Map.Entry<String, Trophy> lEntry : lTrophiesResponse.getTrophies().entrySet()) {
+			lTrophy = lEntry.getValue();
+			if (lTrophy.isUnlocked()) {
+				lTrophies.add(lTrophy);
+			}
+		}
+		return lTrophies;
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
@@ -579,7 +599,7 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public String deleteRegister(final long pLeekId, final String pKey) throws LWException {
 		checkConnected();
-		String lValue = getRegisterValue(pLeekId, pKey);
+		final String lValue = getRegisterValue(pLeekId, pKey);
 		if (lValue == null) {
 			return null; // ce registre n'existe pas
 		}

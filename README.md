@@ -20,8 +20,16 @@ Leek Wars JAVA Utilities for Farmers
 ## Versions
   * 1.0 : version initiale
   * 1.1 : prise en compte des changements dans l'API du potager suite à la version 1.92 de LeekWars
+
+## Infos développeurs
+
+### Environnement
+  * Workspace en UTF-8
+  * Maven 3
+  * Java 7
+  * Libs : JUnit 4, log4j, google gson
     
-## Eléments de l'API utilisés
+### Eléments de l'API utilisés
   * Connexion, récupération du token : `farmer/login-token/[name]/[password]`
   * Invalidation du token : `farmer/disconnect/[token]`
   * Récupération/Mise à jour des infos de l'éleveur : `farmer/get/[farmer_id]`
@@ -41,18 +49,20 @@ Leek Wars JAVA Utilities for Farmers
   * Récupération des registres d'un poireau : `leek/get-registers/[leek_id]/[token]`
   * Positionne un registre d'un poireau : `leek/set-register/[leek_id]/[key]/[value]/[token]`
   * Supprime un registre d'un poireau `leek/delete-register/[leek_id]/[key]/[token]`
+  * Liste les trophées de l'éleveur : `trophy/get-farmer-trophies/[farmer_id]/[lang]/[token]`
 
-## Infos développeurs
-
-### Envrionnement
-  * Workspace en UTF-8
-  * Maven 3
-  * Java 7
-  * Libs : JUnit 4, log4j, google gson
-
-### Passage du site en HTTPS
+### Configuration HTTPS
   * Récupérer les fichiers `leekwars-utils/src/main/security/jssecacerts` et `leekwars-utils/src/main/security/lw.jks`
   * Les copiers dans un dossier. Exemples "res", "resources",  ...
   * Rajouter aux options de la JVM :
    * `-Djavax.net.ssl.keyStore=${APP_HOME}/res/lw.jks`
    * `-Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts`
+  * Ou dans un test unitaire :
+
+
+	@BeforeClass
+	public static void init() {
+		System.setProperty("javax.net.ssl.keyStore", "/chemin/vers/lw.jks");
+		System.setProperty("javax.net.ssl.trustStore", "/chemin/vers/jssecacerts");
+	}
+
