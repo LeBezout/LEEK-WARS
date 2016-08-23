@@ -502,6 +502,18 @@ public abstract class AbstractLeekWarsConnector {
 		final GetFarmerJSONResponse lFarmerResponse = validateResponse(lResponse, "Cannot update farmer", GetFarmerJSONResponse.class);
 		mFarmer = lFarmerResponse.getFarmer();
 	}
+
+	/**
+	 * Récupère les infos conernant les trophées de l'éleveur connecté
+	 * @throws LWException
+	 */
+	public void getFarmerTrophies() throws LWException {
+		// trophy/get-farmer-trophies/farmer_id/lang/token → trophies
+		final String lUrl = LEEK_WARS_ROOT_URL + "trophy/get-farmer-trophies/" + mFarmer.getId() + "/fr/" + mToken; // TODO lang fr en dur
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final GetFarmerTrophiesJSONResponse lTrophiesResponse = validateResponse(lResponse, "Cannot get farmer trophies", GetFarmerTrophiesJSONResponse.class);
+		//TODO a finir
+	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- REGISTRES

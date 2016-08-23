@@ -332,10 +332,32 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		return "msg";
 	}
 	
-	// ------ METHODE POUR GENERER LE RAPPORT FINAL ------
+	// ------ METHODES POUR GENERER LE RAPPORT FINAL ------
 
 	/**
-	 * Génère le rapport à partir de toute les données collectées
+	 * Génère le rapport à partir de toutes les données collectées et retourne le contenu sous forme de code HTML
+	 * @return code HTML ou chaine vide si pas de rapport
+	 * @throws LWException en cas d'erreur
+	 */
+	public String getHTMLReport() throws LWException {
+		if (canGenerate) {
+			try {
+				// Load template
+				String lTemplateHTML = new String(Files.readAllBytes(mTemplateFile.toPath()), mTemplateCharset);
+				// replace token TITLE
+				lTemplateHTML = lTemplateHTML.replace("{TITLE}", mHeadTitle);
+				// replace token BODY
+				lTemplateHTML = lTemplateHTML.replace("{BODY}", mBody.toString());
+				// OK
+				return lTemplateHTML;
+			} catch (IOException ioe) {
+				throw new LWException("Cannot generate report, cannot read HTML template file", ioe);
+			}
+		}
+		return "";
+	}
+	/**
+	 * Génère le rapport à partir de toutes les données collectées, le contenu est directement enregistré dans un fichier HTML
 	 * @throws LWException en cas d'erreur
 	 */
 	public void generate() throws LWException {
@@ -345,16 +367,11 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				throw new LWException("Cannot generate report, no data");
 			}
 			try {
-				// Load template
-				String lTemplateHTML = new String(Files.readAllBytes(mTemplateFile.toPath()), mTemplateCharset);
-				// replace token TITLE
-				lTemplateHTML = lTemplateHTML.replace("{TITLE}", mHeadTitle);
-				// replace token BODY
-				lTemplateHTML = lTemplateHTML.replace("{BODY}", mBody.toString());
-				System.out.println("---DEBUG-- Taille body : " + mBody.length());
-				// write report
+				// generate html
+				final String lTemplateHTML = getHTMLReport();
+				// write report file
 				mOutputFile.getParentFile().mkdirs();
-				FileOutputStream fout = new FileOutputStream(mOutputFile);
+				final FileOutputStream fout = new FileOutputStream(mOutputFile);
 				try {
 					fout.write(lTemplateHTML.getBytes(mReportCharset));
 				} finally {
