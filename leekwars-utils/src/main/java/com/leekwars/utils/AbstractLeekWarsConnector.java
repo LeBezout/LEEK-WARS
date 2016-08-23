@@ -239,22 +239,47 @@ public abstract class AbstractLeekWarsConnector {
 		LOGGER.info("-------------------------------------------------------------");
 		LOGGER.info(" INSCRIPTION AUX TOURNOIS POUR " +  mFarmer.getName());
 		LOGGER.info("-------------------------------------------------------------");
-		// 1. l'eleveur : farmer/register-tournament/token
+		// 1. l'eleveur
+		registerFarmerForNextTournament();
+		
+		// 2. chacun des poireaux
+		registerLeeksForNextTournaments();
+
+		LOGGER.info("-------------------------------------------------------------");
+	}
+
+	/**
+	 * Permet d'inscrire tous les poireaux aux prochains tournois
+	 * @throws LWException
+	 */
+	public void registerFarmerForNextTournament() throws LWException {
+		checkConnected();
+		// farmer/register-tournament/token
 		String lUrl = LEEK_WARS_ROOT_URL + "farmer/register-tournament/" + mToken;
 		HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		boolean inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the farmer " + mFarmer.getName());
 		LOGGER.info("Eleveur " + mFarmer.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
-		
-		// 2. chacun des poireaux : leek/register-tournament/leek_id/token
+	}
+
+	/**
+	 * Permet d'inscrire tous l'éleveur aux prochains tournois
+	 * @throws LWException
+	 */
+	public void registerLeeksForNextTournaments() throws LWException {
+		checkConnected();
+		String lUrl;
+		boolean inscrit;
+		HttpResponseWrapper lResponse;
+		// chacun des poireaux : leek/register-tournament/leek_id/token
+		final String urlPattern = LEEK_WARS_ROOT_URL + "leek/register-tournament/%d/" + mToken;
 		for (LeekSummary lLeek : mFarmer.getLeeks().values()) {
-			lUrl = LEEK_WARS_ROOT_URL + "leek/register-tournament/" + lLeek.getId() + '/' + mToken;
+			lUrl = String.format(urlPattern, lLeek.getId());
 			lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 			inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the leek " + lLeek.getName());
 			LOGGER.info("Poireau " + lLeek.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
 		}
-
-		LOGGER.info("-------------------------------------------------------------");
 	}
+
 	
 	/**
 	 * Permet d'inscrire toutes les compositions de l'équipe aux prochains tournois
@@ -268,10 +293,11 @@ public abstract class AbstractLeekWarsConnector {
 		String lUrl; // team/register-tournament/composition_id/token
 		HttpResponseWrapper lResponse;
 		boolean inscrit;
-		for (TeamComposition lCompo :  lTeamData.getCompositions()) {
+		final String urlPattern = LEEK_WARS_ROOT_URL + "team/register-tournament/%d/" + mToken;
+		for (TeamComposition lCompo : lTeamData.getCompositions()) {
 			// Si la compo contient au moins 4 membres
 			if (lCompo.getLeeks().length >= 4) {
-				lUrl = LEEK_WARS_ROOT_URL + "team/register-tournament/" + lCompo.getId() + '/' + mToken;
+				lUrl = String.format(urlPattern, lCompo.getId());
 				lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 				inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the team composition " + lCompo.getName());
 				LOGGER.info("Composition " + lCompo.getName() + (inscrit ? " inscrite" : " déjà inscrite") + " au tournoi");
@@ -294,8 +320,8 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public Team getTeam() throws LWException {
 		// team/get/team_id → team
-		String lUrl = LEEK_WARS_ROOT_URL + "team/get/" + mFarmer.getTeam().getId();
-		HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final String lUrl = LEEK_WARS_ROOT_URL + "team/get/" + mFarmer.getTeam().getId();
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		final GetTeamJSONResponse lTeam = validateResponse(lResponse, "Cannot obtain team", GetTeamJSONResponse.class);
 		return lTeam.getTeam();
 	}
@@ -308,8 +334,8 @@ public abstract class AbstractLeekWarsConnector {
 	public TeamPrivate getTeamCompositions() throws LWException {
 		checkConnected();
 		// team/get-private/team_id/token
-		String lUrl = LEEK_WARS_ROOT_URL + "team/get-private/" + mFarmer.getTeam().getId() + '/' + mToken;
-		HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final String lUrl = LEEK_WARS_ROOT_URL + "team/get-private/" + mFarmer.getTeam().getId() + '/' + mToken;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		final GetTeamPrivateJSONResponse lTeam = validateResponse(lResponse, "Cannot obtain team private data", GetTeamPrivateJSONResponse.class);
 		return lTeam.getTeam();
 	}
@@ -492,7 +518,7 @@ public abstract class AbstractLeekWarsConnector {
 		// leek/get-registers/leek_id/token → registers
 		final String lUrl = LEEK_WARS_ROOT_URL + "leek/get-registers/" + pLeekId + '/' + mToken;
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		GetRegistersJSONResponse lRegistersResponse = validateResponse(lResponse, "Cannot get registers", GetRegistersJSONResponse.class);
+		final GetRegistersJSONResponse lRegistersResponse = validateResponse(lResponse, "Cannot get registers", GetRegistersJSONResponse.class);
 		return lRegistersResponse.getRegisters();
 	}
 	
@@ -558,7 +584,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @throws LWException
 	 */
 	public void deleteAllRegisters(final long pLeekId) throws LWException {
-		KeyValueCouple[] lRegisters = getRegisters(pLeekId);
+		final KeyValueCouple[] lRegisters = getRegisters(pLeekId);
 		final int len = lRegisters.length;
 		for (KeyValueCouple lRegister : lRegisters) {
 			deleteRegister(pLeekId, lRegister.getKey());
