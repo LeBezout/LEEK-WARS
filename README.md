@@ -1,5 +1,5 @@
 # LEEK-WARS
-Leek Wars JAVA Utilities for Farmers
+Leek Wars JAVA Utilities for Farmers - version 1.2
 
 ## Liens
   * URL du site Leek Wars : https://leekwars.com
@@ -20,6 +20,7 @@ Leek Wars JAVA Utilities for Farmers
 ## Versions
   * 1.0 : version initiale
   * 1.1 : prise en compte des changements dans l'API du potager suite à la version 1.92 de LeekWars
+  * 1.2 : ajout de méthodes pour la récupération des différents classements
 
 ## Infos développeurs
 
@@ -50,6 +51,9 @@ Leek Wars JAVA Utilities for Farmers
   * Positionne un registre d'un poireau : `leek/set-register/[leek_id]/[key]/[value]/[token]`
   * Supprime un registre d'un poireau `leek/delete-register/[leek_id]/[key]/[token]`
   * Liste les trophées de l'éleveur : `trophy/get-farmer-trophies/[farmer_id]/[lang]/[token]`
+  * Obtient le classement de l'éleveur : `ranking/get-farmer-rank/[farmer_id]/[order=talent|name|total_level]`
+  * Obtient le classement d'un poireau : `ranking/get-leek-rank/[leek_id]/[order=talent|name|level]`
+  * Obtient les classements Fun : `ranking/fun/[token]`
 
 ### Configuration HTTPS
   * Récupérer les fichiers `leekwars-utils/src/main/security/jssecacerts` et `leekwars-utils/src/main/security/lw.jks`
@@ -59,10 +63,10 @@ Leek Wars JAVA Utilities for Farmers
    * `-Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts`
   * Ou dans un test unitaire :
 
-
+```java
 	@BeforeClass
 	public static void init() {
 		System.setProperty("javax.net.ssl.keyStore", "/chemin/vers/lw.jks");
 		System.setProperty("javax.net.ssl.trustStore", "/chemin/vers/jssecacerts");
 	}
-
+```
