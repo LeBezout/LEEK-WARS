@@ -2,6 +2,7 @@ package com.leekwars.utils.enums;
 
 /**
  * Catégories des trophées
+ * @since 1.1
  * @author Bezout
  */
 public enum TrophyCategory {
