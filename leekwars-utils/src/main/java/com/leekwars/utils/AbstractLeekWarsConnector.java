@@ -1,5 +1,6 @@
 package com.leekwars.utils;
 
+import com.leekwars.utils.enums.RankType;
 import com.leekwars.utils.io.*;
 import com.leekwars.utils.model.*;
 import org.apache.log4j.Logger;
@@ -220,7 +221,7 @@ public abstract class AbstractLeekWarsConnector {
 	public final void invalidateToken() throws LWException {
 		checkConnected();
 		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/disconnect/" + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.post(lUrl, "", mPhpSessionId); //TODO valider post/get
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId); //TODO valider post/get
 		validateResponse(lResponse, "Bad token", SimpleJSONResponse.class);
 		// OK
 		mToken = null;
@@ -236,7 +237,75 @@ public abstract class AbstractLeekWarsConnector {
 			throw new LWException("Not connected !");
 		}
 	}
-	
+	//---------------------------------------------------------------------------------------------------------------------------------
+	//-------------------- DIVERS
+	//---------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Permet d'effectuer une action sur tous les poireaux de l'éleveur
+	 * @param pVisitor visiteur
+	 * @throws LWException
+	 * @since 1.2
+	 */
+	public final void iterateOnLeeks(final LeekVisitor pVisitor) throws LWException {
+		pVisitor.beforeLeeks();
+		for (LeekSummary leek : mFarmer.getLeeks().values()) {
+			pVisitor.onLeek(leek);
+		}
+		pVisitor.afterLeeks();
+	}
+
+	//---------------------------------------------------------------------------------------------------------------------------------
+	//-------------------- CLASSEMENTS
+	//---------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Permet de récupérer un classement de l'éleveur
+	 * ! CONNEXION NON NECESSAIRE !
+	 * @param pType parmis RankType.TALENT, RankType.NAME, RankType.TOTAL_LEVEL
+	 * @return rank value
+	 * @since 1.2
+	 * @throws LWException
+	 */
+	public long getFarmerRank(final RankType pType) throws LWException {
+		// ranking/get-farmer-rank/order
+		String lUrl = LEEK_WARS_ROOT_URL + "ranking/get-farmer-rank/" + mFarmer.getId() + '/' + pType.getValue();
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final GetRankJSONResponse lRank = validateResponse(lResponse, "Cannot obtain farmer rank value for " + pType, GetRankJSONResponse.class);
+		return lRank.getRank();
+	}
+
+	/**
+	 * Permet de récupérer un classement de l'éleveur
+	 * ! CONNEXION NON NECESSAIRE !
+	 * @param pType parmis RankType.TALENT, RankType.NAME, RankType.LEVEL
+	 * @return rank value
+	 * @since 1.2
+	 * @throws LWException
+	 */
+	public long getLeekRank(final long pLeekId, final RankType pType)throws LWException {
+		// ranking/get-leek-rank/leek_id/order → rank
+		String lUrl = LEEK_WARS_ROOT_URL + "ranking/get-leek-rank/" + pLeekId + '/' + pType.getValue();
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final GetRankJSONResponse lRank = validateResponse(lResponse, "Cannot obtain leek rank value for " + pType, GetRankJSONResponse.class);
+		return lRank.getRank();
+	}
+
+	/**
+	 * Permet de récupérer tous les classements "fun"
+	 * @return tableau de FunRanking
+	 * @since 1.2
+	 * @throws LWException
+	 */
+	public FunRanking[] getFunRank()throws LWException {
+		checkConnected();
+		// ranking/fun/token
+		String lUrl = LEEK_WARS_ROOT_URL + "ranking/fun/" + mToken;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		final GetFunRankingsJSONResponse lRankings = validateResponse(lResponse, "Cannot obtain fun ranking", GetFunRankingsJSONResponse.class);
+		return lRankings.getRankings();
+	}
+
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- TOURNOIS
 	//---------------------------------------------------------------------------------------------------------------------------------
@@ -517,6 +586,7 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * Récupère les infos concernant les trophées obtenus par l'éleveur connecté
 	 * @return liste des trophées débloqués de l'éleveur connecté
+	 * @since 1.1
 	 * @throws LWException
 	 */
 	public List<Trophy> getUnlockedFarmerTrophies() throws LWException {
