@@ -77,7 +77,7 @@ public abstract class UltraFastGarden {
 			final List<FightWrapper> lFights = new ArrayList<FightWrapper>(20);
 			if (lPotager.getFarmer_fights() == 0) {
 				pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : aucun ennemi retourné", "No more fight for the farmer: no enemy returned"));
-				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : aucun ennemi");
+				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR " + lFarmer.getId() + " : aucun ennemi");
 			} else {
 				LWUtils.sleep(1);
 				lFights.addAll(fastGardenForFarmer(pConnector, pVisitor));
@@ -86,7 +86,7 @@ public abstract class UltraFastGarden {
 			computeStats(pConnector, lFights, pVisitor, false);
 		} else {
 			pVisitor.onMessage(new MessageWrapper(lFarmer, MessageWrapper.MESSAGE_TYPE_INFO, "Aucun combat possible pour l'éleveur : plus de combats possibles", "No more fight for the farmer"));
-			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : plus de combats possibles");
+			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR " + lFarmer.getId() + " : plus de combats possibles");
 		}
 		/*
 		 * ON_END
@@ -197,14 +197,14 @@ public abstract class UltraFastGarden {
 		if (lPotager.isFarmer_enabled()) {
 			if (lPotager.getFarmer_fights() == 0) {
 				pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur", "No more fight for the farmer"));
-				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : aucun ennemi");
+				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR " + lFarmer.getId() + " : aucun ennemi");
 			} else {
 				LWUtils.sleep(1);
 				lFights.addAll(fastGardenForFarmer(pConnector, pVisitor));
 			}
 		} else {
 			pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : plus de combats possibles", "No more fight for the farmer"));
-			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR" + lFarmer.getId() + " : plus de combats possibles");
+			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR " + lFarmer.getId() + " : plus de combats possibles");
 		}
 
 		if (!lFights.isEmpty()) {
