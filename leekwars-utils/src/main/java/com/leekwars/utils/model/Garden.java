@@ -11,21 +11,27 @@ import java.util.Map;
  */
 public class Garden {
 
+	// LW_1.94 : Compteur de combat unique : Les compteurs de combat pour chaque type de combat ont été fusionné dans un seul compteur.
+	// Seul les combats d'équipe restent à part avec un compteur par poireau comme avant.
+	// Chaque jour vous avez donc 50 combats, que vous pouvez utiliser dans le mode de jeu que vous souhaitez
+	private int fights; // since LW 1.94
+	private int max_fights; // since LW 1.94
+
 	// SOLO
-	private Map<String, Integer> solo_fights;
+	//private Map<String, Integer> solo_fights;
 	private int total_solo_fights;
 	private int max_solo_fights;
 
 	// FARMER
 	private boolean farmer_enabled;
-	private int farmer_fights;
+	//private int farmer_fights;
 	//private int farmer_total_fights;
-	private int max_farmer_fights;
+	//private int max_farmer_fights;
 
 	// TEAM
 	private boolean team_enabled;
 	private int team_fights;
-	private int team_total_fights;
+	// private int team_total_fights;
 	private int max_team_fights;
 	private GardenFarmerTeamComposition[] my_compositions;
 
@@ -42,6 +48,31 @@ public class Garden {
 	
 
 	// my_team
+	/**
+	 * @return fights
+	 */
+	public int getFights() {
+		return fights;
+	}
+	/**
+	 * @param pfights
+	 */
+	public void setFights(int pfights) {
+		fights = pfights;
+	}
+
+	/**
+	 * @return max_fights
+	 */
+	public int getMax_fights() {
+		return max_fights;
+	}
+	/**
+	 * @param pmax_fights
+	 */
+	public void setMax_fights(int pmax_fights) {
+		max_fights = pmax_fights;
+	}
 
 	/**
 	 * @return the farmer_enabled
@@ -93,18 +124,18 @@ public class Garden {
 		max_solo_fights = pMax_solo_fights;
 	}
 
-	/**
-	 * @return the max_farmer_fights
-	 */
-	public int getMax_farmer_fights() {
-		return max_farmer_fights;
-	}
-	/**
-	 * @param pMax_farmer_fights the max_farmer_fights to set
-	 */
-	public void setMax_farmer_fights(int pMax_farmer_fights) {
-		max_farmer_fights = pMax_farmer_fights;
-	}
+//	/**
+//	 * @return the max_farmer_fights
+//	 */
+//	public int getMax_farmer_fights() {
+//		return max_farmer_fights;
+//	}
+//	/**
+//	 * @param pMax_farmer_fights the max_farmer_fights to set
+//	 */
+//	public void setMax_farmer_fights(int pMax_farmer_fights) {
+//		max_farmer_fights = pMax_farmer_fights;
+//	}
 
 	/**
 	 * @return the max_team_fights
@@ -170,18 +201,18 @@ public class Garden {
 		total_solo_fights = pSolo_total_fights;
 	}
 
-	/**
-	 * @return the farmer_fights
-	 */
-	public int getFarmer_fights() {
-		return farmer_fights;
-	}
-	/**
-	 * @param pFarmer_fights the farmer_fights to set
-	 */
-	public void setFarmer_fights(int pFarmer_fights) {
-		farmer_fights = pFarmer_fights;
-	}
+//	/**
+//	 * @return the farmer_fights
+//	 */
+//	public int getFarmer_fights() {
+//		return farmer_fights;
+//	}
+//	/**
+//	 * @param pFarmer_fights the farmer_fights to set
+//	 */
+//	public void setFarmer_fights(int pFarmer_fights) {
+//		farmer_fights = pFarmer_fights;
+//	}
 
 //	/**
 //	 * @return the farmer_total_fights
@@ -209,18 +240,18 @@ public class Garden {
 		team_fights = pTeam_fights;
 	}
 
-	/**
-	 * @return the team_total_fights
-	 */
-	public int getTeam_total_fights() {
-		return team_total_fights;
-	}
-	/**
-	 * @param pTeam_total_fights the team_total_fights to set
-	 */
-	public void setTeam_total_fights(int pTeam_total_fights) {
-		team_total_fights = pTeam_total_fights;
-	}
+//	/**
+//	 * @return the team_total_fights
+//	 */
+//	public int getTeam_total_fights() {
+//		return team_total_fights;
+//	}
+//	/**
+//	 * @param pTeam_total_fights the team_total_fights to set
+//	 */
+//	public void setTeam_total_fights(int pTeam_total_fights) {
+//		team_total_fights = pTeam_total_fights;
+//	}
 
 //	/**
 //	 * @return the solo_enemies
@@ -248,18 +279,18 @@ public class Garden {
 //		farmer_enemies = pFarmer_enemies;
 //	}
 
-	/**
-	 * @return the solo_fights
-	 */
-	public Map<String, Integer> getSolo_fights() {
-		return solo_fights;
-	}
-	/**
-	 * @param pLeek_fights the solo_fights to set
-	 */
-	public void setSolo_fights(Map<String, Integer> pLeek_fights) {
-		solo_fights = pLeek_fights;
-	}
+//	/**
+//	 * @return the solo_fights
+//	 */
+//	public Map<String, Integer> getSolo_fights() {
+//		return solo_fights;
+//	}
+//	/**
+//	 * @param pLeek_fights the solo_fights to set
+//	 */
+//	public void setSolo_fights(Map<String, Integer> pLeek_fights) {
+//		solo_fights = pLeek_fights;
+//	}
 
 	/**
 	 * @return the my_compositions

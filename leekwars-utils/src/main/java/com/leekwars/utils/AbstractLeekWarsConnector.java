@@ -256,6 +256,12 @@ public abstract class AbstractLeekWarsConnector {
 	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------
+	//-------------------- POIREAUX
+	//---------------------------------------------------------------------------------------------------------------------------------
+
+	//TODO 	leek/set-in-garden/<leek_id>/<in_garden>/<token>
+
+	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- CLASSEMENTS
 	//---------------------------------------------------------------------------------------------------------------------------------
 
@@ -268,7 +274,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @throws LWException
 	 */
 	public long getFarmerRank(final RankType pType) throws LWException {
-		// ranking/get-farmer-rank/order
+		// ranking/get-farmer-rank/farmer_id/order
 		String lUrl = LEEK_WARS_ROOT_URL + "ranking/get-farmer-rank/" + mFarmer.getId() + '/' + pType.getValue();
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		final GetRankJSONResponse lRank = validateResponse(lResponse, "Cannot obtain farmer rank value for " + pType, GetRankJSONResponse.class);
@@ -604,6 +610,8 @@ public abstract class AbstractLeekWarsConnector {
 		}
 		return lTrophies;
 	}
+
+	//TODO 	farmer/set-in-garden/<in_garden(true/false)>/<token>
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- REGISTRES
