@@ -14,13 +14,14 @@ Leek Wars JAVA Utilities for Farmers - version 1.2
   * Lancement de combats (poireau, éleveur, équipe)
   * Ultra Fast Garden : lancer tous les combats d'un poireau (ou de tous les poireaux)
   * Ultra Fast Garden : lancer tous les combats d'un éleveur
-  * Ultra Fast Garden : lancer tous les combats d'un composition d'équipe
+  * Ultra Fast Garden : lancer tous les combats d'une composition d'équipe
   * Trace des flux JSON
 
 ## Versions
   * 1.0 : version initiale
   * 1.1 : prise en compte des changements dans l'API du potager suite à la version 1.92 de LeekWars
   * 1.2 : ajout de méthodes pour la récupération des différents classements
+  * 1.3 : prise en compte des changements dans l'API du potager suite à la version 1.94 de LeekWars
 
 ## Infos développeurs
 
