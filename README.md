@@ -1,5 +1,5 @@
 # LEEK-WARS
-Leek Wars JAVA Utilities for Farmers - version 1.2
+Leek Wars JAVA Utilities for Farmers - version 1.3
 
 ## Liens
   * URL du site Leek Wars : https://leekwars.com
