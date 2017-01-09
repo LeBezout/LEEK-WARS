@@ -129,20 +129,16 @@ public abstract class AbstractLeekWarsConnector {
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- GENERIQUE
 	//---------------------------------------------------------------------------------------------------------------------------------
-	
-	/*
+
+	/**
+	 * Validation basique de la réponse JSON. success=OK sinon exeption
 	 * @param pResponse
 	 * @param pDefaultMessage
+	 * @param pType
+	 * @param <T>
+	 * @return
 	 * @throws LWException
 	 */
-//	private void validateResponse(final HttpResponse pResponse, final String pDefaultMessage) throws LWException {
-//		SimpleJSONResponse lBasicResponse = gson.fromJson(pResponse.getResponseText(), SimpleJSONResponse.class);
-//		if (!lBasicResponse.isSuccess()) {
-//			throw new LWException(lBasicResponse.getError() == null ? pDefaultMessage : lBasicResponse.getError());
-//		}
-//		// OK
-//	}
-	
 	protected <T extends SimpleJSONResponse> T validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final Class<T> pType) throws LWException {
 		trace(pResponse, pType);
 		T lResponse = gson.fromJson(pResponse.getResponseText(), pType);
@@ -152,7 +148,22 @@ public abstract class AbstractLeekWarsConnector {
 		// OK
 		return lResponse;
 	}
-	
+
+	/**
+	 * Pour les réponses simples OK/KO sans besoin de retour
+	 * @since 1.4.0
+	 */
+	protected void validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
+		validateResponse(pResponse, pDefaultMessage, SimpleJSONResponse.class);
+	}
+
+	/**
+	 * Spécifique à l'inscription aux tournois
+	 * @param pResponse
+	 * @param pDefaultMessage
+	 * @return
+	 * @throws LWException
+	 */
 	protected boolean validateRegisterTournamentResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
 		trace(pResponse, SimpleJSONResponse.class);
 		SimpleJSONResponse lBasicResponse = gson.fromJson(pResponse.getResponseText(), SimpleJSONResponse.class);
@@ -165,6 +176,7 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	
 	/**
+	 * Trace du flux JSON recu du serveur LW
 	 * @param pResponse flux JSON brut
 	 * @param pType type attendu en sortie (informatif)
 	 */
@@ -179,7 +191,7 @@ public abstract class AbstractLeekWarsConnector {
 				}
 				LOGGER_TRACE.info(gson.toJson(new JsonParser().parse(pResponse.getResponseText())));
 			} catch (Exception e) {
-				LOGGER.error("Impossible d'effectuer la trace de " + pType.getCanonicalName());
+				LOGGER.error("Impossible d'effectuer la trace de " + pType.getCanonicalName(), e);
 			}
 		}
 	}
@@ -259,7 +271,29 @@ public abstract class AbstractLeekWarsConnector {
 	//-------------------- POIREAUX
 	//---------------------------------------------------------------------------------------------------------------------------------
 
-	//TODO 	leek/set-in-garden/<leek_id>/<in_garden>/<token>
+	/**
+	 * Positionne ou non un des poireaux de l'éleveur dans le potager
+	 * @param pLeekId id du poireau de l'éleveur
+	 * @param pInGarden true/false
+	 * @throws LWException
+	 * @since 1.4
+	 */
+	public void setLeekInGarden(final long pLeekId, final boolean pInGarden) throws LWException {
+		// leek/set-in-garden/<leek_id>/<in_garden>/<token>
+		String lUrl = LEEK_WARS_ROOT_URL + "leek/set-in-garden/" + pLeekId + '/' + pInGarden + '/' + mToken;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		validateResponse(lResponse, "Cannot set or unset leek in garden");
+	}
+	/**
+	 * Positionne ou non un poireau dans le potager
+	 * @param pLeek poireau
+	 * @param pInGarden true/false
+	 * @throws LWException
+	 * @since 1.4
+	 */
+	public void setLeekInGarden(final Entity pLeek, final boolean pInGarden) throws LWException {
+		setLeekInGarden(pLeek.getId(), pInGarden);
+	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- CLASSEMENTS
@@ -289,7 +323,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @since 1.2
 	 * @throws LWException
 	 */
-	public long getLeekRank(final long pLeekId, final RankType pType)throws LWException {
+	public long getLeekRank(final long pLeekId, final RankType pType) throws LWException {
 		// ranking/get-leek-rank/leek_id/order → rank
 		String lUrl = LEEK_WARS_ROOT_URL + "ranking/get-leek-rank/" + pLeekId + '/' + pType.getValue();
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
@@ -611,7 +645,22 @@ public abstract class AbstractLeekWarsConnector {
 		return lTrophies;
 	}
 
-	//TODO 	farmer/set-in-garden/<in_garden(true/false)>/<token>
+	/**
+	 * Permet de positionner ou d'enlever l'éleveur du potager
+	 * @param pInGarden
+	 * @throws LWException
+	 * @since 1.4
+	 */
+	public boolean setFarmerInGarden(final boolean pInGarden) throws LWException {
+		if (mFarmer.isInGarden() == pInGarden) {
+			return false;
+		}
+		// farmer/set-in-garden/<in_garden(true/false)>/<token>
+		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/set-in-garden/" + pInGarden + '/' + mToken;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
+		validateResponse(lResponse, "Cannot set or unset farmer in garden");
+		return true;
+	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- REGISTRES

@@ -454,6 +454,14 @@ public class Farmer extends Entity {
 	}
 
 	/**
+	 * @return
+	 * @since 1.4.0
+	 */
+	public boolean isInGarden() {
+		return in_garden == 1;
+	}
+
+	/**
 	 * @return level
 	 * @since 1.3.0
 	 */

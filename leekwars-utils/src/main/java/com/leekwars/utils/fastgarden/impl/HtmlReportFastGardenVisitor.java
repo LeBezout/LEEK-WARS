@@ -272,8 +272,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 
 	@Override
 	public void onStat(GardenStatsWrapper pStat) {
-		addBodyLine("\t<tr>");
 		final int diffTalent = pStat.getTalentGain();
+		addBodyLine("\t<tr class=\"" + (diffTalent > 0 ? "win" : (diffTalent == 0 ? "unknown" : "defeat")) + "\">"); // CSS since 1.4
 		addBodyLine(String.format("\t\t<td><b><a href=\"https://leekwars.com/%s/%d\">%s</a></b></td><td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%+d (%d &rarr; %d)</td>",
 				(pStat.getEntityType() == EntityType.FARMER ? "farmer" : (pStat.getEntityType() == EntityType.TEAMP_COMPO ? "team" : "leek")),
 				(pStat.getEntity() instanceof TeamComposition ? ((TeamComposition)pStat.getEntity()).getTeamId() : pStat.getEntity().getId()),	
