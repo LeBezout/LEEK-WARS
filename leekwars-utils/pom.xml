@@ -8,6 +8,11 @@
 	<version>1.4.0</version>
 	<name>leekwars-utils</name>
 
+	<properties>
+		<published.version>1.4.0</published.version>
+		<long.version>1.4.0.0</long.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -77,16 +82,44 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- On exclue du build certains tests JUNIT -->
-			<!-- <plugin> -->
-			<!-- <groupId>org.apache.maven.plugins</groupId> -->
-			<!-- <artifactId>maven-surefire-plugin</artifactId> -->
-			<!-- <configuration> -->
-			<!-- <excludes> -->
-			<!-- <exclude></exclude> -->
-			<!-- </excludes> -->
-			<!-- </configuration> -->
-			<!-- </plugin> -->
+
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<version>1.5.2</version>
+				<executions>
+					<execution>
+						<id>l4j-clui</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>gui</headerType>
+							<outfile>target/UltraFastGarden.exe</outfile>
+							<classPath>
+								<mainClass>com.leekwars.utils.fastgarden.Main</mainClass>
+								<addDependencies>true</addDependencies>
+								<preCp>anything</preCp>
+							</classPath>
+							<jre>
+								<minVersion>1.7.0</minVersion>
+							</jre>
+							<versionInfo>
+								<fileVersion>${long.version}</fileVersion>
+								<txtFileVersion>${published.version}</txtFileVersion>
+								<fileDescription>Runs your fights in the garden</fileDescription>
+								<productVersion>${long.version}</productVersion>
+								<txtProductVersion>${published.version}</txtProductVersion>
+								<copyright>copyright </copyright>
+								<productName>${project.name}</productName>
+								<internalName>UltraFastGarden</internalName>
+								<originalFilename>UltraFastGarden.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -94,6 +127,10 @@
 		<developer>
 			<name>Bezout</name>
 			<email>lebezout@gmail.com</email>
+		</developer>
+		<developer>
+			<name>tyrcho</name>
+			<email>tyrcho@tyrcho.com</email>
 		</developer>
 	</developers>
 </project>
