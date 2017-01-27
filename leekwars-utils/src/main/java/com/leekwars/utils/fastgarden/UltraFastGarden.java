@@ -62,7 +62,7 @@ public abstract class UltraFastGarden {
 	 * @param pVisitor visiteur pour intercepter tous les evenements.
 	 * @throws LWException
 	 */
-	public static void forFamer(final AbstractLeekWarsConnector pConnector, final FastGardenVisitor pVisitor) throws LWException {
+	public static void forFarmer(final AbstractLeekWarsConnector pConnector, final FastGardenVisitor pVisitor) throws LWException {
 		// récupération du token si besoin
 		pConnector.connectIfNeeded();
 		final Farmer lFarmer = pConnector.getFarmer();

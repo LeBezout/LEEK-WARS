@@ -25,7 +25,7 @@ public class Main {
 		final File output = new File("target/reports", TIMESTAMP + "_TODO.html");
 		HtmlReportFastGardenVisitor lReport = new HtmlReportFastGardenVisitor(HTML_TEMPLATE_FILE, output);
 		UltraFastGarden.setParams(configuration());
-		UltraFastGarden.forFamer(connector, lReport);
+		UltraFastGarden.forFarmer(connector, lReport);
 		lReport.generate();
 		System.out.println("Report written to "+output.getAbsolutePath());
 		Desktop.getDesktop().open(output);
