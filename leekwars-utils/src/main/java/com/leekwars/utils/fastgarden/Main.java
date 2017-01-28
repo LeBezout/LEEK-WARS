@@ -5,6 +5,9 @@ import static javax.swing.JOptionPane.*;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,10 +21,12 @@ public class Main {
 	private static final String TIMESTAMP = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
 
 	public static void main(String[] args) throws Exception {
-		DefaultLeekWarsConnector connector = buildConnector();
-		System.setProperty("javax.net.ssl.keyStore", "src/main/security/lw.jks");
-		System.setProperty("javax.net.ssl.trustStore", "src/main/security/jssecacerts");
+		File lw = extractFromClassPath("lw.jks");
+		File jssecacerts = extractFromClassPath("jssecacerts");
+		System.setProperty("javax.net.ssl.keyStore", lw.getAbsolutePath());
+		System.setProperty("javax.net.ssl.trustStore", jssecacerts.getAbsolutePath());
 
+		DefaultLeekWarsConnector connector = buildConnector();
 		final File output = new File("target/reports", TIMESTAMP + "_TODO.html");
 		HtmlReportFastGardenVisitor lReport = new HtmlReportFastGardenVisitor(HTML_TEMPLATE_FILE, output);
 		UltraFastGarden.setParams(configuration());
@@ -50,6 +55,19 @@ public class Main {
 		DefaultLeekWarsConnector connector = new DefaultLeekWarsConnector(login,
 				String.valueOf(String.valueOf(passwordField.getPassword())));
 		return connector;
+	}
+	
+	private static File extractFromClassPath(String name) throws IOException {
+		File tempFile = File.createTempFile(name, name);
+		InputStream inputStream = ClassLoader.getSystemResourceAsStream(name);
+		FileOutputStream outputStream = new FileOutputStream(tempFile);
+		int read;
+		byte[] buffer=new byte[1024];
+		while ((read = inputStream.read(buffer)) != -1) {
+			outputStream.write(buffer, 0, read);
+		}
+		outputStream.close();
+		return tempFile;
 	}
 	
 	
