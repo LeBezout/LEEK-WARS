@@ -9,13 +9,13 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<published.version>1.4.0</published.version>
-		<long.version>1.4.0.0</long.version>
+		<published.version>1.4.1</published.version>
+		<long.version>1.4.1.0</long.version>
 	</properties>
 
 	<scm>
-		<connection>scm:git:https://github.com/tyrcho/LEEK-WARS.git</connection>
-		<developerConnection>scm:git:https://github.com/tyrcho/LEEK-WARS.git</developerConnection>
+		<connection>scm:git:https://github.com/LeBezout/LEEK-WARS.git</connection>
+		<developerConnection>scm:git:https://github.com/LeBezout/LEEK-WARS.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 

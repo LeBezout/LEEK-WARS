@@ -336,7 +336,7 @@ public abstract class UltraFastGarden {
 		Garden lPotager = pConnector.getGarden();
 
 		//final int lInitialFightCount = lPotager.getSolo_fights().get(String.valueOf(pId));
-		final int lInitialFightCount = Math.min(10, lPotager.getFights());
+		final int lInitialFightCount = Math.min(PARAMS.getMaxStartFights(), lPotager.getFights());
 		final LeekSummary leek = pConnector.getFarmer().getLeekFromId(pId);
 		final String leekName = leek.getName();
 		LOGGER.info("-------------------------------------------------------------");

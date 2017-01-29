@@ -1,9 +1,10 @@
 package com.leekwars.utils.fastgarden;
 
-import static javax.swing.JOptionPane.OK_OPTION;
-import static javax.swing.JOptionPane.*;
+import com.leekwars.utils.DefaultLeekWarsConnector;
+import com.leekwars.utils.LWUtils;
+import com.leekwars.utils.fastgarden.impl.HtmlReportFastGardenVisitor;
 
-import java.awt.Desktop;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,15 +12,21 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.JPasswordField;
+import static javax.swing.JOptionPane.OK_OPTION;
 
-import com.leekwars.utils.DefaultLeekWarsConnector;
-import com.leekwars.utils.LWUtils;
-import com.leekwars.utils.fastgarden.impl.HtmlReportFastGardenVisitor;
-
+/**
+ * Standalone sample main app
+ * @author tyrcho
+ * @version 1.0
+ */
 public class Main {
 	private static final String TIMESTAMP = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
 
+	/**
+	 *
+	 * @param args empty
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		File lw = extractFromClassPath("lw.jks");
 		File jssecacerts = extractFromClassPath("jssecacerts");
@@ -31,7 +38,7 @@ public class Main {
 		File output = File.createTempFile("report" + connector.getUsername() + TIMESTAMP, ".html");
 		HtmlReportFastGardenVisitor lReport = new HtmlReportFastGardenVisitor(htmlTemplate, output);
 		UltraFastGarden.setParams(configuration());
-		UltraFastGarden.forFarmer(connector, lReport);
+		UltraFastGarden.forAll(connector, lReport);
 		lReport.generate();
 		System.out.println("Report written to " + output.getAbsolutePath());
 		LWUtils.openFileInDefaultBrowser(output);
@@ -47,28 +54,29 @@ public class Main {
 	}
 
 	private static DefaultLeekWarsConnector buildConnector() {
-		String login = showInputDialog(null, "Enter your LeekWars login");
+		String login = JOptionPane.showInputDialog(null, "Enter your LeekWars login");
 
 		JPasswordField passwordField = new JPasswordField();
-		if (showConfirmDialog(null, passwordField, "Enter your LeekWars password for " + login, OK_OPTION) != OK_OPTION)
+		if (JOptionPane.showConfirmDialog(null, passwordField, "Enter your LeekWars password for " + login, OK_OPTION) != OK_OPTION) {
 			System.exit(1);
+		}
 
-		DefaultLeekWarsConnector connector = new DefaultLeekWarsConnector(login,
-				String.valueOf(String.valueOf(passwordField.getPassword())));
-		return connector;
+		return new DefaultLeekWarsConnector(login, String.valueOf(passwordField.getPassword()));
 	}
 
 	private static File extractFromClassPath(String name) throws IOException {
 		File tempFile = File.createTempFile(name, name);
-		InputStream inputStream = ClassLoader.getSystemResourceAsStream(name);
-		FileOutputStream outputStream = new FileOutputStream(tempFile);
-		int read;
-		byte[] buffer = new byte[1024];
-		while ((read = inputStream.read(buffer)) != -1) {
-			outputStream.write(buffer, 0, read);
+		try (
+				InputStream inputStream = ClassLoader.getSystemResourceAsStream(name);
+				FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+			int read;
+			byte[] buffer = new byte[1024];
+			while ((read = inputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, read);
+			}
+			outputStream.close();
+			return tempFile;
 		}
-		outputStream.close();
-		return tempFile;
 	}
 
 }

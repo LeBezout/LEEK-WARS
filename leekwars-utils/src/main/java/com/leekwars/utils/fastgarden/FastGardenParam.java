@@ -28,18 +28,25 @@ public class FastGardenParam {
 	 * Pour eviter les boucles infinies, nombres d'erreurs maximum tolérées (par entité)
 	 */
 	private int maxStartFightErrors = 20;
-	
+
+	/**
+	 * Depuis LW 1.94 on peut répartir le nombre total de combats journaliers scomme bon nous semble
+	 * avant il y avait un nombre max par poireau et un noombre max pour l'éleveur.<br/>
+	 * Ce paramètre permet de limiter le nombre de combats maximum par entité
+	 */
 	private int maxStartFights = 10;
-	
+
+	/**
+	 * @return the maxStartFights
+	 */
 	public int getMaxStartFights() {
 		return maxStartFights;
 	}
-	
 	/**
-	 * @param maxStartFights How many fights to start in total if available
+	 * @param pMaxStartFights How many fights to start in total if available
 	 */
-	public void setMaxStartFights(int maxStartFights) {
-		this.maxStartFights = maxStartFights;
+	public void setMaxStartFights(int pMaxStartFights) {
+		maxStartFights = pMaxStartFights;
 	}
 	
 	/**
