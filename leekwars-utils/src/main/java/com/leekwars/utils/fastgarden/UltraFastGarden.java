@@ -62,7 +62,7 @@ public abstract class UltraFastGarden {
 	 * @param pVisitor visiteur pour intercepter tous les evenements.
 	 * @throws LWException
 	 */
-	public static void forFamer(final AbstractLeekWarsConnector pConnector, final FastGardenVisitor pVisitor) throws LWException {
+	public static void forFarmer(final AbstractLeekWarsConnector pConnector, final FastGardenVisitor pVisitor) throws LWException {
 		// récupération du token si besoin
 		pConnector.connectIfNeeded();
 		final Farmer lFarmer = pConnector.getFarmer();
@@ -397,7 +397,7 @@ public abstract class UltraFastGarden {
 		Garden lPotager = pConnector.getGarden();
 		final String farmerName = pConnector.getFarmer().getName();
 		//final int lInitialFightCount = lPotager.getFarmer_fights();
-		final int lInitialFightCount = Math.min(10, lPotager.getFights());
+		final int lInitialFightCount = Math.min(PARAMS.getMaxStartFights(), lPotager.getFights());
 		LOGGER.info("-------------------------------------------------------------");
 		LOGGER.info(" COMBATS POUR L'ELEVEUR " + pConnector.getFarmer().getId() + " - " + pConnector.getFarmer().getName());
 		LOGGER.info(" NB DE COMBATS MAXIMUM : " + lPotager.getFights());

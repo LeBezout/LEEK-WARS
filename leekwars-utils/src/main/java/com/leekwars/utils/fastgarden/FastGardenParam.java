@@ -29,11 +29,17 @@ public class FastGardenParam {
 	 */
 	private int maxStartFightErrors = 20;
 	
+	private int maxStartFights = 10;
+	
+	public int getMaxStartFights() {
+		return maxStartFights;
+	}
+	
 	/**
-	 * Constructeur
+	 * @param maxStartFights How many fights to start in total if available
 	 */
-	public FastGardenParam() {
-		super();
+	public void setMaxStartFights(int maxStartFights) {
+		this.maxStartFights = maxStartFights;
 	}
 	
 	/**

@@ -10,3 +10,5 @@
 *.old
 *.sav
 Thumbs.db
+*.releaseBackup
+release.properties
