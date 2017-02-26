@@ -1,5 +1,6 @@
 package com.leekwars.utils.fastgarden.impl;
 
+import com.leekwars.utils.LWConst;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -76,13 +77,13 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onEntityChange(EntityType pEntityType, Entity pEntity) {
-		mLogger.log(mLevel, "-------------------------------------------------------------");
+		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
 		if (pEntityType == EntityType.FARMER) {
 			mLogger.log(mLevel, "Résultats pour l'éleveur " + pEntity.getName());
 		} else if (pEntityType == EntityType.LEEK) {
 			mLogger.log(mLevel, "Résultats pour le poireau " + pEntity.getName());
 		}
-		mLogger.log(mLevel, "-------------------------------------------------------------");
+		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
 	}
 
 	/* (non-Javadoc)
@@ -102,9 +103,9 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onBeforeStat() {
-		mLogger.log(mLevel, "-------------------------------------------------------------");
+		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
 		mLogger.log(mLevel, " STATISTIQUES ");
-		mLogger.log(mLevel, "-------------------------------------------------------------");
+		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
 	}
 	
 	/* (non-Javadoc)
@@ -120,5 +121,6 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onEnd() {
+		// rien à faire dans cette implémentation
 	}
 }

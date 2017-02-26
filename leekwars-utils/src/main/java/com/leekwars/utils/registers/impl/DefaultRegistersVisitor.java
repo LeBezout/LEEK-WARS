@@ -1,5 +1,6 @@
 package com.leekwars.utils.registers.impl;
 
+import com.leekwars.utils.LWConst;
 import org.apache.log4j.Logger;
 
 import com.leekwars.utils.exceptions.LWException;
@@ -23,7 +24,7 @@ public class DefaultRegistersVisitor implements RegistersVisitor {
 
 	@Override
 	public void onInit(Farmer pFarmer) {
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		LOGGER.info("Vérification du remplissage des registres de tous les poireaux de " + pFarmer);
 	}
 
@@ -38,14 +39,14 @@ public class DefaultRegistersVisitor implements RegistersVisitor {
 
 	@Override
 	public void onOverflow(LeekSummary pLeek) throws LWException {
-		LOGGER.error("*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*");
+		LOGGER.error(LWConst.LOG_WARN_SEPARATOR);
 		LOGGER.error(pLeek + " : ATTENTION dépassement de taille acceptable des registres. Action à prévoir avant d'atteindre " + CheckRegistersThresholds.REGISTERS_MAX_CAPACITY + " registres.");
-		LOGGER.error("*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*~~*");
+		LOGGER.error(LWConst.LOG_WARN_SEPARATOR);
 	}
 
 	@Override
 	public void onEnd() {
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 	}
 
 }

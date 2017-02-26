@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import com.leekwars.utils.LWConst;
 import org.apache.log4j.Logger;
 
 import com.leekwars.utils.LWUtils;
@@ -17,7 +18,15 @@ import com.leekwars.utils.exceptions.LWException;
  */
 public final class HttpUtils {
 	private static final Logger LOGGER = Logger.getLogger(HttpUtils.class.getName());
-	private static final String ENCODING = "UTF-8";
+	/** Timeout de connexion en secondes */
+	private static final int HTTP_CONNECT_TIMEOUT = 10;
+	/** Timeout de lecture de réponse en secondes */
+	private static final int HTT_READ_TIMEOUT = 20;
+	/** Valeur du header Http Accept-Language */
+	private static final String HTTP_ACCEPT_LANGUAGE = "fr,fr-FR";
+	/** Taille initiale du buffer de lecture de la réponse Http */
+	private static final int HTTP_READ_BUFFER_CAPACITY = 1024;
+
 	private HttpUtils() {}
 	
 	//TODO peut être lever des exceptions agnostiques ! (HttpException)
@@ -30,7 +39,7 @@ public final class HttpUtils {
 	 */
 	public static String encodeUrlParam(final String pValue) throws LWException {
 		try {
-			return java.net.URLEncoder.encode(pValue, ENCODING);
+			return java.net.URLEncoder.encode(pValue, LWConst.DEFAULT_ENCODING);
 		} catch (UnsupportedEncodingException e) {
 			 throw new LWException(e);
 		}
@@ -67,12 +76,12 @@ public final class HttpUtils {
 	 */
 	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID) throws LWException {
 		final HttpURLConnection lConnection = getHttpConnection(pURL, "POST", pPHPSESSID);
-		int lCode = 0;
+		int lCode;
 		if (pData != null && pData.trim().length() > 0) {
 			try {
 				lConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-				final byte[] lBytes = pData.getBytes(ENCODING);
-				lConnection.setRequestProperty("Content-Encoding", ENCODING);
+				final byte[] lBytes = pData.getBytes(LWConst.DEFAULT_ENCODING);
+				lConnection.setRequestProperty("Content-Encoding", LWConst.DEFAULT_ENCODING);
 				lConnection.setRequestProperty("Content-Length", String.valueOf(lBytes.length));
 				LOGGER.debug("Content-Length : " + lBytes.length);
 				lConnection.connect();
@@ -113,14 +122,14 @@ public final class HttpUtils {
 		try {
 			connection = (HttpURLConnection)new URL(pURl).openConnection();
 			connection.setRequestMethod(pMethod);
-			connection.setConnectTimeout(1000 * 10);
-			connection.setReadTimeout(1000 * 20);
+			connection.setConnectTimeout(1000 * HTTP_CONNECT_TIMEOUT);
+			connection.setReadTimeout(1000 * HTT_READ_TIMEOUT);
 			connection.setUseCaches(false);
 			connection.setAllowUserInteraction(false);
 			connection.setInstanceFollowRedirects(true);
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
-			connection.setRequestProperty("Accept-Language", "fr,fr-FR");
+			connection.setRequestProperty("Accept-Language", HTTP_ACCEPT_LANGUAGE);
 			if (pPHPSESSID != null) {
 				connection.addRequestProperty("Cookie", "PHPSESSID=" + pPHPSESSID);// + "; path=/; domain=leekwars.com; HttpOnly");
 			}
@@ -141,8 +150,8 @@ public final class HttpUtils {
 			final int retCode = connection.getResponseCode();
 			LOGGER.debug("HTTP RETURN CODE " + retCode);
 			if (retCode >= HttpURLConnection.HTTP_OK && retCode < HttpURLConnection.HTTP_MULT_CHOICE) {
-				StringBuilder lResponseStr = new StringBuilder(1024);
-				final Scanner lScanner = new Scanner(connection.getInputStream(), LWUtils.defaultIfNull(connection.getContentEncoding(), ENCODING));
+				StringBuilder lResponseStr = new StringBuilder(HTTP_READ_BUFFER_CAPACITY);
+				final Scanner lScanner = new Scanner(connection.getInputStream(), LWUtils.defaultIfNull(connection.getContentEncoding(), LWConst.DEFAULT_ENCODING));
 				try {
 					while (lScanner.hasNextLine()) {
 						lResponseStr.append(lScanner.nextLine());

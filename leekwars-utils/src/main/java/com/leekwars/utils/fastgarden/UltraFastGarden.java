@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.leekwars.utils.LWConst;
 import org.apache.log4j.Logger;
 
 import com.leekwars.utils.AbstractLeekWarsConnector;
@@ -35,7 +36,7 @@ import com.leekwars.utils.wrappers.MessageWrapper;
 public abstract class UltraFastGarden {
 	private static final Logger LOGGER = Logger.getLogger(UltraFastGarden.class.getName());
 	
-	private static FastGardenParam PARAMS = new FastGardenParam(); 
+	private static FastGardenParam mParams = new FastGardenParam();
 
 	/**
 	 * Permet de modifier les paramètres par défaut :
@@ -47,13 +48,13 @@ public abstract class UltraFastGarden {
 	 * @param pParams
 	 */
 	public static void setParams(final FastGardenParam pParams) {
-		PARAMS = pParams;
+		mParams = pParams;
 	}
 	/**
 	 * Restore les paramètres par défaut.
 	 */
 	public static void setDefaultParams() {
-		PARAMS = new FastGardenParam(); 
+		mParams = new FastGardenParam();
 	}
 	
 	/**
@@ -74,7 +75,7 @@ public abstract class UltraFastGarden {
 		Garden lPotager = pConnector.getGarden();
 		// Combats d'éleveur (le potager est moins varié, il faut éviter de taper les talents trop élevés, et trop souvent les trop faibles)
 		if (lPotager.isFarmer_enabled()) {
-			final List<FightWrapper> lFights = new ArrayList<FightWrapper>(20);
+			final List<FightWrapper> lFights = new ArrayList<>(20);
 			if (lPotager.getFights() == 0) {
 				pVisitor.onMessage(new MessageWrapper(lFarmer, "Aucun combat possible pour l'éleveur : max_fights = 0", "No more fight for the farmer: max_fights = 0"));
 				LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR " + lFarmer.getId() + " : aucun ennemi");
@@ -83,7 +84,7 @@ public abstract class UltraFastGarden {
 				lFights.addAll(fastGardenForFarmer(pConnector, pVisitor));
 			}
 			// Statistiques
-			computeStats(pConnector, lFights, pVisitor, false);
+			computeStats(pConnector, lFights, pVisitor);
 		} else {
 			pVisitor.onMessage(new MessageWrapper(lFarmer, MessageWrapper.MESSAGE_TYPE_INFO, "Aucun combat possible pour l'éleveur : plus de combats possibles", "No more fight for the farmer"));
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR L'ELEVEUR " + lFarmer.getId() + " : plus de combats possibles");
@@ -114,14 +115,14 @@ public abstract class UltraFastGarden {
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR LES POIREAUX");
 			pVisitor.onMessage(MessageWrapper.info("Aucun combat possible pour les poireaux", "No more fight for leeks"));
 		} else {
-			final List<FightWrapper> lFights = new ArrayList<FightWrapper>(80); // 80 = max (4*20)
+			final List<FightWrapper> lFights = new ArrayList<>(80); // 80 = max (4*20)
 			// Pour chaque poireau de l'éléveur
 			for (LeekSummary lLeek : lFarmer.getLeeks().values()) {
 				LWUtils.sleep(1);
 				lFights.addAll(fastGardenForLeek(pConnector, lLeek.getId(), pVisitor));
 			}
 			// Statistiques
-			computeStats(pConnector, lFights, pVisitor, false);
+			computeStats(pConnector, lFights, pVisitor);
 		}
 		/*
 		 * ON_END
@@ -146,7 +147,7 @@ public abstract class UltraFastGarden {
 		pVisitor.onInit(lFarmer);
 		// on commence par faire un 1er appel au potager
 		Garden lPotager = pConnector.getGarden();
-		List<FightWrapper> lFights = new ArrayList<FightWrapper>(80); // 100 = max (4*20)
+		List<FightWrapper> lFights = new ArrayList<>(80); // 100 = max (4*20)
 		// Pour chaque poireau de l'éléveur
 		//if (lPotager.getSolo_fights().get(String.valueOf(pLeekID)) == 0) {
 		if (lPotager.getFights() == 0) {
@@ -157,7 +158,7 @@ public abstract class UltraFastGarden {
 			fastGardenForLeek(pConnector, pLeekID, pVisitor);
 
 			// Statistiques
-			computeStats(pConnector, lFights, pVisitor, false);
+			computeStats(pConnector, lFights, pVisitor);
 		}
 		/*
 		 * ON_END
@@ -181,7 +182,7 @@ public abstract class UltraFastGarden {
 		pVisitor.onInit(lFarmer);
 		// on commence par faire un 1er appel au potager
 		Garden lPotager = pConnector.getGarden();
-		List<FightWrapper> lFights = new ArrayList<FightWrapper>(120); // 120 = max (4*20+2*20)
+		List<FightWrapper> lFights = new ArrayList<>(120); // 120 = max (4*20+2*20)
 		// Pour chaque poireau de l'éléveur
 		if (lPotager.getFights() == 0) {
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR LES POIREAUX");
@@ -211,7 +212,7 @@ public abstract class UltraFastGarden {
 
 		if (!lFights.isEmpty()) {
 			// Statistiques
-			computeStats(pConnector, lFights, pVisitor, false);
+			computeStats(pConnector, lFights, pVisitor);
 		}
 		/*
 		 * ON_END
@@ -240,7 +241,7 @@ public abstract class UltraFastGarden {
 		if (lPotager.isTeam_enabled()) {
 			// Pour chaque équipe
 			final TeamComposition[] lCompos = lTeamCompos.getCompositions();
-			final List<FightWrapper> lFights = new ArrayList<FightWrapper>(20 * lCompos.length);
+			final List<FightWrapper> lFights = new ArrayList<>(20 * lCompos.length);
 			for (TeamComposition lCompo : lCompos) {
 				LWUtils.sleep(1);
 				// positionne l'id de l'équipe
@@ -250,7 +251,7 @@ public abstract class UltraFastGarden {
 			}
 			if (!lFights.isEmpty()) {
 				// Statistiques
-				computeStats(pConnector, lFights, pVisitor, true);
+				computeStats(pConnector, lFights, pVisitor);
 			}
 		} else {
 			pVisitor.onMessage(new MessageWrapper(lTeamCompos, MessageWrapper.MESSAGE_TYPE_INFO, "Aucun combat possible pour l'équipe : plus de combats possibles", "No more fight for the team composition"));
@@ -262,20 +263,20 @@ public abstract class UltraFastGarden {
 	}
 	
 	private static List<FightWrapper> fastGardenForTeamCompo(final AbstractLeekWarsConnector pConnector, final TeamComposition pCompo, final FastGardenVisitor pVisitor) throws LWException {
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		LOGGER.info(" COMBATS POUR LA COMPO " + pCompo.getId() + " - " +  pCompo.getName());
-		final List<FightWrapper> lFights = new ArrayList<FightWrapper>(20);
+		final List<FightWrapper> lFights = new ArrayList<>(20);
 		final Garden lPotager = pConnector.getGarden();
 		if (lPotager.getTeam_fights() == 0) {
 			LOGGER.info(" PLUS DE COMBAT POSSIBLE POUR CETTE EQUIPE (pour cet éleveur)");
-			LOGGER.info("-------------------------------------------------------------");
+			LOGGER.info(LWConst.LOG_SEPARATOR);
 			pVisitor.onMessage(new MessageWrapper(pCompo, MessageWrapper.MESSAGE_TYPE_INFO, "Pas de combat possible pour cette compo", "No mere fight for the team composition: already launched"));
 			return lFights;
 		}
 		final GardenFarmerTeamComposition myCompo = lPotager.getMyComposition(pCompo.getId());
 		if (myCompo == null) {
 			LOGGER.info(" CETTE COMPO N'EST PAS ACCESSIBLE POUR L'ELEVEUR " + pConnector.getFarmer().getName());
-			LOGGER.info("-------------------------------------------------------------");
+			LOGGER.info(LWConst.LOG_SEPARATOR);
 			pVisitor.onMessage(new MessageWrapper(pCompo, "Le potager de cette compo n'est pas accessible depuis l'éleveur " + pConnector.getFarmer().getName(), "Garden for this team composition is not accessible for the farmer " + pConnector.getFarmer().getName()));
 			return lFights;
 		}
@@ -285,17 +286,17 @@ public abstract class UltraFastGarden {
 		LOGGER.info(" NB DE COMBATS A LANCER : " + lInitialFightCount);
 		if (lInitialFightCount == 0) {
 			LOGGER.info(" PLUS DE COMBAT POSSIBLE POUR CETTE COMPO");
-			LOGGER.info("-------------------------------------------------------------");
+			LOGGER.info(LWConst.LOG_SEPARATOR);
 			pVisitor.onMessage(new MessageWrapper(pCompo, MessageWrapper.MESSAGE_TYPE_INFO, "Pas de combat possible pour cette compo", "No mere fight for the team composition: already launched"));
 			return lFights;
 		}
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		long fightId;
 		String label;
 		int lFightCount = 0;
 		int lErrorCount = 0;
 		FightWrapper lFightInfos;
-		while ((lCompoEnemies != null) && (lCompoEnemies.length > 0) && (lErrorCount < PARAMS.getMaxStartFightErrors()) && (lFightCount < lInitialFightCount)) {
+		while ((lCompoEnemies != null) && (lCompoEnemies.length > 0) && (lErrorCount < mParams.getMaxStartFightErrors()) && (lFightCount < lInitialFightCount)) {
 			// on prend le 1er pour lancer le combat
 			try {
 				fightId = pConnector.startTeamFight(pCompo.getId(), lCompoEnemies[0].getId());
@@ -307,7 +308,7 @@ public abstract class UltraFastGarden {
 				lFightCount++;
 			} catch (LWException le) {
 				pVisitor.onMessage(new MessageWrapper(pCompo, MessageWrapper.MESSAGE_TYPE_ERROR, "Impossible de lancer le combat contre " + lCompoEnemies[0] + ". Cause : " + le.getMessage(), "Cannot start a fight against " + lCompoEnemies[0] + ". Cause: " + le.getMessage()));
-				fightId = -1;
+				//fightId = -1;
 				label = "COMBAT TEAM IMPOSSIBLE A LANCER POUR " + pCompo + " CONTRE " + lCompoEnemies[0] + " (Index=" + (lFightCount+1) + ")";
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
@@ -331,19 +332,19 @@ public abstract class UltraFastGarden {
 	 * @throws LWException
 	 */
 	private static List<FightWrapper> fastGardenForLeek(final AbstractLeekWarsConnector pConnector, final long pId, final FastGardenVisitor pVisitor) throws LWException {
-		final List<FightWrapper> lFights = new ArrayList<FightWrapper>(20);
+		final List<FightWrapper> lFights = new ArrayList<>(20);
 		// appel au potager
 		Garden lPotager = pConnector.getGarden();
 
 		//final int lInitialFightCount = lPotager.getSolo_fights().get(String.valueOf(pId));
-		final int lInitialFightCount = Math.min(PARAMS.getMaxStartFights(), lPotager.getFights());
+		final int lInitialFightCount = Math.min(mParams.getMaxStartFights(), lPotager.getFights());
 		final LeekSummary leek = pConnector.getFarmer().getLeekFromId(pId);
 		final String leekName = leek.getName();
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		LOGGER.info(" COMBATS POUR LE POIREAU " + pId + " - " +  leekName);
 		LOGGER.info(" NB DE COMBATS MAXIMUM : " + lPotager.getFights());
 		LOGGER.info(" NB DE COMBATS A LANCER : " + lInitialFightCount);
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		
 		// récupère les énemmis du poireau
 		LeekSummary[] lTargets = pConnector.getLeekOpponents(pId); // avant 1.92 lPotager.getSolo_enemies().get(String.valueOf(pId));
@@ -355,7 +356,7 @@ public abstract class UltraFastGarden {
 		while ((lFightCount < lInitialFightCount)
 				&& (lTargets != null)
 				&& (lTargets.length > 0)
-				&& (lErrorCount < PARAMS.getMaxStartFightErrors())) {
+				&& (lErrorCount < mParams.getMaxStartFightErrors())) {
 			// on prend le 1er pour lancer le combat
 			try {
 				fightId = pConnector.startSoloFight(pId, lTargets[0].getId());
@@ -367,17 +368,17 @@ public abstract class UltraFastGarden {
 				lFightCount++;
 			} catch (LWException le) {
 				pVisitor.onMessage(new MessageWrapper(leek, MessageWrapper.MESSAGE_TYPE_ERROR, "Impossible de lancer le combat contre "+ lTargets[0] +". Cause : " + le.getMessage(), "Cannot start a fight against "+ lTargets[0] +". Cause : " + le.getMessage()));
-				fightId = -1;
+				//fightId = -1;
 				label = "COMBAT SOLO IMPOSSIBLE A LANCER POUR " + leekName + " CONTRE " + lTargets[0] + " (Index=" + (lFightCount+1) + ")";
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
 			}
 			LWUtils.sleepMS(500);
 			// appel au potager
-			lPotager = pConnector.getGarden();
+			//lPotager = pConnector.getGarden();
 			// récupère les énemmis du poireau
 			lTargets = pConnector.getLeekOpponents(pId); // avant 1.92 lPotager.getSolo_enemies().get(String.valueOf(pId));
-			//LOGGER.info("il reste " + lPotager.getSolo_fights().get(String.valueOf(pId)) + " combat(s) pour ce poireau");
+			//mLogger.info("il reste " + lPotager.getSolo_fights().get(String.valueOf(pId)) + " combat(s) pour ce poireau");
 			LOGGER.info("il reste " + (lInitialFightCount - lFightCount) + " combat(s) pour ce poireau");
 		}
 		LOGGER.info(String.valueOf(lFightCount) + " combats lancés sur " + lInitialFightCount + " possibles pour " + leekName);
@@ -391,18 +392,18 @@ public abstract class UltraFastGarden {
  	 * @throws LWException
 	 */
 	private static List<FightWrapper> fastGardenForFarmer(final AbstractLeekWarsConnector pConnector, final FastGardenVisitor pVisitor) throws LWException {
-		List<FightWrapper> lFights = new ArrayList<FightWrapper>(20);
-		Map<Long/* id farmer */, Integer /* nb de combats lancés */> lMapFights = new HashMap<Long, Integer>();
+		List<FightWrapper> lFights = new ArrayList<>(20);
+		Map<Long/* id farmer */, Integer /* nb de combats lancés */> lMapFights = new HashMap<>();
 		// appel au potager
 		Garden lPotager = pConnector.getGarden();
 		final String farmerName = pConnector.getFarmer().getName();
 		//final int lInitialFightCount = lPotager.getFarmer_fights();
-		final int lInitialFightCount = Math.min(PARAMS.getMaxStartFights(), lPotager.getFights());
-		LOGGER.info("-------------------------------------------------------------");
+		final int lInitialFightCount = Math.min(mParams.getMaxStartFights(), lPotager.getFights());
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		LOGGER.info(" COMBATS POUR L'ELEVEUR " + pConnector.getFarmer().getId() + " - " + pConnector.getFarmer().getName());
 		LOGGER.info(" NB DE COMBATS MAXIMUM : " + lPotager.getFights());
 		LOGGER.info(" NB DE COMBATS A LANCER : " + lInitialFightCount);
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		
 		//final FarmerSummary[] lFamerEnemies = pConnector.getFarmerOpponents(); // avant 1.92 List<FarmerSummary> lFamerEnemies = lPotager.getFarmer_enemies();
 		int lFightCount = 0;
@@ -414,20 +415,20 @@ public abstract class UltraFastGarden {
 		int lastFightCount = 0;
 		int lErrorCount = 0;
 		FarmerSummary[] lFamerEnemies;
-		while (!famine && (lFightCount < lInitialFightCount) && (lErrorCount < PARAMS.getMaxStartFightErrors())) {
-		//while (!famine && (lPotager.getFarmer_fights() > 0) && (lErrorCount < PARAMS.getMaxStartFightErrors())) {
+		while (!famine && (lFightCount < lInitialFightCount) && (lErrorCount < mParams.getMaxStartFightErrors())) {
+		//while (!famine && (lPotager.getFarmer_fights() > 0) && (lErrorCount < mParams.getMaxStartFightErrors())) {
 			lFamerEnemies = pConnector.getFarmerOpponents();
 			logFarmerGarden(lFamerEnemies);
 
 			// choix de la cible
 			FightWrapper lFightInfos;
 			for (FarmerSummary lTargetFamer : lFamerEnemies) {
-				if (LWUtils.acceptTalent(lRefTalent, lTargetFamer.getTalent(), PARAMS.getTalentDiffAcceptance())) {
+				if (LWUtils.acceptTalent(lRefTalent, lTargetFamer.getTalent(), mParams.getTalentDiffAcceptance())) {
 					countForTarget = lMapFights.get(lTargetFamer.getId());
 					if (countForTarget == null) {
 						countForTarget = Integer.valueOf(0);
 					}
-					if (countForTarget.intValue() < PARAMS.getMaxFarmerAttacks()) {
+					if (countForTarget.intValue() < mParams.getMaxFarmerAttacks()) {
 						try {
 							fightId = pConnector.startFarmerFight(lTargetFamer.getId());
 							label = "COMBAT FARMER "+ fightId + " [" + farmerName + " vs " + lTargetFamer.getName() + "]";
@@ -439,7 +440,7 @@ public abstract class UltraFastGarden {
 							lMapFights.put(lTargetFamer.getId(), Integer.valueOf(countForTarget.intValue() + 1));
 						} catch (LWException le) {
 							pVisitor.onMessage(new MessageWrapper(pConnector.getFarmer(), MessageWrapper.MESSAGE_TYPE_ERROR, "Impossible de lancer le combat contre "+ lTargetFamer +". Cause : " + le.getMessage(), "Cannot start a fight against "+ lTargetFamer +". Cause: " + le.getMessage()));
-							fightId = -1;
+							//fightId = -1;
 							label = "COMBAT FARMER IMPOSSIBLE A LANCER POUR " + farmerName + " CONTRE " + lTargetFamer + " (Index=" + (lFightCount+1) + ")";
 							LOGGER.warn(">> "+ label + " : " + le.getMessage());
 							lErrorCount++;
@@ -474,21 +475,21 @@ public abstract class UltraFastGarden {
 	private static void logFarmerGarden(final FarmerSummary[] pOpponents) {
 		LOGGER.info(">> POTAGER :");
 		for (FarmerSummary lTargetFamer : pOpponents) {
-			LOGGER.info("\t" + lTargetFamer.getName() + " [Talent=" + lTargetFamer.getTalent() + ", level=" + lTargetFamer.getTotal_level() + "]");
+			LOGGER.info(LWConst.STR_TAB + lTargetFamer.getName() + " [Talent=" + lTargetFamer.getTalent() + ", level=" + lTargetFamer.getTotal_level() + "]");
 		}
 	}
 	
 	/*
 	 * Recupere les resultats des combats et génére les statistiques.
 	 */
-	private static void computeStats(final AbstractLeekWarsConnector pConnector, final List<FightWrapper> pFights, final FastGardenVisitor pVisitor, final boolean pIsTeam) throws LWException {
+	private static void computeStats(final AbstractLeekWarsConnector pConnector, final List<FightWrapper> pFights, final FastGardenVisitor pVisitor) throws LWException {
 		// attente de x secondes
 		LOGGER.info("On patiente quelques secondes pour laisser les combats se terminer ...");
-		LWUtils.waitFor(PARAMS.getWaitTimeToGetResults());
+		LWUtils.waitFor(mParams.getWaitTimeToGetResults());
 		final Farmer lFarmer = pConnector.getFarmer();
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		LOGGER.info(" RESUME COMBATS ");
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		final Map<String/*name*/, GardenStatsWrapper> lStats = new LinkedHashMap<>();
 		GardenStatsWrapper lEntityStats;
 		// Résumé - état des combats
@@ -518,7 +519,7 @@ public abstract class UltraFastGarden {
 			lResult = LWUtils.getFightResult(lFarmer, lFightTmp);
 			switch (lResult) {
 				case UNKNOWN :
-					if (retry < PARAMS.getMaxRetryForFightResult()) {
+					if (retry < mParams.getMaxRetryForFightResult()) {
 						i--; // on reste sur le meme combat
 						retry++;
 						LWUtils.waitFor(2); // on attend pour retenter notre chance
@@ -553,9 +554,9 @@ public abstract class UltraFastGarden {
 			}
 			
 			if (lResult == FightResult.UNKNOWN) {
-				LOGGER.info("\t" + lFight + " -- attente du résultat (" + retry + ") --");
+				LOGGER.info(LWConst.STR_TAB + lFight + " -- attente du résultat (" + retry + ") --");
 			} else {
-				LOGGER.info("\t" + lFight + " : " + lResult + " en " + lFight.getTurnCount() + " tours");
+				LOGGER.info(LWConst.STR_TAB + lFight + " : " + lResult + " en " + lFight.getTurnCount() + " tours");
 				/*
 				 * ON_RESULT(lResult, lFight)
 				 */
@@ -569,19 +570,16 @@ public abstract class UltraFastGarden {
 		 * ON_BEFORESTAT()
 		 */
 		pVisitor.onBeforeStat();
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		LOGGER.info(" STATISTIQUES ");
-		LOGGER.info("-------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		// Mise à jour des infos (talent notamment) de l'eleveur et poireaux
 		pConnector.updateFarmer();
-		TeamPrivate lTeamCompos = null;
-		if (pIsTeam) {
-			lTeamCompos = pConnector.getTeamCompositions();
-		}
+
 		GardenStatsWrapper lStat;
 		for (Map.Entry<String, GardenStatsWrapper> lEntry : lStats.entrySet()) {
 			lStat = lEntry.getValue();
-			LOGGER.info("\t" + lStat);
+			LOGGER.info(LWConst.STR_TAB + lStat);
 			// Récupération du talent et level final
 			switch (lStat.getEntityType()) {
 				case FARMER :
@@ -594,7 +592,7 @@ public abstract class UltraFastGarden {
 					lStat.getEntity().setLevel(leek.getLevel());
 					break;
 				case TEAMP_COMPO :
-					TeamComposition lCompo = lTeamCompos.getComposition(lStat.getEntity().getId());
+					TeamComposition lCompo = pConnector.getTeamCompositions().getComposition(lStat.getEntity().getId());
 					lStat.setFinalTalent(lCompo.getTalent());
 					lStat.getEntity().setLevel(lCompo.getLevel());
 					break;

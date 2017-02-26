@@ -20,6 +20,7 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onInit(Farmer pFarmer) {
+		// rien à faire dans cette implémentation
 	}
 
 	/* (non-Javadoc)
@@ -27,6 +28,7 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onMessage(final MessageWrapper pMessage) {
+		// rien à faire dans cette implémentation
 	}
 
 	/* (non-Javadoc)
@@ -34,6 +36,7 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onEntityChange(EntityType pEntityType, Entity pEntity) {
+		// rien à faire dans cette implémentation
 	}
 
 	/* (non-Javadoc)
@@ -41,6 +44,7 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onResult(final Fight pFight, final FightResult pResult) {
+		// rien à faire dans cette implémentation
 	}
 
 	/* (non-Javadoc)
@@ -48,6 +52,7 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onBeforeStat() {
+		// rien à faire dans cette implémentation
 	}
 	
 	/* (non-Javadoc)
@@ -55,6 +60,7 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onStat(GardenStatsWrapper pStat) {
+		// rien à faire dans cette implémentation
 	}
 	
 	/* (non-Javadoc)
@@ -62,5 +68,6 @@ public class NullFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onEnd() {
+		// rien à faire dans cette implémentation
 	}
 }

@@ -23,20 +23,19 @@ import java.util.Map;
  * @version 1.1
  */
 public abstract class AbstractLeekWarsConnector {
-	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
-	protected final Logger LOGGER_TRACE = Logger.getLogger("JSON_TRACE");
+	protected static final Logger LOGGER_TRACE = Logger.getLogger("JSON_TRACE");
 
 	protected static final String LEEK_WARS_ROOT_URL = "https://leekwars.com/api/";
-	protected static final String ENCODING = "UTF-8";
-	
+
+	protected final Logger mLogger = Logger.getLogger(getClass().getName());
 	protected boolean mTrace;
 	private String mUsername;
 	private String mPassword;
 	private String mToken;
 	private String mPhpSessionId;
 	private Farmer mFarmer;
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private String mLang = "fr";
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	/**
 	 * @return login du compte LW
@@ -161,14 +160,16 @@ public abstract class AbstractLeekWarsConnector {
 	 * Spécifique à l'inscription aux tournois
 	 * @param pResponse
 	 * @param pDefaultMessage
-	 * @return
+	 * @return true si inscription réalisée, false si déjà inscrit
 	 * @throws LWException
 	 */
 	protected boolean validateRegisterTournamentResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
 		trace(pResponse, SimpleJSONResponse.class);
 		SimpleJSONResponse lBasicResponse = gson.fromJson(pResponse.getResponseText(), SimpleJSONResponse.class);
 		if (!lBasicResponse.isSuccess()) {
-			if (lBasicResponse.getError().equals("already_registered")) return false; // OK
+			if ("already_registered".equals(lBasicResponse.getError())) {
+				return false; // déjà inscrit
+			}
 			throw new LWException(lBasicResponse.getError() == null ? pDefaultMessage : lBasicResponse.getError());
 		}
 		// OK
@@ -183,7 +184,7 @@ public abstract class AbstractLeekWarsConnector {
 	protected <T extends SimpleJSONResponse> void trace(final HttpResponseWrapper pResponse, final Class<T> pType) {
 		if (mTrace) {
 			try {
-				LOGGER_TRACE.info("--------------------------------------------------------------------------------------");
+				LOGGER_TRACE.info(LWConst.LOG_SEPARATOR);
 				if (pResponse.getUrlCalled() == null) {
 					LOGGER_TRACE.info(pType.getCanonicalName());
 				} else {
@@ -191,7 +192,7 @@ public abstract class AbstractLeekWarsConnector {
 				}
 				LOGGER_TRACE.info(gson.toJson(new JsonParser().parse(pResponse.getResponseText())));
 			} catch (Exception e) {
-				LOGGER.error("Impossible d'effectuer la trace de " + pType.getCanonicalName(), e);
+				mLogger.error("Impossible d'effectuer la trace de " + pType.getCanonicalName(), e);
 			}
 		}
 	}
@@ -211,10 +212,10 @@ public abstract class AbstractLeekWarsConnector {
 		mPhpSessionId = lResponse.getCookie("PHPSESSID");
 		mToken = lLoginResponse.getToken();
 		mFarmer = lLoginResponse.getFarmer();
-		LOGGER.debug("TOKEN=" + mToken);
-		LOGGER.debug("PHPSESSID=" + mPhpSessionId);
-		LOGGER.info("FARMER=" + mFarmer);
-		LOGGER.info("TEAM=" + mFarmer.getTeam());
+		mLogger.debug("TOKEN=" + mToken);
+		mLogger.debug("PHPSESSID=" + mPhpSessionId);
+		mLogger.info("FARMER=" + mFarmer);
+		mLogger.info("TEAM=" + mFarmer.getTeam());
 	}
 	
 	/**
@@ -356,16 +357,16 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public void registerAllTournaments() throws LWException {
 		checkConnected();
-		LOGGER.info("-------------------------------------------------------------");
-		LOGGER.info(" INSCRIPTION AUX TOURNOIS POUR " +  mFarmer.getName());
-		LOGGER.info("-------------------------------------------------------------");
+		mLogger.info(LWConst.LOG_SEPARATOR);
+		mLogger.info(" INSCRIPTION AUX TOURNOIS POUR " +  mFarmer.getName());
+		mLogger.info(LWConst.LOG_SEPARATOR);
 		// 1. l'eleveur
 		registerFarmerForNextTournament();
 		
 		// 2. chacun des poireaux
 		registerLeeksForNextTournaments();
 
-		LOGGER.info("-------------------------------------------------------------");
+		mLogger.info(LWConst.LOG_SEPARATOR);
 	}
 
 	/**
@@ -378,7 +379,7 @@ public abstract class AbstractLeekWarsConnector {
 		String lUrl = LEEK_WARS_ROOT_URL + "farmer/register-tournament/" + mToken;
 		HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		boolean inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the farmer " + mFarmer.getName());
-		LOGGER.info("Eleveur " + mFarmer.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
+		mLogger.info("Eleveur " + mFarmer.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
 	}
 
 	/**
@@ -396,7 +397,7 @@ public abstract class AbstractLeekWarsConnector {
 			lUrl = String.format(urlPattern, lLeek.getId());
 			lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 			inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the leek " + lLeek.getName());
-			LOGGER.info("Poireau " + lLeek.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
+			mLogger.info("Poireau " + lLeek.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
 		}
 	}
 
@@ -407,9 +408,9 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public void registerAllTeamCompositions() throws LWException {
 		final TeamPrivate lTeamData = getTeamCompositions();
-		LOGGER.info("-------------------------------------------------------------");
-		LOGGER.info(" INSCRIPTION AUX TOURNOIS POUR L'EQUIPE " +  lTeamData.getName());
-		LOGGER.info("-------------------------------------------------------------");
+		mLogger.info(LWConst.LOG_SEPARATOR);
+		mLogger.info(" INSCRIPTION AUX TOURNOIS POUR L'EQUIPE " +  lTeamData.getName());
+		mLogger.info(LWConst.LOG_SEPARATOR);
 		String lUrl; // team/register-tournament/composition_id/token
 		HttpResponseWrapper lResponse;
 		boolean inscrit;
@@ -420,12 +421,12 @@ public abstract class AbstractLeekWarsConnector {
 				lUrl = String.format(urlPattern, lCompo.getId());
 				lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 				inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the team composition " + lCompo.getName());
-				LOGGER.info("Composition " + lCompo.getName() + (inscrit ? " inscrite" : " déjà inscrite") + " au tournoi");
+				mLogger.info("Composition " + lCompo.getName() + (inscrit ? " inscrite" : " déjà inscrite") + " au tournoi");
 			} else {
-				LOGGER.warn("Composition " + lCompo.getName() + " ne peut être inscrite à un tournoi : " + lCompo.getLeeks().length + " poireau(x). 4 minimum attendus.");
+				mLogger.warn("Composition " + lCompo.getName() + " ne peut être inscrite à un tournoi : " + lCompo.getLeeks().length + " poireau(x). 4 minimum attendus.");
 			}
 		}
-		LOGGER.info("-------------------------------------------------------------");
+		mLogger.info(LWConst.LOG_SEPARATOR);
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
@@ -634,7 +635,7 @@ public abstract class AbstractLeekWarsConnector {
 		final String lUrl = LEEK_WARS_ROOT_URL + "trophy/get-farmer-trophies/" + mFarmer.getId() + '/' + mLang + '/' + mToken;
 		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
 		final GetFarmerTrophiesJSONResponse lTrophiesResponse = validateResponse(lResponse, "Cannot get farmer trophies", GetFarmerTrophiesJSONResponse.class);
-		final List<Trophy> lTrophies = new ArrayList<Trophy>(lTrophiesResponse.getCount());
+		final List<Trophy> lTrophies = new ArrayList<>(lTrophiesResponse.getCount());
 		Trophy lTrophy;
 		for (final Map.Entry<String, Trophy> lEntry : lTrophiesResponse.getTrophies().entrySet()) {
 			lTrophy = lEntry.getValue();
@@ -747,8 +748,8 @@ public abstract class AbstractLeekWarsConnector {
 		final int len = lRegisters.length;
 		for (KeyValueCouple lRegister : lRegisters) {
 			deleteRegister(pLeekId, lRegister.getKey());
-			LOGGER.info("Registre " + lRegister + " supprimé");
+			mLogger.info("Registre " + lRegister + " supprimé");
 		}
-		LOGGER.info(String.valueOf(len) + " registres supprimés pour le poireau d'id " + pLeekId);
+		mLogger.info(String.valueOf(len) + " registres supprimés pour le poireau d'id " + pLeekId);
 	}
 }

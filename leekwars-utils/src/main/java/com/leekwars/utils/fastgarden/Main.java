@@ -22,6 +22,8 @@ import static javax.swing.JOptionPane.OK_OPTION;
 public class Main {
 	private static final String TIMESTAMP = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
 
+	private Main() {}
+
 	/**
 	 *
 	 * @param args empty
