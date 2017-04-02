@@ -1,5 +1,5 @@
 # LEEK-WARS
-Leek Wars JAVA Utilities for Farmers - version 1.3
+Leek Wars JAVA Utilities for Farmers - version 1.4.1
 
 ## Liens
   * URL du site Leek Wars : https://leekwars.com
@@ -22,6 +22,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.3
   * 1.1 : prise en compte des changements dans l'API du potager suite à la version 1.92 de LeekWars
   * 1.2 : ajout de méthodes pour la récupération des différents classements
   * 1.3 : prise en compte des changements dans l'API du potager suite à la version 1.94 de LeekWars
+  * 1.4 : prise en compte de la version de l'API, ajout d'un "main" pour le fastgarden
 
 ## Infos développeurs
 
@@ -55,6 +56,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.3
   * Obtenir le classement de l'éleveur : `ranking/get-farmer-rank/[farmer_id]/[order=talent|name|total_level]`
   * Obtenir le classement d'un poireau : `ranking/get-leek-rank/[leek_id]/[order=talent|name|level]`
   * Obtenir les classements Fun : `ranking/fun/[token]`
+  * Obtenir la version  courante de l'API : `leek-wars/version`
 
 ### Configuration HTTPS
   * Récupérer les fichiers `leekwars-utils/src/main/security/jssecacerts` et `leekwars-utils/src/main/security/lw.jks`
@@ -71,3 +73,5 @@ Leek Wars JAVA Utilities for Farmers - version 1.3
 		System.setProperty("javax.net.ssl.trustStore", "/chemin/vers/jssecacerts");
 	}
 ```
+  * _Les certificats LeekWars ont une durée de 3 mois_
+

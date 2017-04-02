@@ -20,7 +20,7 @@ import java.util.Map;
  * Classe mère permettant d'effectuer tous les appels à l'API LW
  * @author Bezout
  * @see <a href="http://leekwars.com/help/api">API</a>
- * @version 1.1
+ * @version 1.4.1
  */
 public abstract class AbstractLeekWarsConnector {
 	protected static final Logger LOGGER_TRACE = Logger.getLogger("JSON_TRACE");
@@ -35,6 +35,7 @@ public abstract class AbstractLeekWarsConnector {
 	private String mPhpSessionId;
 	private Farmer mFarmer;
 	private String mLang = "fr";
+	private int mVersion = -1;
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	/**
@@ -136,7 +137,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @param pType
 	 * @param <T>
 	 * @return
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	protected <T extends SimpleJSONResponse> T validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final Class<T> pType) throws LWException {
 		trace(pResponse, pType);
@@ -150,6 +151,9 @@ public abstract class AbstractLeekWarsConnector {
 
 	/**
 	 * Pour les réponses simples OK/KO sans besoin de retour
+     * @param pResponse
+     * @param pDefaultMessage
+     * @throws LWException e
 	 * @since 1.4.0
 	 */
 	protected void validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
@@ -161,7 +165,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @param pResponse
 	 * @param pDefaultMessage
 	 * @return true si inscription réalisée, false si déjà inscrit
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	protected boolean validateRegisterTournamentResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
 		trace(pResponse, SimpleJSONResponse.class);
@@ -203,7 +207,7 @@ public abstract class AbstractLeekWarsConnector {
 	
 	/**
 	 * Connexion (récuparation du token et du php session id) via l'API
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public final void connect() throws LWException {
 		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/login-token/"+mUsername+'/'+mPassword;
@@ -220,7 +224,7 @@ public abstract class AbstractLeekWarsConnector {
 	
 	/**
 	 * Connexion (récuparation du token et du php session id) via l'API seulement si pas déjà connecté.
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public final void connectIfNeeded() throws LWException {
 		if (mPhpSessionId == null || mToken == null) {
@@ -229,7 +233,7 @@ public abstract class AbstractLeekWarsConnector {
 	}
 	
 	/**
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public final void invalidateToken() throws LWException {
 		checkConnected();
@@ -243,7 +247,7 @@ public abstract class AbstractLeekWarsConnector {
 	
 	/**
 	 * Leve une exception si non connecté (pas de token récupéré)
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public final void checkConnected() throws LWException {
 		if (mPhpSessionId == null || mToken == null) {
@@ -254,10 +258,44 @@ public abstract class AbstractLeekWarsConnector {
 	//-------------------- DIVERS
 	//---------------------------------------------------------------------------------------------------------------------------------
 
-	/**
+    /**
+     * Permet d'obtenir la version courante de Leek Wars
+     * @return version (ou -1 si pb)
+     * @since 1.4.1
+     */
+    public final int getVersion() {
+	    if (mVersion == -1) {
+            final String lUrl = LEEK_WARS_ROOT_URL + "leek-wars/version";
+            try {
+                final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, null);
+                final GetLWVersionJSONResponse lVersion = validateResponse(lResponse, "Cannot obtain the current LeekWars version", GetLWVersionJSONResponse.class);
+                mVersion = lVersion.getVersion();
+            } catch (LWException lwe) {
+                mLogger.error("Impossible de récupérer la version de Leek Wars", lwe);
+            }
+        }
+        return mVersion;
+    }
+
+    /**
+     * Vérifie que la version de LW est-bien celle attendue, lève une LWException sinon
+     * @param pExpectedVersion numéro de version attendue
+     * @throws LWException e
+     */
+    public void checkForExpectedVersion(final int pExpectedVersion) throws LWException {
+        final int lVersion = getVersion();
+        if (lVersion > 0) {
+            if (pExpectedVersion != lVersion) {
+                throw new LWException(String.format("Expected version %d, obtain %d", pExpectedVersion, lVersion));
+            }
+        }
+        // else version indisponible, on ne peut pas controller
+    }
+
+    /**
 	 * Permet d'effectuer une action sur tous les poireaux de l'éleveur
 	 * @param pVisitor visiteur
-	 * @throws LWException
+	 * @throws LWException e
 	 * @since 1.2
 	 */
 	public final void iterateOnLeeks(final LeekVisitor pVisitor) throws LWException {
@@ -276,7 +314,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Positionne ou non un des poireaux de l'éleveur dans le potager
 	 * @param pLeekId id du poireau de l'éleveur
 	 * @param pInGarden true/false
-	 * @throws LWException
+	 * @throws LWException e
 	 * @since 1.4
 	 */
 	public void setLeekInGarden(final long pLeekId, final boolean pInGarden) throws LWException {
@@ -289,7 +327,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Positionne ou non un poireau dans le potager
 	 * @param pLeek poireau
 	 * @param pInGarden true/false
-	 * @throws LWException
+	 * @throws LWException e
 	 * @since 1.4
 	 */
 	public void setLeekInGarden(final Entity pLeek, final boolean pInGarden) throws LWException {
@@ -305,8 +343,8 @@ public abstract class AbstractLeekWarsConnector {
 	 * ! CONNEXION NON NECESSAIRE !
 	 * @param pType parmis RankType.TALENT, RankType.NAME, RankType.TOTAL_LEVEL
 	 * @return rank value
+     * @throws LWException e
 	 * @since 1.2
-	 * @throws LWException
 	 */
 	public long getFarmerRank(final RankType pType) throws LWException {
 		// ranking/get-farmer-rank/farmer_id/order
@@ -321,8 +359,8 @@ public abstract class AbstractLeekWarsConnector {
 	 * ! CONNEXION NON NECESSAIRE !
 	 * @param pType parmis RankType.TALENT, RankType.NAME, RankType.LEVEL
 	 * @return rank value
+     * @throws LWException e
 	 * @since 1.2
-	 * @throws LWException
 	 */
 	public long getLeekRank(final long pLeekId, final RankType pType) throws LWException {
 		// ranking/get-leek-rank/leek_id/order → rank
@@ -335,8 +373,8 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * Permet de récupérer tous les classements "fun"
 	 * @return tableau de FunRanking
+     * @throws LWException e
 	 * @since 1.2
-	 * @throws LWException
 	 */
 	public FunRanking[] getFunRank()throws LWException {
 		checkConnected();
@@ -353,7 +391,7 @@ public abstract class AbstractLeekWarsConnector {
 	
 	/**
 	 * Permet d'inscrire tous les poireaux et l'éleveur aux prochains tournois
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public void registerAllTournaments() throws LWException {
 		checkConnected();
@@ -371,7 +409,7 @@ public abstract class AbstractLeekWarsConnector {
 
 	/**
 	 * Permet d'inscrire tous les poireaux aux prochains tournois
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public void registerFarmerForNextTournament() throws LWException {
 		checkConnected();
@@ -384,7 +422,7 @@ public abstract class AbstractLeekWarsConnector {
 
 	/**
 	 * Permet d'inscrire tous l'éleveur aux prochains tournois
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public void registerLeeksForNextTournaments() throws LWException {
 		checkConnected();
@@ -404,7 +442,7 @@ public abstract class AbstractLeekWarsConnector {
 	
 	/**
 	 * Permet d'inscrire toutes les compositions de l'équipe aux prochains tournois
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public void registerAllTeamCompositions() throws LWException {
 		final TeamPrivate lTeamData = getTeamCompositions();
@@ -437,7 +475,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Récupération de l'équipe du farmer.
 	 * ! CONNEXION NON NECESSAIRE !
 	 * @return Team
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public Team getTeam() throws LWException {
 		// team/get/team_id → team
@@ -450,7 +488,7 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * Récupération des informations privées (compositions par exemples) de l'équipe du farmer.
 	 * @return TeamPrivate
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public TeamPrivate getTeamCompositions() throws LWException {
 		checkConnected();
@@ -466,8 +504,9 @@ public abstract class AbstractLeekWarsConnector {
 	//---------------------------------------------------------------------------------------------------------------------------------
 	
 	/**
+     * Obtention du potager
 	 * @return Garden
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public Garden getGarden() throws LWException {
 		checkConnected();
@@ -477,8 +516,9 @@ public abstract class AbstractLeekWarsConnector {
 		return lGargen.getGarden();
 	}
 	/**
+     * Obtention des adversaires de poireaux
 	 * @return tableau de poireaux que l'on peut agresser
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public LeekSummary[] getLeekOpponents(final long pLeekId) throws LWException {
 		checkConnected();
@@ -489,8 +529,9 @@ public abstract class AbstractLeekWarsConnector {
 		return lWrapper.getOpponents();
 	}
 	/**
+     * Obtention des adversaires d'éleveur
 	 * @return tableau d'éleveurs que l'on peut agresser
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public FarmerSummary[] getFarmerOpponents() throws LWException {
 		checkConnected();
@@ -501,8 +542,9 @@ public abstract class AbstractLeekWarsConnector {
 		return lWrapper.getOpponents();
 	}
     /**
+     * Obtention des adversaires de compositions d'équipe
      * @return tableau de compos que l'on peut agresser
-     * @throws LWException
+     * @throws LWException e
      */
     public GardenEnemyTeamComposition[] getTeamOpponents(final long pCompoId) throws LWException {
         checkConnected();
@@ -526,7 +568,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Retourne l'id du combat demandé ou lève une exception en cas d'erreur
 	 * @param pResponse
 	 * @return id
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	private long genericStartFight(final HttpResponseWrapper pResponse) throws LWException {
 		final StartFightJSONResponse lFightResponse = validateResponse(pResponse, "Cannot start fight", StartFightJSONResponse.class);
@@ -538,7 +580,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @param pLeekId
 	 * @param pEnemyLeekId
 	 * @return fight id
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public long startSoloFight(final long pLeekId, final long pEnemyLeekId) throws LWException {
 		checkConnected();
@@ -552,7 +594,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Démarre un combat d'éléveur et retourne son id si OK
 	 * @param pEnemyId
 	 * @return fight id
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public long startFarmerFight(final long pEnemyId) throws LWException {
 		checkConnected();
@@ -567,7 +609,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @param pCompoId
 	 * @param pTargetTeamCompoId
 	 * @return fight id
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public long startTeamFight(final long pCompoId, final long pTargetTeamCompoId) throws LWException {
 		checkConnected();
@@ -585,7 +627,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Récupère les informations d'un combat, utile pour connaitre le resultat après avoir lancé le combat en asynchrone.
 	 * ! CONNEXION NON NECESSAIRE !
 	 * @param pFightId id du combat
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public Fight getFight(final long pFightId) throws LWException {
 		// fight/get/fight_id → fight
@@ -597,7 +639,7 @@ public abstract class AbstractLeekWarsConnector {
 	
 //	/**
 //	 * @param pFightId id du combat
-//	 * @throws LWException
+//	 * @throws LWException e
 //	 */
 //	public void getFightLogs(final long pFightId) throws LWException {
 //		checkConnected();
@@ -614,7 +656,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Met à jour l'éleveur (et tous les poireaux).
 	 * Suite à déclenchement de combats par exemple (evolution du talent, level, ...)
 	 * ! CONNEXION NON NECESSAIRE !
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public void updateFarmer() throws LWException {
 		// farmer/get/farmer_id → farmer
@@ -628,7 +670,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Récupère les infos concernant les trophées obtenus par l'éleveur connecté
 	 * @return liste des trophées débloqués de l'éleveur connecté
 	 * @since 1.1
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public List<Trophy> getUnlockedFarmerTrophies() throws LWException {
 		// trophy/get-farmer-trophies/farmer_id/lang/token → trophies
@@ -649,7 +691,7 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * Permet de positionner ou d'enlever l'éleveur du potager
 	 * @param pInGarden
-	 * @throws LWException
+	 * @throws LWException e
 	 * @since 1.4
 	 */
 	public boolean setFarmerInGarden(final boolean pInGarden) throws LWException {
@@ -671,7 +713,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Récupère les registrers d'un poireau
 	 * @param pLeekId identifiant du poireau
 	 * @return KeyValueCouple[]
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public KeyValueCouple[] getRegisters(final long pLeekId) throws LWException {
 		checkConnected();
@@ -687,7 +729,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @param pLeekId identifiant du poireau
 	 * @param pKey clef de registre
 	 * @return valeur de registre
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public String getRegisterValue(final long pLeekId, final String pKey) throws LWException {
 		final KeyValueCouple[] lRegisters = getRegisters(pLeekId);
@@ -704,7 +746,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * Ajoute un élément au registre
 	 * @param pLeekId identifiant du poireau
 	 * @param pRegister KeyValueCouple
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public void setRegister(final long pLeekId, final KeyValueCouple pRegister) throws LWException {
 		checkConnected();
@@ -723,7 +765,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @param pLeekId identifiant du poireau
 	 * @param pKey clef de registre
 	 * @return valeur du registre supprimé
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public String deleteRegister(final long pLeekId, final String pKey) throws LWException {
 		checkConnected();
@@ -741,7 +783,7 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * Suppression de tous les registres d'un poireau
 	 * @param pLeekId identifiant du poireau
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public void deleteAllRegisters(final long pLeekId) throws LWException {
 		final KeyValueCouple[] lRegisters = getRegisters(pLeekId);

@@ -7,12 +7,14 @@ import java.util.Properties;
 
 /**
  * Classe permettant de définir Login et MDP dans un fichier properties
+ * Permet aussi de stocker la version attendue de LW
  * @author Bezout
  */
 public class PropertiesLeekWarsConnector extends AbstractLeekWarsConnector {
 
     private static final String MODE_RAW = "RAW";
     private static final String MODE_B64 = "BASE64";
+    private int expectedVersion;
 
     /**
      * Constructeur
@@ -49,6 +51,10 @@ public class PropertiesLeekWarsConnector extends AbstractLeekWarsConnector {
         // suivant le mode
         String mode = pProps.getProperty("lw.mode");
         String password = pProps.getProperty("lw.password");
+        String lVersion = pProps.getProperty("lw.expectedVersion");
+        if (lVersion != null && !lVersion.isEmpty()) {
+            expectedVersion = Integer.parseInt(lVersion);
+        }
         if (mode == null || mode.isEmpty()) {
             mode = MODE_RAW;
         }
@@ -60,5 +66,12 @@ public class PropertiesLeekWarsConnector extends AbstractLeekWarsConnector {
             String lPwd = new String(new org.apache.commons.codec.binary.Base64().decode(password));
             setPassword(lPwd);
         }
+    }
+
+    /**
+     * @return expectedVersion
+     */
+    public int getExpectedVersion() {
+        return expectedVersion;
     }
 }

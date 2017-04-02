@@ -23,6 +23,7 @@ public class PropertiesLeekWarsConnectorTest {
         PropertiesLeekWarsConnector lConnector = new PropertiesLeekWarsConnector("/connector-RAW.properties");
         System.out.println(lConnector.getUsername());
         System.out.println(lConnector.getPassword());
+        System.out.println("Version attendue : " + lConnector.getExpectedVersion());
     }
 
     @Test
@@ -30,6 +31,7 @@ public class PropertiesLeekWarsConnectorTest {
         PropertiesLeekWarsConnector lConnector = new PropertiesLeekWarsConnector("/connector-B64.properties");
         System.out.println(lConnector.getUsername());
         System.out.println(lConnector.getPassword());
+        System.out.println("Version attendue : " + lConnector.getExpectedVersion());
     }
 
     @Test
@@ -37,5 +39,6 @@ public class PropertiesLeekWarsConnectorTest {
         PropertiesLeekWarsConnector lConnector = new PropertiesLeekWarsConnector("/connector-DEFAULT.properties");
         System.out.println(lConnector.getUsername());
         System.out.println(lConnector.getPassword());
+        System.out.println("Version attendue : " + lConnector.getExpectedVersion());
     }
 }

@@ -45,6 +45,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	private String mReportCharset = "UTF-8";
 	private String mHeadTitle;
 	private String mPageTitle;
+	private int mLWVersion;
 	
 	/**
 	 * Constructeur avec files
@@ -55,6 +56,15 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		mTemplateFile = pTemplate;
 		mOutputFile = pOutput;
 		setLang("fr");
+	}
+	/**
+	 * Offre la possibilité de définir la version de l'API LW utilisée
+	 * @param pVersion
+	 * @return this pour chainage
+	 */
+	public HtmlReportFastGardenVisitor setLWVersion(final int pVersion) {
+		mLWVersion = pVersion;
+		return this;
 	}
 	
 	// ------ POUR CHANGER LE PARAMETRAGE PAR DEFAUT ------
@@ -153,7 +163,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		lMap.put("team", 	"<img src=\"http://leekwars.com/static/image/icon/team.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		return Collections.unmodifiableMap(lMap);
 	}
-	private static String getIcon(final String pKey, int width, int height) {
+	private static String  getIcon(final String pKey, int width, int height) {
 		String value = MAP_ICONS.get(pKey);
 		return value == null ? pKey : String.format(value, width, height);
 	}
@@ -167,7 +177,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		mHeadTitle = (isFR() ? "Rapport FastGarden pour " : "FastGarden Report for ") + pFarmer.getName();
 		mBody = new StringBuilder(15 * 1024); // 15kio
 		mFarmer = pFarmer;
-		addBodyLine(String.format("<h1 style=\"display:inline\"><img src=\"http://leekwars.com/static/image/logo.png\"/> %s %s</h1>", mPageTitle, getIcon("flag_" + mLang, 32, 32)));
+		addBodyLine(String.format("<h1 style=\"display:inline\"><img src=\"http://leekwars.com/static/image/logo.png\"/> %d - %s %s</h1>", mLWVersion, mPageTitle, getIcon("flag_" + mLang, 32, 32)));
 		addBodyLine("<br/>");
 		addBodyLine("<div class=\"container\">");
 	}
@@ -185,11 +195,12 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 			addBodyLine("</table>"); 
 		}
 		addBodyLine("<br/>");
-		addBodyLine(String.format("<h2>"+getIcon("garden", 22, 22)+" %s %s <a href=\"https://leekwars.com/%s/%d\">%s</a></h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
-				(isFR() ? "Combats" : "Fights for"),
+		addBodyLine(String.format("<h2>%s %s %s <a href=\"https://leekwars.com/%s/%d\">%s</a></h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
+                getIcon("garden", 22, 22),
+                isFR() ? "Combats" : "Fights for",
 				toString(pEntityType),
-				(pEntityType == EntityType.FARMER ? "farmer" : (pEntityType == EntityType.TEAMP_COMPO ? "team" : "leek")),
-				(pEntity instanceof TeamComposition ? ((TeamComposition)pEntity).getTeamId() : pEntity.getId()),	
+				pEntityType == EntityType.FARMER ? "farmer" : (pEntityType == EntityType.TEAMP_COMPO ? "team" : "leek"),
+				pEntity instanceof TeamComposition ? ((TeamComposition)pEntity).getTeamId() : pEntity.getId(),
 				pEntity.getName()
 				//pEntity.getTalent()
 				));
@@ -275,8 +286,8 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		final int diffTalent = pStat.getTalentGain();
 		addBodyLine("\t<tr class=\"" + (diffTalent > 0 ? "win" : (diffTalent == 0 ? "unknown" : "defeat")) + "\">"); // CSS since 1.4
 		addBodyLine(String.format("\t\t<td><b><a href=\"https://leekwars.com/%s/%d\">%s</a></b></td><td>%s</td><td>%d%%</td><td>%.2f</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%+d (%d &rarr; %d)</td>",
-				(pStat.getEntityType() == EntityType.FARMER ? "farmer" : (pStat.getEntityType() == EntityType.TEAMP_COMPO ? "team" : "leek")),
-				(pStat.getEntity() instanceof TeamComposition ? ((TeamComposition)pStat.getEntity()).getTeamId() : pStat.getEntity().getId()),	
+				pStat.getEntityType() == EntityType.FARMER ? "farmer" : (pStat.getEntityType() == EntityType.TEAMP_COMPO ? "team" : "leek"),
+				pStat.getEntity() instanceof TeamComposition ? ((TeamComposition)pStat.getEntity()).getTeamId() : pStat.getEntity().getId(),
 				pStat.getEntity().getName(),
 				pStat.getEntity().getLevel() > 0 ? String.valueOf(pStat.getEntity().getLevel()) : "&empty;",
 				pStat.getVictoriesPercent(),pStat.getRatio(),
@@ -314,13 +325,13 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<br/>");
 		addBodyLine("</div>"); // container
 		addBodyLine("<div class=\"copyright\">");
-		addBodyLine("\t"
-			+ getIcon("fight", 12, 12)
-			+ " Version " + VERSION_TEMPLATE
-			+ String.format(" - <a href=\"https://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - %s <a href=\"https://leekwars.com/help/api\">%s</a> ",
-					(isFR() ? "Généré en Java depuis" : "Java Powered by"), 
-					(isFR() ? "l'API Leek Wars" : "Leek Wars API"))
-			+ getIcon("fight", 12, 12)
+		addBodyLine(String.format("\t%s Version %s - <a href=\"https://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - %s <a href=\"https://leekwars.com/help/api\">%s</a> v%d %s",
+                    getIcon("fight", 12, 12),
+                    VERSION_TEMPLATE,
+					isFR() ? "Généré en Java depuis" : "Java Powered by",
+					isFR() ? "l'API Leek Wars" : "Leek Wars API",
+					mLWVersion,
+                    getIcon("fight", 12, 12))
 			);
 		addBodyLine("</div>"); // copyright
 	}
