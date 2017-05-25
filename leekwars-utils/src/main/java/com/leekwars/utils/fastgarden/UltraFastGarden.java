@@ -148,7 +148,7 @@ public abstract class UltraFastGarden {
 		// on commence par faire un 1er appel au potager
 		Garden lPotager = pConnector.getGarden();
 		List<FightWrapper> lFights = new ArrayList<>(80); // 100 = max (4*20)
-		// Pour chaque poireau de l'éléveur
+
 		//if (lPotager.getSolo_fights().get(String.valueOf(pLeekID)) == 0) {
 		if (lPotager.getFights() == 0) {
 			LOGGER.warn("PAS DE COMBATS POSSIBLE POUR LE POIREAU");
@@ -194,7 +194,7 @@ public abstract class UltraFastGarden {
 			}
 		}
 		
-		// Combats d'éleveur (le potager est moins variés, il faut éviter de taper les talents trop élevés, et trop souvent les trop faibles)
+		// Combats d'éleveur (le potager est moins varié, il faut éviter de taper les talents trop élevés, et trop souvent les trop faibles)
 		lPotager = pConnector.getGarden(); // nouvel appel pour etre sur
 		if (lPotager.isFarmer_enabled()) {
 			//if (lPotager.getFarmer_fights() == 0) {

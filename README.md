@@ -2,10 +2,10 @@
 Leek Wars JAVA Utilities for Farmers - version 1.4.1
 
 ## Liens
-  * URL du site Leek Wars : https://leekwars.com
-  * URL racine de l'API Leek Wars : https://leekwars.com/api
-  * URL de l'aide de l'API Leek Wars : https://leekwars.com/help/api
-  * Sujet sur le forum : https://leekwars.com/forum/category-7/topic-8059
+  * URL du site Leek Wars : <https://leekwars.com>
+  * URL racine de l'API Leek Wars : <https://leekwars.com/api>
+  * URL de l'aide de l'API Leek Wars : <https://leekwars.com/help/api>
+  * Sujet sur le forum : <https://leekwars.com/forum/category-7/topic-8059>
 
 ## Outillage implémenté
   * Connexion / déconnexion
@@ -62,8 +62,8 @@ Leek Wars JAVA Utilities for Farmers - version 1.4.1
   * Récupérer les fichiers `leekwars-utils/src/main/security/jssecacerts` et `leekwars-utils/src/main/security/lw.jks`
   * Les copier dans un dossier. Exemples "res", "resources",  ...
   * Rajouter aux options de la JVM :
-   * `-Djavax.net.ssl.keyStore=${APP_HOME}/res/lw.jks`
-   * `-Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts`
+    * `-Djavax.net.ssl.keyStore=${APP_HOME}/res/lw.jks`
+    * `-Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts`
   * Ou dans un test unitaire :
 
 ```java
@@ -73,5 +73,6 @@ Leek Wars JAVA Utilities for Farmers - version 1.4.1
 		System.setProperty("javax.net.ssl.trustStore", "/chemin/vers/jssecacerts");
 	}
 ```
-  * _Les certificats LeekWars ont une durée de 3 mois_
+  * _Les certificats LeekWars ont une durée de validité de 3 mois_
+  * La classe outil `com.leekwars.utils.tools.InstallCert` permet de générer le fichier "trust store"
 

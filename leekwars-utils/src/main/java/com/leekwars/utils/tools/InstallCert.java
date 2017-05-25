@@ -75,9 +75,13 @@ public class InstallCert {
         }
         System.out.println("Loading KeyStore " + file + "...");
         InputStream in = new FileInputStream(file);
-        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-        ks.load(in, passphrase);
-        in.close();
+        KeyStore ks;
+        try {
+            ks = KeyStore.getInstance(KeyStore.getDefaultType());
+            ks.load(in, passphrase);
+        } finally {
+            in.close();
+        }
 
         SSLContext context = SSLContext.getInstance("TLS");
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());

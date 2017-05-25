@@ -163,7 +163,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		lMap.put("team", 	"<img src=\"http://leekwars.com/static/image/icon/team.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		return Collections.unmodifiableMap(lMap);
 	}
-	private static String  getIcon(final String pKey, int width, int height) {
+	private static String getIcon(final String pKey, int width, int height) {
 		String value = MAP_ICONS.get(pKey);
 		return value == null ? pKey : String.format(value, width, height);
 	}
