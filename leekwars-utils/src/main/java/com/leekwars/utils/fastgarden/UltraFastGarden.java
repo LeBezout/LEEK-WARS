@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.leekwars.utils.LWConst;
+import com.leekwars.utils.fastgarden.impl.FastGardenParamImpl;
 import org.apache.log4j.Logger;
 
 import com.leekwars.utils.AbstractLeekWarsConnector;
@@ -36,7 +37,7 @@ import com.leekwars.utils.wrappers.MessageWrapper;
 public abstract class UltraFastGarden {
 	private static final Logger LOGGER = Logger.getLogger(UltraFastGarden.class.getName());
 	
-	private static FastGardenParam mParams = new FastGardenParam();
+	private static FastGardenParam mParams = new FastGardenParamImpl();
 
 	/**
 	 * Permet de modifier les paramètres par défaut :
@@ -54,7 +55,7 @@ public abstract class UltraFastGarden {
 	 * Restore les paramètres par défaut.
 	 */
 	public static void setDefaultParams() {
-		mParams = new FastGardenParam();
+		mParams = new FastGardenParamImpl();
 	}
 	
 	/**
@@ -313,7 +314,7 @@ public abstract class UltraFastGarden {
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
 			}
-			LWUtils.sleepMS(500);
+			LWUtils.sleepMS(Math.max(1, mParams.getSleepTimeBetweenFights()));
 			// appel au potager
 			//lPotager = pConnector.getGarden();
 			// récupère les énemmis de la compo
@@ -373,7 +374,7 @@ public abstract class UltraFastGarden {
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
 			}
-			LWUtils.sleepMS(500);
+			LWUtils.sleepMS(Math.max(1, mParams.getSleepTimeBetweenFights()));
 			// appel au potager
 			//lPotager = pConnector.getGarden();
 			// récupère les énemmis du poireau
@@ -449,7 +450,7 @@ public abstract class UltraFastGarden {
 					}
 				}
 			}
-			LWUtils.sleepMS(500);
+			LWUtils.sleepMS(Math.max(1, mParams.getSleepTimeBetweenFights()));
 			// appel au potager
 			//lPotager = pConnector.getGarden();
 			//famine = lastFightCount == lPotager.getFarmer_fights();
@@ -522,7 +523,7 @@ public abstract class UltraFastGarden {
 					if (retry < mParams.getMaxRetryForFightResult()) {
 						i--; // on reste sur le meme combat
 						retry++;
-						LWUtils.waitFor(2); // on attend pour retenter notre chance
+						LWUtils.waitFor(Math.max(1, mParams.getWaitTimeBeforeRetry())); // on attend pour retenter notre chance
 					} else {
 						pVisitor.onMessage(new MessageWrapper(lFight.getEntity(), 
 								"Impossible de récupérer le résultat du combat " + lFight.getFightId(), 

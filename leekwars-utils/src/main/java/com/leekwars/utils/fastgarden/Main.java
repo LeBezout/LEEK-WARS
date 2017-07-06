@@ -2,6 +2,7 @@ package com.leekwars.utils.fastgarden;
 
 import com.leekwars.utils.DefaultLeekWarsConnector;
 import com.leekwars.utils.LWUtils;
+import com.leekwars.utils.fastgarden.impl.FastGardenParamImpl;
 import com.leekwars.utils.fastgarden.impl.HtmlReportFastGardenVisitor;
 
 import javax.swing.*;
@@ -47,7 +48,7 @@ public class Main {
 	}
 
 	private static FastGardenParam configuration() {
-		FastGardenParam params = new FastGardenParam();
+		FastGardenParamImpl params = new FastGardenParamImpl();
 		params.setMaxFarmerAttacks(3);
 		params.setWaitTimeToGetResults(20);
 		params.setMaxRetryForFightResult(30);
