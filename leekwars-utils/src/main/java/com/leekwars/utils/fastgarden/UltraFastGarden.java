@@ -314,7 +314,7 @@ public abstract class UltraFastGarden {
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
 			}
-			LWUtils.sleepMS(Math.max(1, mParams.getSleepTimeBetweenFights()));
+			LWUtils.sleep(Math.max(1, mParams.getSleepTimeBetweenFights()));
 			// appel au potager
 			//lPotager = pConnector.getGarden();
 			// récupère les énemmis de la compo
@@ -374,7 +374,7 @@ public abstract class UltraFastGarden {
 				LOGGER.info(">> "+ label + " : " + le.getMessage());
 				lErrorCount++;
 			}
-			LWUtils.sleepMS(Math.max(1, mParams.getSleepTimeBetweenFights()));
+			LWUtils.sleep(Math.max(1, mParams.getSleepTimeBetweenFights()));
 			// appel au potager
 			//lPotager = pConnector.getGarden();
 			// récupère les énemmis du poireau
@@ -450,7 +450,7 @@ public abstract class UltraFastGarden {
 					}
 				}
 			}
-			LWUtils.sleepMS(Math.max(1, mParams.getSleepTimeBetweenFights()));
+			LWUtils.sleep(Math.max(1, mParams.getSleepTimeBetweenFights()));
 			// appel au potager
 			//lPotager = pConnector.getGarden();
 			//famine = lastFightCount == lPotager.getFarmer_fights();
