@@ -4,13 +4,11 @@
 	<groupId>com.leekwars</groupId>
 	<artifactId>leekwars-utils</artifactId>
 	<packaging>jar</packaging>
-	<version>1.4.1-SNAPSHOT</version>
+	<version>1.4-SNAPSHOT</version>
 	<name>leekwars-utils</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<published.version>1.4.1</published.version>
-		<long.version>1.4.1.0</long.version>
 	</properties>
 
 	<scm>
@@ -40,6 +38,7 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
@@ -102,6 +101,11 @@
 	<profiles>
 		<profile>
 			<id>windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -127,12 +131,12 @@
 										<minVersion>1.7.0</minVersion>
 									</jre>
 									<versionInfo>
-										<fileVersion>${long.version}</fileVersion>
-										<txtFileVersion>${published.version}</txtFileVersion>
+										<fileVersion>${project.version}</fileVersion>
+										<txtFileVersion>${project.version}</txtFileVersion>
 										<fileDescription>Runs your fights in the garden</fileDescription>
-										<productVersion>${long.version}</productVersion>
-										<txtProductVersion>${published.version}</txtProductVersion>
-										<copyright>copyright </copyright>
+										<productVersion>${project.version}</productVersion>
+										<txtProductVersion>${project.version}</txtProductVersion>
+										<copyright>https://github.com/LeBezout/LEEK-WARS </copyright>
 										<productName>${project.name}</productName>
 										<internalName>UltraFastGarden</internalName>
 										<originalFilename>UltraFastGarden.exe</originalFilename>
@@ -150,10 +154,12 @@
 		<developer>
 			<name>Bezout</name>
 			<email>lebezout@gmail.com</email>
+            <organizationUrl>https://github.com/LeBezout/LEEK-WARS</organizationUrl>
 		</developer>
 		<developer>
 			<name>tyrcho</name>
 			<email>tyrcho@tyrcho.com</email>
+            <organizationUrl>https://github.com/tyrcho</organizationUrl>
 		</developer>
 	</developers>
 </project>
