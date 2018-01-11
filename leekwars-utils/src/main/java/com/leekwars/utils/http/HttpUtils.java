@@ -21,7 +21,7 @@ public final class HttpUtils {
 	/** Timeout de connexion en secondes */
 	private static final int HTTP_CONNECT_TIMEOUT = 10;
 	/** Timeout de lecture de réponse en secondes */
-	private static final int HTT_READ_TIMEOUT = 20;
+	private static final int HTTP_READ_TIMEOUT = 20;
 	/** Valeur du header Http Accept-Language */
 	private static final String HTTP_ACCEPT_LANGUAGE = "fr,fr-FR";
 	/** Taille initiale du buffer de lecture de la réponse Http */
@@ -46,9 +46,9 @@ public final class HttpUtils {
 	}
 	
 	/** ------- GET DATA ---------
-	 * @param pURL
-	 * @param pPHPSESSID
-	 * @return HttpResponse
+	 * @param pURL url to call
+	 * @param pPHPSESSID cookie value
+	 * @return response wrapper
 	 * @throws LWException
 	 */
 	public static HttpResponseWrapper get(final String pURL, final String pPHPSESSID) throws LWException {
@@ -63,15 +63,15 @@ public final class HttpUtils {
 		}
 		LOGGER.debug("HEADERS="+lConnection.getHeaderFields());
 		final String lResponse = readHttpResponse(lConnection);
-		LOGGER.debug("Recieving " + lResponse);
+		LOGGER.debug("Receiving " + lResponse);
 		return new HttpResponseWrapper(pURL, lCode, lConnection.getHeaderFields(), lResponse.trim());
 	}
 	
 	/** ------- POST DATA ---------
-	 * @param pURL
-	 * @param pData
-	 * @param pPHPSESSID
-	 * @return wrapper
+	 * @param pURL url to call
+	 * @param pData data to send
+	 * @param pPHPSESSID cookie value
+	 * @return response wrapper
 	 * @throws LWException
 	 */
 	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID) throws LWException {
@@ -105,13 +105,13 @@ public final class HttpUtils {
 		LOGGER.debug("HEADERS="+lConnection.getHeaderFields());
 		final String lResponse = readHttpResponse(lConnection);
 		// exemple d'erreur : {"success":false,"error":"missing_parameter","parameter":"login","module":"farmer","function":"login-token"}
-		LOGGER.debug("Recieving " + lResponse);
+		LOGGER.debug("Receiving " + lResponse);
 		return new HttpResponseWrapper(pURL, lCode, lConnection.getHeaderFields(), lResponse.trim());
 	}
 
 	/**
 	 * Initialisation d'une connexion HTTP de type HttpURLConnection
-	 * @param pURl
+	 * @param pURl url to call
 	 * @param pMethod (GET/POST)
 	 * @param pPHPSESSID valeur du cookie ou null
 	 * @return HttpURLConnection
@@ -123,7 +123,7 @@ public final class HttpUtils {
 			connection = (HttpURLConnection)new URL(pURl).openConnection();
 			connection.setRequestMethod(pMethod);
 			connection.setConnectTimeout(1000 * HTTP_CONNECT_TIMEOUT);
-			connection.setReadTimeout(1000 * HTT_READ_TIMEOUT);
+			connection.setReadTimeout(1000 * HTTP_READ_TIMEOUT);
 			connection.setUseCaches(false);
 			connection.setAllowUserInteraction(false);
 			connection.setInstanceFollowRedirects(true);
@@ -167,5 +167,4 @@ public final class HttpUtils {
 			throw new LWException(e);
 		}
 	}
-	
 }
