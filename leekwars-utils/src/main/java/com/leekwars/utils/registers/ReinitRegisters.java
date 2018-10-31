@@ -1,5 +1,6 @@
 package com.leekwars.utils.registers;
 
+import com.leekwars.utils.LWConst;
 import org.apache.log4j.Logger;
 
 import com.leekwars.utils.AbstractLeekWarsConnector;
@@ -20,9 +21,9 @@ public abstract class ReinitRegisters {
 	 * @throws LWException
 	 */
 	public static void reinitForLeek(final AbstractLeekWarsConnector pConnector, final long pLeekID) throws LWException {
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		pConnector.deleteAllRegisters(pLeekID);
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 	}
 	/**
 	 * @param pConnector
@@ -30,11 +31,11 @@ public abstract class ReinitRegisters {
 	 * @throws LWException
 	 */
 	public static void reinitForLeek(final AbstractLeekWarsConnector pConnector, final String pLeekName) throws LWException {
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		pConnector.deleteAllRegisters(pConnector.getLeekByName(pLeekName).getId());
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 	}
-	
+
 	/**
 	 * Réinitialise tous les registres des poireaux de l'éleveur.
 	 * @param pConnector
@@ -44,7 +45,7 @@ public abstract class ReinitRegisters {
 		// récupération du token si besoin
 		pConnector.connectIfNeeded();
 		final Farmer lFarmer = pConnector.getFarmer();
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 		LOGGER.info("Reinitialisation des registres de tous les poireaux de " + lFarmer);
 		// Pour chaque poireau de l'éléveur
 		for (LeekSummary lLeek : lFarmer.getLeeks().values()) {
@@ -52,6 +53,6 @@ public abstract class ReinitRegisters {
 			pConnector.deleteAllRegisters(lLeek.getId());
 		}
 		LOGGER.info("Reinitialisation OK");
-		LOGGER.info("----------------------------------------------------------------------------------");
+		LOGGER.info(LWConst.LOG_SEPARATOR);
 	}
 }

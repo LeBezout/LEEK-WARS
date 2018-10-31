@@ -6,6 +6,10 @@ package com.leekwars.utils.enums;
  */
 public enum FightType {
 	/**
+	 * Inconnu
+	 */
+	UNKNOWN,
+	/**
 	 * Combat solo 
 	 */
 	SOLO,

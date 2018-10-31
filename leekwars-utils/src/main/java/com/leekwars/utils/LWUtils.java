@@ -30,7 +30,7 @@ public final class LWUtils {
 	 */
 	public static void sleep(final int pSeconds) {
 		try {
-			Thread.sleep(pSeconds * 1000);
+			Thread.sleep((long) pSeconds * 1000);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -265,7 +265,7 @@ public final class LWUtils {
 			case 0 : return FightType.SOLO;
 			case 1 : return FightType.FARMER;
 			case 2 : return FightType.TEAM;
-			default : return null;
+			default : return FightType.UNKNOWN;
 		}
 	}
 	/**
@@ -274,7 +274,7 @@ public final class LWUtils {
 	 * @return FightType
 	 */
 	public static FightType getFightType(final Fight pFight) {
-		return pFight == null ? null : getFightType(pFight.getType());
+		return pFight == null ? FightType.UNKNOWN : getFightType(pFight.getType());
 	}
 	
 	/**
@@ -283,19 +283,21 @@ public final class LWUtils {
 	 * @return string
 	 */
 	public static String fightToString(final Fight pFight) {
-		switch (getFightType(pFight)) {
-			case SOLO : 
-				String leek1 = pFight.getLeeks1() == null || pFight.getLeeks1().length == 0 ? "?" : pFight.getLeeks1()[0].getName();
-				String leek2 = pFight.getLeeks2() == null || pFight.getLeeks2().length == 0 ? "?" : pFight.getLeeks2()[0].getName();
-				return "COMBAT SOLO " + pFight.getId() + " [" + leek1 + " vs " + leek2 + "]";
-			case FARMER :
-				String farmer1 = pFight.getFarmers1().isEmpty() ? "?" :  pFight.getFarmers1().values().iterator().next().getName();
-				String farmer2 = pFight.getFarmers2().isEmpty() ? "?" :  pFight.getFarmers2().values().iterator().next().getName();
-				return "COMBAT ELEVEUR " + pFight.getId() + " [" + farmer1 + " vs " + farmer2 + "]";
-			case TEAM :
-				return "COMBAT EQUIPE " + pFight.getId() + " [" + pFight.getTeam1_name() + " vs " + pFight.getTeam2_name() + "]";
-			default : 
-				return "?";
+		if (pFight != null) {
+			switch (getFightType(pFight)) {
+				case SOLO:
+					String leek1 = pFight.getLeeks1() == null || pFight.getLeeks1().length == 0 ? "?" : pFight.getLeeks1()[0].getName();
+					String leek2 = pFight.getLeeks2() == null || pFight.getLeeks2().length == 0 ? "?" : pFight.getLeeks2()[0].getName();
+					return "COMBAT SOLO " + pFight.getId() + " [" + leek1 + " vs " + leek2 + "]";
+				case FARMER:
+					String farmer1 = pFight.getFarmers1().isEmpty() ? "?" : pFight.getFarmers1().values().iterator().next().getName();
+					String farmer2 = pFight.getFarmers2().isEmpty() ? "?" : pFight.getFarmers2().values().iterator().next().getName();
+					return "COMBAT ELEVEUR " + pFight.getId() + " [" + farmer1 + " vs " + farmer2 + "]";
+				case TEAM:
+					return "COMBAT EQUIPE " + pFight.getId() + " [" + pFight.getTeam1_name() + " vs " + pFight.getTeam2_name() + "]";
+				default:
+			}
 		}
+		return "?";
 	}
 }

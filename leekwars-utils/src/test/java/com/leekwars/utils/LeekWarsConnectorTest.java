@@ -11,6 +11,14 @@ public class LeekWarsConnectorTest {
 		ErrorPasswordLeekWarsConnector lConnector = new ErrorPasswordLeekWarsConnector();
 		lConnector.connect();
 	}
+
+	@Test
+	@org.junit.Ignore
+	public void testGetVersion() throws LWException {
+		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("ignored", "ignored");
+
+		System.out.println("[JUNIT] Version courante de LW = " +  lConnector.getVersion());
+	}
 	
 	@Test
 	@org.junit.Ignore
@@ -19,7 +27,7 @@ public class LeekWarsConnectorTest {
 		
 		lConnector.connect();
 		System.out.println("[JUNIT] Connecté ...");
-		
+
 		System.out.println("[JUNIT] " + lConnector.getFarmer().getLeeks());
 		
 		//lConnector.getGarden();

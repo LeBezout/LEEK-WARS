@@ -74,7 +74,7 @@ public class GardenStatsWrapper {
 			return (float)victories;
 		}
 		//  Nombre victoires/Nombre défaites
-		return ((float)victories / (float)defeats);
+		return (float)victories / (float)defeats;
 	}
 	
 	/**

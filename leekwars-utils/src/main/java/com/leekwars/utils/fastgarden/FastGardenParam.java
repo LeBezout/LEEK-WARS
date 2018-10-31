@@ -1,100 +1,44 @@
 package com.leekwars.utils.fastgarden;
 
 /**
- * Paramétrage du Fast Garden
+ * Interface décrivant le paramétrage du Fast Garden
  * @author Bezout
  */
-public class FastGardenParam {
-
+public interface FastGardenParam {
 	/**
-	 * Nombre de tentatives maximales pour récupérer le résultat d'un combat
+	 * @return the maxStartFights
 	 */
-	private int maxRetryForFightResult = 10;
-	/**
-	 * Nombre de secondes à attendre pour laisser les combats se terminer 
-	 */
-	private int waitTimeToGetResults = 10;
-	/**
-	 * Nombre d'agressions maximales d'un seul éleveur
-	 */
-	private int maxFarmerAttacks = 2;
-	/**
-	 * Seuil d'acception en pourcentage d'un talent pour déterminer si l'on peut combattre l'adversaire
-	 * => pourcentage accepté d'écart entre 2 talents
-	 */
-	private int talentDiffAcceptance = 20;
-	
-	/**
-	 * Pour eviter les boucles infinies, nombres d'erreurs maximum tolérées (par entité)
-	 */
-	private int maxStartFightErrors = 20;
-	
-	/**
-	 * Constructeur
-	 */
-	public FastGardenParam() {
-		super();
-	}
-	
+	public int getMaxStartFights();
 	/**
 	 * @return the maxRetryForFightResult
 	 */
-	public int getMaxRetryForFightResult() {
-		return maxRetryForFightResult;
-	}
+	public int getMaxRetryForFightResult();
 	/**
-	 * @param pMaxRetryForFightResult the maxRetryForFightResult to set. Defaults to 10.
+	 * @return the waitTimeBeforeRetry [en secondes]
 	 */
-	public void setMaxRetryForFightResult(int pMaxRetryForFightResult) {
-		maxRetryForFightResult = pMaxRetryForFightResult;
-	}
+	public int getWaitTimeBeforeRetry();
 	/**
-	 * @return the waitTimeToGetResults
+	 * @return the waitTimeToGetResults [en secondes]
 	 */
-	public int getWaitTimeToGetResults() {
-		return waitTimeToGetResults;
-	}
-	/**
-	 * @param pWaitTimeToGetResults the waitTimeToGetResults to set. Defaults to 10.
-	 */
-	public void setWaitTimeToGetResults(int pWaitTimeToGetResults) {
-		waitTimeToGetResults = pWaitTimeToGetResults;
-	}
+	public int getWaitTimeToGetResults();
 	/**
 	 * @return the maxFarmerAttacks
 	 */
-	public int getMaxFarmerAttacks() {
-		return maxFarmerAttacks;
-	}
+	public int getMaxFarmerAttacks();
 	/**
-	 * @param pMaxFarmerAttacks the maxFarmerAttacks to set. Defaults to 2.
+	 * @return the talentDiffAcceptance [en %]
 	 */
-	public void setMaxFarmerAttacks(int pMaxFarmerAttacks) {
-		maxFarmerAttacks = pMaxFarmerAttacks;
-	}
-	/**
-	 * @return the talentDiffAcceptance
-	 */
-	public int getTalentDiffAcceptance() {
-		return talentDiffAcceptance;
-	}
-	/**
-	 * @param pTalentDiffAcceptance the talentDiffAcceptance to set. Defaults to 20.
-	 */
-	public void setTalentDiffAcceptance(int pTalentDiffAcceptance) {
-		talentDiffAcceptance = pTalentDiffAcceptance;
-	}
+	public int getTalentDiffAcceptance();
 	/**
 	 * @return the maxStartFightErrors
 	 */
-	public int getMaxStartFightErrors() {
-		return maxStartFightErrors;
-	}
+	public int getMaxStartFightErrors();
 	/**
-	 * @param pMaxStartFightErrors the maxStartFightErrors to set
+	 * @return the sleepTimeBetweenFights [en secondes]
 	 */
-	public void setMaxStartFightErrors(int pMaxStartFightErrors) {
-		maxStartFightErrors = pMaxStartFightErrors;
-	}
-	
+	public int getSleepTimeBetweenFights();
+    /**
+     * @return strategie de répartition
+     */
+	public FightingDistributionStrategy getFightingDistributionStrategy();
 }

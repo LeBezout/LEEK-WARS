@@ -12,8 +12,9 @@ public class Farmer extends Entity {
 	private Map<String, LeekSummary> leeks;
 	private long avatar_changed;
 	private int talent_more;
+	// avant LW 1.94 private FightSummary[] fights;
+	private long fights; // depuis LW 1.94 - nombre total de combats restant
 	private int victories;
-	private FightSummary[] fights;
 	private int draws;
 	private int defeats;
 	private double ratio;
@@ -39,7 +40,10 @@ public class Farmer extends Entity {
 	private Potion[] potions;
 	private Hat[] hats;
 	private DailyTournament tournament;
-	// candidacy
+	//private Fight[] fight_history
+	private int in_garden; // since 1.3.0
+	private int total_level; // since 1.3.0
+	private int leek_count; // since 1.3.0
 	
 	/**
 	 * @return the login
@@ -405,13 +409,13 @@ public class Farmer extends Entity {
 	/**
 	 * @return the fights
 	 */
-	public FightSummary[] getFights() {
+	public long/*FightSummary[]*/ getFights() {
 		return fights;
 	}
 	/**
 	 * @param pFights the fights to set
 	 */
-	public void setFights(FightSummary[] pFights) {
+	public void setFights(long/*FightSummary[]*/ pFights) {
 		fights = pFights;
 	}
 	/**
@@ -432,5 +436,59 @@ public class Farmer extends Entity {
 	 */
 	public LeekSummary getLeekFromId(final long pId) {
 		return leeks.get(String.valueOf(pId));
+	}
+
+	/**
+	 * @return 0 ou 1 ?
+	 * @since 1.3.0
+	 */
+	public int getIn_garden() {
+		return in_garden;
+	}
+	/**
+	 * @param pIn_garden
+	 * @since 1.3.0
+	 */
+	public void setIn_garden(int pIn_garden) {
+		in_garden = pIn_garden;
+	}
+
+	/**
+	 * @return
+	 * @since 1.4.0
+	 */
+	public boolean isInGarden() {
+		return in_garden == 1;
+	}
+
+	/**
+	 * @return level
+	 * @since 1.3.0
+	 */
+	public int getTotal_level() {
+		return total_level;
+	}
+	/**
+	 *
+	 * @param pTotal_level
+	 * @since 1.3.0
+	 */
+	public void setTotal_level(int pTotal_level) {
+		total_level = pTotal_level;
+	}
+
+	/**
+	 * @return 1, 2, 3, 4
+	 * @since 1.3.0
+	 */
+	public int getLeek_count() {
+		return leek_count;
+	}
+	/**
+	 * @param pLeek_count
+	 * @since 1.3.0
+	 */
+	public void setLeek_count(int pLeek_count) {
+		leek_count = pLeek_count;
 	}
 }
