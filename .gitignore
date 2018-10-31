@@ -5,6 +5,15 @@
 **/.classpath
 **/.project
 **/*.iml
+**/out/
+**/.sonarlint/
+**/*.tmp
+**/*.bak
+**/*.old
+**/*.sav
+**/Thumbs.db
+**/*.releaseBackup
+**/release.properties
 
 
 # Mobile Tools for Java (J2ME)
