@@ -83,6 +83,10 @@ Leek Wars JAVA Utilities for Farmers - version 1.4.1
 * _Les certificats LeekWars ont généralement une durée de validité de 3 mois_
 * La classe outil `com.leekwars.utils.tools.InstallCert` permet de générer le fichier "trust store"
 
+## How To
+
+* [Utiliser leekwars-utils](docs/how-to.md)
+
 ## Problèmes
 
 > `Exception in thread "main" java.awt.AWTError: Assistive Technology not found: org.GNOME.Accessibility.AtkWrapper`

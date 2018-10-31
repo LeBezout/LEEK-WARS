@@ -14,7 +14,7 @@ cd leekwars-utils
 mvn install
 ```
 
-## Créer son propre projet
+## Créer son propre projet
 
 Exécuter ce script shell d'initialisation : 
 
