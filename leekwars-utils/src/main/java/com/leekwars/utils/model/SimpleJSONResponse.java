@@ -1,7 +1,7 @@
 package com.leekwars.utils.model;
 
 /**
- * Réponse JSO minimal
+ * Réponse JSON minimale
  * @author Bezout
  */
 public class SimpleJSONResponse {

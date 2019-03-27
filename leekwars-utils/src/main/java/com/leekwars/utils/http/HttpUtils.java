@@ -48,11 +48,12 @@ public final class HttpUtils {
 	/** ------- GET DATA ---------
 	 * @param pURL url to call
 	 * @param pPHPSESSID cookie value
+     * @param pToken token JWT
 	 * @return response wrapper
 	 * @throws LWException
 	 */
-	public static HttpResponseWrapper get(final String pURL, final String pPHPSESSID) throws LWException {
-		final HttpURLConnection lConnection = getHttpConnection(pURL, "GET", pPHPSESSID);
+	public static HttpResponseWrapper get(final String pURL, final String pPHPSESSID, final String pToken) throws LWException {
+		final HttpURLConnection lConnection = getHttpConnection(pURL, "GET", pPHPSESSID,  pToken);
 		int lCode = 0;
 		try {
 			lConnection.connect();
@@ -71,11 +72,12 @@ public final class HttpUtils {
 	 * @param pURL url to call
 	 * @param pData data to send
 	 * @param pPHPSESSID cookie value
+     * @param pToken token JWT
 	 * @return response wrapper
 	 * @throws LWException
 	 */
-	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID) throws LWException {
-		final HttpURLConnection lConnection = getHttpConnection(pURL, "POST", pPHPSESSID);
+	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException {
+		final HttpURLConnection lConnection = getHttpConnection(pURL, "POST", pPHPSESSID, pToken);
 		int lCode;
 		if (pData != null && pData.trim().length() > 0) {
 			try {
@@ -114,10 +116,11 @@ public final class HttpUtils {
 	 * @param pURl url to call
 	 * @param pMethod (GET/POST)
 	 * @param pPHPSESSID valeur du cookie ou null
+     * @param pToken token JWT
 	 * @return HttpURLConnection
 	 * @throws LWException
 	 */
-	public static HttpURLConnection getHttpConnection(final String pURl, final String pMethod, final String pPHPSESSID) throws LWException {
+	public static HttpURLConnection getHttpConnection(final String pURl, final String pMethod, final String pPHPSESSID, final String pToken) throws LWException {
 		HttpURLConnection connection;
 		try {
 			connection = (HttpURLConnection)new URL(pURl).openConnection();
@@ -133,6 +136,9 @@ public final class HttpUtils {
 			if (pPHPSESSID != null) {
 				connection.addRequestProperty("Cookie", "PHPSESSID=" + pPHPSESSID);// + "; path=/; domain=leekwars.com; HttpOnly");
 			}
+            if (pToken != null) {
+                connection.addRequestProperty("Authorization", "Bearer " + pToken);
+            }
 			return connection;
 		} catch (IOException e) {
 			throw new LWException(e);

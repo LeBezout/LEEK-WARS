@@ -59,7 +59,7 @@ public class KeyValueCouple {
 	}
 	
 	/**
-	 * @throws LWException si non conforme à la règle des registres
+	 * @throws LWException si non conforme
 	 */
 	public void validate() throws LWException {
 		if (key == null || key.isEmpty()) {

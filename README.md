@@ -1,6 +1,6 @@
 # LEEK-WARS
 
-Leek Wars JAVA Utilities for Farmers - version 1.4.1
+Leek Wars JAVA Utilities for Farmers - version 1.5
 
 ## Liens
 
@@ -27,6 +27,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.4.1
 * 1.2 : ajout de méthodes pour la récupération des différents classements
 * 1.3 : prise en compte des changements dans l'API du potager suite à la version 1.94 de LeekWars
 * 1.4 : prise en compte de la version de l'API, ajout d'un "main" pour le fastgarden
+* 1.5 : prise en compte de la version 2.0.2 de LeekWars : le token est désormais passé au format JWT le header `Authorization: Bearer <token>`
 
 ## Infos développeurs
 

@@ -26,8 +26,9 @@ public abstract class AbstractLeekWarsConnector {
 	protected static final Logger LOGGER_TRACE = Logger.getLogger("JSON_TRACE");
 
 	protected static final String LEEK_WARS_ROOT_URL = "https://leekwars.com/api/";
+    protected static final String NO_TOKEN = null;
 
-	protected final Logger mLogger = Logger.getLogger(getClass().getName());
+    protected final Logger mLogger = Logger.getLogger(getClass().getName());
 	protected boolean mTrace;
 	private String mUsername;
 	private String mPassword;
@@ -131,19 +132,20 @@ public abstract class AbstractLeekWarsConnector {
 	//---------------------------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Validation basique de la réponse JSON. success=OK sinon exeption
-	 * @param pResponse
-	 * @param pDefaultMessage
-	 * @param pType
+	 * Validation basique de la réponse JSON. success=OK sinon execption
+	 * @param pResponse infos de la réponse HTTP
+	 * @param pDefaultMessage message d'erreur par défaut si pas la réponse JSON
+	 * @param pType type du wrapper de réponse
+     * @param pServiceAPIName nom du service appelé
 	 * @param <T>
 	 * @return
 	 * @throws LWException e
 	 */
-	protected <T extends SimpleJSONResponse> T validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final Class<T> pType) throws LWException {
+	protected <T extends SimpleJSONResponse> T validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final Class<T> pType, final String pServiceAPIName) throws LWException {
 		trace(pResponse, pType);
 		T lResponse = gson.fromJson(pResponse.getResponseText(), pType);
 		if (!lResponse.isSuccess()) {
-			throw new LWException(lResponse.getError() == null ? pDefaultMessage : lResponse.getError());
+			throw new LWException(pServiceAPIName + " : " + (lResponse.getError() == null ? pDefaultMessage : lResponse.getError()));
 		}
 		// OK
 		return lResponse;
@@ -151,30 +153,32 @@ public abstract class AbstractLeekWarsConnector {
 
 	/**
 	 * Pour les réponses simples OK/KO sans besoin de retour
-     * @param pResponse
-     * @param pDefaultMessage
+     * @param pResponse infos de la réponse HTTP
+     * @param pDefaultMessage message d'erreur par défaut si pas la réponse JSON
+     * @param pServiceAPIName nom du service appelé
      * @throws LWException e
 	 * @since 1.4.0
 	 */
-	protected void validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
-		validateResponse(pResponse, pDefaultMessage, SimpleJSONResponse.class);
+	protected void validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final String pServiceAPIName) throws LWException {
+		validateResponse(pResponse, pDefaultMessage, SimpleJSONResponse.class, pServiceAPIName);
 	}
 
 	/**
 	 * Spécifique à l'inscription aux tournois
-	 * @param pResponse
-	 * @param pDefaultMessage
+	 * @param pResponse infos de la réponse HTTP
+	 * @param pDefaultMessage message d'erreur par défaut si pas la réponse JSON
+     * @param pServiceAPIName nom du service appelé
 	 * @return true si inscription réalisée, false si déjà inscrit
 	 * @throws LWException e
 	 */
-	protected boolean validateRegisterTournamentResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage) throws LWException {
+	protected boolean validateRegisterTournamentResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final String pServiceAPIName) throws LWException {
 		trace(pResponse, SimpleJSONResponse.class);
 		SimpleJSONResponse lBasicResponse = gson.fromJson(pResponse.getResponseText(), SimpleJSONResponse.class);
 		if (!lBasicResponse.isSuccess()) {
 			if ("already_registered".equals(lBasicResponse.getError())) {
 				return false; // déjà inscrit
 			}
-			throw new LWException(lBasicResponse.getError() == null ? pDefaultMessage : lBasicResponse.getError());
+			throw new LWException(pServiceAPIName + " : " + (lBasicResponse.getError() == null ? pDefaultMessage : lBasicResponse.getError()));
 		}
 		// OK
 		return true;
@@ -206,18 +210,18 @@ public abstract class AbstractLeekWarsConnector {
 	//---------------------------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Connexion (récuparation du token et du php session id) via l'API
+	 * Connexion (récupération du token et du php session id) via l'API
 	 * @throws LWException e
 	 */
 	public final void connect() throws LWException {
 		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/login-token/"+mUsername+'/'+mPassword;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, null);
-		final LoginJSONResponse lLoginResponse = validateResponse(lResponse, "Can't connect to LeekWars for " + mUsername, LoginJSONResponse.class);
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, null, NO_TOKEN);
+		final LoginJSONResponse lLoginResponse = validateResponse(lResponse, "Can't connect to LeekWars for " + mUsername, LoginJSONResponse.class, "farmer/login-token");
 		mPhpSessionId = lResponse.getCookie("PHPSESSID");
 		mToken = lLoginResponse.getToken();
 		mFarmer = lLoginResponse.getFarmer();
-		mLogger.debug("TOKEN=" + mToken);
-		mLogger.debug("PHPSESSID=" + mPhpSessionId);
+		mLogger.info("TOKEN=" + mToken);
+		mLogger.info("PHPSESSID=" + mPhpSessionId);
 		mLogger.info("FARMER=" + mFarmer);
 		mLogger.info("TEAM=" + mFarmer.getTeam());
 	}
@@ -237,9 +241,9 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public final void invalidateToken() throws LWException {
 		checkConnected();
-		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/disconnect/" + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId); //TODO valider post/get
-		validateResponse(lResponse, "Bad token", SimpleJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/disconnect";
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken); //TODO valider post/get
+		validateResponse(lResponse, "Bad token", SimpleJSONResponse.class, "farmer/disconnect");
 		// OK
 		mToken = null;
 		mPhpSessionId = null;
@@ -267,8 +271,8 @@ public abstract class AbstractLeekWarsConnector {
 	    if (mVersion == -1) {
             final String lUrl = LEEK_WARS_ROOT_URL + "leek-wars/version";
             try {
-                final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, null);
-                final GetLWVersionJSONResponse lVersion = validateResponse(lResponse, "Cannot obtain the current LeekWars version", GetLWVersionJSONResponse.class);
+                final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, null, NO_TOKEN);
+                final GetLWVersionJSONResponse lVersion = validateResponse(lResponse, "Cannot obtain the current LeekWars version", GetLWVersionJSONResponse.class, "leek-wars/version");
                 mVersion = lVersion.getVersion();
             } catch (LWException lwe) {
                 mLogger.error("Impossible de récupérer la version de Leek Wars", lwe);
@@ -319,9 +323,9 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public void setLeekInGarden(final long pLeekId, final boolean pInGarden) throws LWException {
 		// leek/set-in-garden/<leek_id>/<in_garden>/<token>
-		String lUrl = LEEK_WARS_ROOT_URL + "leek/set-in-garden/" + pLeekId + '/' + pInGarden + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		validateResponse(lResponse, "Cannot set or unset leek in garden");
+		String lUrl = LEEK_WARS_ROOT_URL + "leek/set-in-garden/" + pLeekId + '/' + pInGarden;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		validateResponse(lResponse, "Cannot set or unset leek in garden", "leek/set-in-garden");
 	}
 	/**
 	 * Positionne ou non un poireau dans le potager
@@ -349,8 +353,8 @@ public abstract class AbstractLeekWarsConnector {
 	public long getFarmerRank(final RankType pType) throws LWException {
 		// ranking/get-farmer-rank/farmer_id/order
 		String lUrl = LEEK_WARS_ROOT_URL + "ranking/get-farmer-rank/" + mFarmer.getId() + '/' + pType.getValue();
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetRankJSONResponse lRank = validateResponse(lResponse, "Cannot obtain farmer rank value for " + pType, GetRankJSONResponse.class);
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, NO_TOKEN);
+		final GetRankJSONResponse lRank = validateResponse(lResponse, "Cannot obtain farmer rank value for " + pType, GetRankJSONResponse.class, "ranking/get-farmer-rank");
 		return lRank.getRank();
 	}
 
@@ -365,8 +369,8 @@ public abstract class AbstractLeekWarsConnector {
 	public long getLeekRank(final long pLeekId, final RankType pType) throws LWException {
 		// ranking/get-leek-rank/leek_id/order → rank
 		String lUrl = LEEK_WARS_ROOT_URL + "ranking/get-leek-rank/" + pLeekId + '/' + pType.getValue();
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetRankJSONResponse lRank = validateResponse(lResponse, "Cannot obtain leek rank value for " + pType, GetRankJSONResponse.class);
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, NO_TOKEN);
+		final GetRankJSONResponse lRank = validateResponse(lResponse, "Cannot obtain leek rank value for " + pType, GetRankJSONResponse.class, "ranking/get-leek-rank");
 		return lRank.getRank();
 	}
 
@@ -379,9 +383,9 @@ public abstract class AbstractLeekWarsConnector {
 	public FunRanking[] getFunRank()throws LWException {
 		checkConnected();
 		// ranking/fun/token
-		String lUrl = LEEK_WARS_ROOT_URL + "ranking/fun/" + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetFunRankingsJSONResponse lRankings = validateResponse(lResponse, "Cannot obtain fun ranking", GetFunRankingsJSONResponse.class);
+		String lUrl = LEEK_WARS_ROOT_URL + "ranking/fun";
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		final GetFunRankingsJSONResponse lRankings = validateResponse(lResponse, "Cannot obtain fun ranking", GetFunRankingsJSONResponse.class, "ranking/fun");
 		return lRankings.getRankings();
 	}
 
@@ -414,9 +418,9 @@ public abstract class AbstractLeekWarsConnector {
 	public void registerFarmerForNextTournament() throws LWException {
 		checkConnected();
 		// farmer/register-tournament/token
-		String lUrl = LEEK_WARS_ROOT_URL + "farmer/register-tournament/" + mToken;
-		HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		boolean inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the farmer " + mFarmer.getName());
+		String lUrl = LEEK_WARS_ROOT_URL + "farmer/register-tournament";
+		HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		boolean inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the farmer " + mFarmer.getName(), "farmer/register-tournament");
 		mLogger.info("Eleveur " + mFarmer.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
 	}
 
@@ -430,11 +434,11 @@ public abstract class AbstractLeekWarsConnector {
 		boolean inscrit;
 		HttpResponseWrapper lResponse;
 		// chacun des poireaux : leek/register-tournament/leek_id/token
-		final String urlPattern = LEEK_WARS_ROOT_URL + "leek/register-tournament/%d/" + mToken;
+		final String urlPattern = LEEK_WARS_ROOT_URL + "leek/register-tournament/%d";
 		for (LeekSummary lLeek : mFarmer.getLeeks().values()) {
 			lUrl = String.format(urlPattern, lLeek.getId());
-			lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-			inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the leek " + lLeek.getName());
+			lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+			inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the leek " + lLeek.getName(), "leek/register-tournament");
 			mLogger.info("Poireau " + lLeek.getName() + (inscrit ? " inscrit" : " déjà inscrit") + " au tournoi");
 		}
 	}
@@ -452,13 +456,13 @@ public abstract class AbstractLeekWarsConnector {
 		String lUrl; // team/register-tournament/composition_id/token
 		HttpResponseWrapper lResponse;
 		boolean inscrit;
-		final String urlPattern = LEEK_WARS_ROOT_URL + "team/register-tournament/%d/" + mToken;
+		final String urlPattern = LEEK_WARS_ROOT_URL + "team/register-tournament/%d";
 		for (TeamComposition lCompo : lTeamData.getCompositions()) {
 			// Si la compo contient au moins 4 membres
 			if (lCompo.getLeeks().length >= 4) {
 				lUrl = String.format(urlPattern, lCompo.getId());
-				lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-				inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the team composition " + lCompo.getName());
+				lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+				inscrit = validateRegisterTournamentResponse(lResponse, "Cannot register tournament for the team composition " + lCompo.getName(), "team/register-tournament");
 				mLogger.info("Composition " + lCompo.getName() + (inscrit ? " inscrite" : " déjà inscrite") + " au tournoi");
 			} else {
 				mLogger.warn("Composition " + lCompo.getName() + " ne peut être inscrite à un tournoi : " + lCompo.getLeeks().length + " poireau(x). 4 minimum attendus.");
@@ -480,8 +484,8 @@ public abstract class AbstractLeekWarsConnector {
 	public Team getTeam() throws LWException {
 		// team/get/team_id → team
 		final String lUrl = LEEK_WARS_ROOT_URL + "team/get/" + mFarmer.getTeam().getId();
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetTeamJSONResponse lTeam = validateResponse(lResponse, "Cannot obtain team", GetTeamJSONResponse.class);
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, NO_TOKEN);
+		final GetTeamJSONResponse lTeam = validateResponse(lResponse, "Cannot obtain team", GetTeamJSONResponse.class, "team/get");
 		return lTeam.getTeam();
 	}
 	
@@ -493,9 +497,9 @@ public abstract class AbstractLeekWarsConnector {
 	public TeamPrivate getTeamCompositions() throws LWException {
 		checkConnected();
 		// team/get-private/team_id/token
-		final String lUrl = LEEK_WARS_ROOT_URL + "team/get-private/" + mFarmer.getTeam().getId() + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetTeamPrivateJSONResponse lTeam = validateResponse(lResponse, "Cannot obtain team private data", GetTeamPrivateJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "team/get-private/" + mFarmer.getTeam().getId();
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		final GetTeamPrivateJSONResponse lTeam = validateResponse(lResponse, "Cannot obtain team private data", GetTeamPrivateJSONResponse.class, "team/get-private");
 		return lTeam.getTeam();
 	}
 
@@ -510,9 +514,9 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public Garden getGarden() throws LWException {
 		checkConnected();
-		final String lUrl = LEEK_WARS_ROOT_URL + "garden/get/" + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetGardenJSONResponse lGargen = validateResponse(lResponse, "Cannot obtain garden", GetGardenJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "garden/get";
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		final GetGardenJSONResponse lGargen = validateResponse(lResponse, "Cannot obtain garden", GetGardenJSONResponse.class, "garden/get");
 		return lGargen.getGarden();
 	}
 	/**
@@ -523,9 +527,9 @@ public abstract class AbstractLeekWarsConnector {
 	public LeekSummary[] getLeekOpponents(final long pLeekId) throws LWException {
 		checkConnected();
 		// garden/get-leek-opponents/leek_id/token → opponents
-		final String lUrl = LEEK_WARS_ROOT_URL + "garden/get-leek-opponents/" + pLeekId + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetLeekOpponentsJSONResponse lWrapper = validateResponse(lResponse, "Cannot obtain opponnents for leek", GetLeekOpponentsJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "garden/get-leek-opponents/" + pLeekId;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		final GetLeekOpponentsJSONResponse lWrapper = validateResponse(lResponse, "Cannot obtain opponents for leek", GetLeekOpponentsJSONResponse.class, "garden/get-leek-opponents");
 		return lWrapper.getOpponents();
 	}
 	/**
@@ -536,9 +540,9 @@ public abstract class AbstractLeekWarsConnector {
 	public FarmerSummary[] getFarmerOpponents() throws LWException {
 		checkConnected();
 		// garden/get-farmer-opponents/token → opponents
-		final String lUrl = LEEK_WARS_ROOT_URL + "garden/get-farmer-opponents/" + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetFarmerOpponentsJSONResponse lWrapper = validateResponse(lResponse, "Cannot obtain opponnents for famer", GetFarmerOpponentsJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "garden/get-farmer-opponents";
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		final GetFarmerOpponentsJSONResponse lWrapper = validateResponse(lResponse, "Cannot obtain opponents for farmer", GetFarmerOpponentsJSONResponse.class, "garden/get-farmer-opponents");
 		return lWrapper.getOpponents();
 	}
     /**
@@ -549,9 +553,9 @@ public abstract class AbstractLeekWarsConnector {
     public GardenEnemyTeamComposition[] getTeamOpponents(final long pCompoId) throws LWException {
         checkConnected();
         // garden/get-composition-opponents/composition/token → opponents
-        final String lUrl = LEEK_WARS_ROOT_URL + "garden/get-composition-opponents/" + pCompoId + '/' + mToken;
-        final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-        final GetTeamOpponentsJSONResponse lWrapper = validateResponse(lResponse, "Cannot obtain opponnents for team composition", GetTeamOpponentsJSONResponse.class);
+        final String lUrl = LEEK_WARS_ROOT_URL + "garden/get-composition-opponents/" + pCompoId;
+        final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+        final GetTeamOpponentsJSONResponse lWrapper = validateResponse(lResponse, "Cannot obtain opponents for team composition", GetTeamOpponentsJSONResponse.class, "garden/get-composition-opponents");
         return lWrapper.getOpponents();
     }
 
@@ -567,11 +571,12 @@ public abstract class AbstractLeekWarsConnector {
 	/*
 	 * Retourne l'id du combat demandé ou lève une exception en cas d'erreur
 	 * @param pResponse
+	 * @param pServiceAPIName
 	 * @return id
 	 * @throws LWException e
 	 */
-	private long genericStartFight(final HttpResponseWrapper pResponse) throws LWException {
-		final StartFightJSONResponse lFightResponse = validateResponse(pResponse, "Cannot start fight", StartFightJSONResponse.class);
+	private long genericStartFight(final HttpResponseWrapper pResponse, final String pServiceAPIName) throws LWException {
+		final StartFightJSONResponse lFightResponse = validateResponse(pResponse, "Cannot start fight", StartFightJSONResponse.class, pServiceAPIName);
 		return lFightResponse.getFight();
 	}
 
@@ -585,9 +590,9 @@ public abstract class AbstractLeekWarsConnector {
 	public long startSoloFight(final long pLeekId, final long pEnemyLeekId) throws LWException {
 		checkConnected();
 		// garden/start-solo-fight/leek_id/target_id/token → fight_id
-		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-solo-fight/" + pLeekId + '/' + pEnemyLeekId + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		return genericStartFight(lResponse);
+		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-solo-fight/" + pLeekId + '/' + pEnemyLeekId;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		return genericStartFight(lResponse, "garden/start-solo-fight");
 	}
 	
 	/**
@@ -599,9 +604,9 @@ public abstract class AbstractLeekWarsConnector {
 	public long startFarmerFight(final long pEnemyId) throws LWException {
 		checkConnected();
 		// garden/start-farmer-fight/target_id/token
-		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-farmer-fight/" + pEnemyId + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		return genericStartFight(lResponse);
+		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-farmer-fight/" + pEnemyId;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		return genericStartFight(lResponse, "garden/start-farmer-fight");
 	}
 	
 	/**
@@ -614,9 +619,9 @@ public abstract class AbstractLeekWarsConnector {
 	public long startTeamFight(final long pCompoId, final long pTargetTeamCompoId) throws LWException {
 		checkConnected();
 		// garden/start-team-fight/composition_id/target_id/token → fight_id
-		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-team-fight/" + pCompoId + '/' + pTargetTeamCompoId + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		return genericStartFight(lResponse);
+		final String lUrl = LEEK_WARS_ROOT_URL + "garden/start-team-fight/" + pCompoId + '/' + pTargetTeamCompoId;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		return genericStartFight(lResponse, "garden/start-team-fight");
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------
@@ -632,8 +637,8 @@ public abstract class AbstractLeekWarsConnector {
 	public Fight getFight(final long pFightId) throws LWException {
 		// fight/get/fight_id → fight
 		final String lUrl = LEEK_WARS_ROOT_URL + "fight/get/" + pFightId;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetFightJSONResponse lFightResponse = validateResponse(lResponse, "Cannot get fight " + pFightId, GetFightJSONResponse.class);
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, NO_TOKEN);
+		final GetFightJSONResponse lFightResponse = validateResponse(lResponse, "Cannot get fight " + pFightId, GetFightJSONResponse.class, "fight/get");
 		return lFightResponse.getFight();
 	}
 	
@@ -661,8 +666,8 @@ public abstract class AbstractLeekWarsConnector {
 	public void updateFarmer() throws LWException {
 		// farmer/get/farmer_id → farmer
 		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/get/" + mFarmer.getId();
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetFarmerJSONResponse lFarmerResponse = validateResponse(lResponse, "Cannot update farmer", GetFarmerJSONResponse.class);
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, NO_TOKEN);
+		final GetFarmerJSONResponse lFarmerResponse = validateResponse(lResponse, "Cannot update farmer", GetFarmerJSONResponse.class, "farmer/get");
 		mFarmer = lFarmerResponse.getFarmer();
 	}
 
@@ -674,9 +679,9 @@ public abstract class AbstractLeekWarsConnector {
 	 */
 	public List<Trophy> getUnlockedFarmerTrophies() throws LWException {
 		// trophy/get-farmer-trophies/farmer_id/lang/token → trophies
-		final String lUrl = LEEK_WARS_ROOT_URL + "trophy/get-farmer-trophies/" + mFarmer.getId() + '/' + mLang + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetFarmerTrophiesJSONResponse lTrophiesResponse = validateResponse(lResponse, "Cannot get farmer trophies", GetFarmerTrophiesJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "trophy/get-farmer-trophies/" + mFarmer.getId() + '/' + mLang;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		final GetFarmerTrophiesJSONResponse lTrophiesResponse = validateResponse(lResponse, "Cannot get farmer trophies", GetFarmerTrophiesJSONResponse.class, "trophy/get-farmer-trophies");
 		final List<Trophy> lTrophies = new ArrayList<>(lTrophiesResponse.getCount());
 		Trophy lTrophy;
 		for (final Map.Entry<String, Trophy> lEntry : lTrophiesResponse.getTrophies().entrySet()) {
@@ -699,9 +704,9 @@ public abstract class AbstractLeekWarsConnector {
 			return false;
 		}
 		// farmer/set-in-garden/<in_garden(true/false)>/<token>
-		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/set-in-garden/" + pInGarden + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		validateResponse(lResponse, "Cannot set or unset farmer in garden");
+		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/set-in-garden/" + pInGarden;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		validateResponse(lResponse, "Cannot set or unset farmer in garden", "farmer/set-in-garden");
 		return true;
 	}
 	
@@ -718,9 +723,9 @@ public abstract class AbstractLeekWarsConnector {
 	public KeyValueCouple[] getRegisters(final long pLeekId) throws LWException {
 		checkConnected();
 		// leek/get-registers/leek_id/token → registers
-		final String lUrl = LEEK_WARS_ROOT_URL + "leek/get-registers/" + pLeekId + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		final GetRegistersJSONResponse lRegistersResponse = validateResponse(lResponse, "Cannot get registers", GetRegistersJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "leek/get-registers/" + pLeekId;
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		final GetRegistersJSONResponse lRegistersResponse = validateResponse(lResponse, "Cannot get registers", GetRegistersJSONResponse.class, "leek/get-registers");
 		return lRegistersResponse.getRegisters();
 	}
 	
@@ -755,9 +760,9 @@ public abstract class AbstractLeekWarsConnector {
 		//	- La valeur, chaîne qui doit contenir 5000 caractères au maximum
 		pRegister.validateForRegister();
 		// leek/set-register/leek_id/key/value/token
-		final String lUrl = LEEK_WARS_ROOT_URL + "leek/set-register/" + pLeekId + '/' + HttpUtils.encodeUrlParam(pRegister.getKey()) + '/' + HttpUtils.encodeUrlParam(pRegister.getValue()) + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		validateResponse(lResponse, "Cannot set register", SimpleJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "leek/set-register/" + pLeekId + '/' + HttpUtils.encodeUrlParam(pRegister.getKey()) + '/' + HttpUtils.encodeUrlParam(pRegister.getValue());
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		validateResponse(lResponse, "Cannot set register", "leek/set-register");
 	}
 	
 	/**
@@ -774,9 +779,9 @@ public abstract class AbstractLeekWarsConnector {
 			return null; // ce registre n'existe pas
 		}
 		// leek/delete-register/leek_id/key/token
-		final String lUrl = LEEK_WARS_ROOT_URL + "leek/delete-register/" + pLeekId + '/' + HttpUtils.encodeUrlParam(pKey) + '/' + mToken;
-		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId);
-		validateResponse(lResponse, "Cannot delete register", SimpleJSONResponse.class);
+		final String lUrl = LEEK_WARS_ROOT_URL + "leek/delete-register/" + pLeekId + '/' + HttpUtils.encodeUrlParam(pKey);
+		final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		validateResponse(lResponse, "Cannot delete register", "leek/delete-register");
 		return lValue;
 	}
 	
