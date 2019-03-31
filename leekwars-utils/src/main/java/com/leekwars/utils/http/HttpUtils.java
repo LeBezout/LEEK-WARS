@@ -1,12 +1,14 @@
 package com.leekwars.utils.http;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
 import com.leekwars.utils.LWConst;
+import com.leekwars.utils.model.ErrorResponse;
 import org.apache.log4j.Logger;
 
 import com.leekwars.utils.LWUtils;
@@ -51,8 +53,9 @@ public final class HttpUtils {
      * @param pToken token JWT
 	 * @return response wrapper
 	 * @throws LWException
+     * @throws HttpException
 	 */
-	public static HttpResponseWrapper get(final String pURL, final String pPHPSESSID, final String pToken) throws LWException {
+	public static HttpResponseWrapper get(final String pURL, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
 		final HttpURLConnection lConnection = getHttpConnection(pURL, "GET", pPHPSESSID,  pToken);
 		int lCode = 0;
 		try {
@@ -74,9 +77,10 @@ public final class HttpUtils {
 	 * @param pPHPSESSID cookie value
      * @param pToken token JWT
 	 * @return response wrapper
-	 * @throws LWException
+     * @throws LWException
+     * @throws HttpException
 	 */
-	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException {
+	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
 		final HttpURLConnection lConnection = getHttpConnection(pURL, "POST", pPHPSESSID, pToken);
 		int lCode;
 		if (pData != null && pData.trim().length() > 0) {
@@ -149,28 +153,44 @@ public final class HttpUtils {
 	 * Lecture du flux de réponse HTTP
 	 * @param connection
 	 * @return réponse texte
-	 * @throws LWException
+     * @throws LWException
+     * @throws HttpException
 	 */
-	public static String readHttpResponse(final HttpURLConnection connection) throws LWException {
+	public static String readHttpResponse(final HttpURLConnection connection) throws LWException, HttpException {
 		try {
 			final int retCode = connection.getResponseCode();
 			LOGGER.debug("HTTP RETURN CODE " + retCode);
 			if (retCode >= HttpURLConnection.HTTP_OK && retCode < HttpURLConnection.HTTP_MULT_CHOICE) {
-				StringBuilder lResponseStr = new StringBuilder(HTTP_READ_BUFFER_CAPACITY);
-				final Scanner lScanner = new Scanner(connection.getInputStream(), LWUtils.defaultIfNull(connection.getContentEncoding(), LWConst.DEFAULT_ENCODING));
-				try {
-					while (lScanner.hasNextLine()) {
-						lResponseStr.append(lScanner.nextLine());
-					}
-					return lResponseStr.toString();
-				} finally {
-					lScanner.close();
-				}
+				return readResponse(connection.getInputStream(), connection.getContentEncoding());
 			} else {
-				throw new LWException("HTTP ERROR : " + retCode); // on ne lit même pas l'errorStream !
+                String errorMessage = readResponse(connection.getErrorStream(), connection.getContentEncoding());
+                if (errorMessage.isEmpty() || "{}".equals(errorMessage) || "[]".equals(errorMessage)) {
+                    LOGGER.error("Erreur " + retCode + " lors de l'appel de " + connection.getURL() + " : " + connection.getResponseMessage());
+                    throw new HttpException("HTTP ERROR : " + retCode + " : " + connection.getResponseMessage(), retCode, connection.getResponseMessage());
+                } else {
+                    LOGGER.error("Erreur " + retCode + " lors de l'appel de " + connection.getURL() + " : " + LWUtils.formatJsonString(errorMessage));
+                    ErrorResponse errorResponse = LWUtils.parseJson(errorMessage, ErrorResponse.class);
+                    throw new HttpException(errorResponse, retCode, connection.getResponseMessage());
+                }
 			}
 		} catch (IOException e) {
 			throw new LWException(e);
 		}
 	}
+
+	/*
+	 * Lecture du stream de réponse
+	 */
+	private static String readResponse(final InputStream pStream, final String pEncoding) {
+        final StringBuilder lResponseStr = new StringBuilder(HTTP_READ_BUFFER_CAPACITY);
+        final Scanner lScanner = new Scanner(pStream, LWUtils.defaultIfNull(pEncoding, LWConst.DEFAULT_ENCODING));
+        try {
+            while (lScanner.hasNextLine()) {
+                lResponseStr.append(lScanner.nextLine());
+            }
+        } finally {
+            lScanner.close();
+        }
+        return lResponseStr.toString();
+    }
 }

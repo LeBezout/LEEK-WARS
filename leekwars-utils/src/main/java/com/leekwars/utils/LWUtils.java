@@ -8,6 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import com.leekwars.utils.enums.FightContext;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.enums.FightType;
@@ -16,15 +19,37 @@ import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.model.Identity;
 import com.leekwars.utils.model.LeekSummary;
+import com.leekwars.utils.model.SimpleJSONResponse;
 
 /**
  * Utilitaires divers
  * @author Bezout
  */
 public final class LWUtils {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private LWUtils() {}
-	
-	/**
+
+    /**
+     * Formatte une chaine JSON
+     * @param pJSON chaine JSON
+     * @return JSON formatté
+     */
+	public static String formatJsonString(final String pJSON) {
+	    return GSON.toJson(new JsonParser().parse(pJSON));
+    }
+
+    /**
+     * Convertit une chaine JSON en objet Java
+     * @param pJSON chaine JSON
+     * @param pType type du wrapper de réponse
+     * @param <T>
+     * @return
+     */
+    public static  <T extends SimpleJSONResponse> T parseJson(final String pJSON, final Class<T> pType) {
+	    return GSON.fromJson(pJSON, pType);
+    }
+
+    /**
 	 * Attente en secondes
 	 * @param pSeconds
 	 */
@@ -37,7 +62,7 @@ public final class LWUtils {
 	}
 	/**
 	 * Attente en millisecondes
-	 * @param pMs
+	 * @param pMs nb ms
 	 */
 	public static void sleepMS(final int pMs) {
 		try {
@@ -48,7 +73,7 @@ public final class LWUtils {
 	}
 	/**
 	 * Attente en secondes avec affichage d'un décompte sur la console
-	 * @param pSeconds
+	 * @param pSeconds nb sec
 	 */
 	public static void waitFor(final int pSeconds) {
 		if (pSeconds < 1) return; 
@@ -60,7 +85,7 @@ public final class LWUtils {
 	
 	/**
 	 * Permet d'ouvrir un fichier dans un browser
-	 * @param pFile
+	 * @param pFile fichier à ouvrir
 	 * @throws LWException
 	 */
 	public static void openFileInDefaultBrowser(final File pFile) throws LWException {

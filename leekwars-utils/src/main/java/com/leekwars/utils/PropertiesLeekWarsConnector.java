@@ -7,7 +7,7 @@ import java.util.Properties;
 
 /**
  * Classe permettant de définir Login et MDP dans un fichier properties
- * Permet aussi de stocker la version attendue de LW
+ * Permet aussi de stocker la version attendue de LW et l'indicateur d'activation des traces des flux.
  * @author Bezout
  */
 public class PropertiesLeekWarsConnector extends AbstractLeekWarsConnector {
@@ -52,6 +52,7 @@ public class PropertiesLeekWarsConnector extends AbstractLeekWarsConnector {
         String mode = pProps.getProperty("lw.mode");
         String password = pProps.getProperty("lw.password");
         String lVersion = pProps.getProperty("lw.expectedVersion");
+        String lTrace = pProps.getProperty("lw.trace");
         if (lVersion != null && !lVersion.isEmpty()) {
             expectedVersion = Integer.parseInt(lVersion);
         }
@@ -65,6 +66,10 @@ public class PropertiesLeekWarsConnector extends AbstractLeekWarsConnector {
             // JAVA8 : (java.util.)Base64.getDecoder().decode(password)
             String lPwd = new String(new org.apache.commons.codec.binary.Base64().decode(password));
             setPassword(lPwd);
+        }
+        // since 1.6
+        if (Boolean.parseBoolean(lTrace)) {
+            setTrace(true);
         }
     }
 

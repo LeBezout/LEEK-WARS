@@ -5,33 +5,5 @@ package com.leekwars.utils.model;
  * @author Bezout
  */
 public class SimpleJSONResponse {
-
-	private boolean success;
-	private String error;
-
-	/**
-	 * @return the success
-	 */
-	public boolean isSuccess() {
-		return success;
-	}
-	/**
-	 * @param pSuccess the success to set
-	 */
-	public void setSuccess(boolean pSuccess) {
-		success = pSuccess;
-	}
-	/**
-	 * @return the error
-	 */
-	public String getError() {
-		return error;
-	}
-	/**
-	 * @param pError the error to set
-	 */
-	public void setError(String pError) {
-		error = pError;
-	}
-	
+    // désormais vide depuis LW 2.0.2 (2019-03) => token JWT + utilisation des status HTTP (200, 400, ...)
 }
