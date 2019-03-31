@@ -8,18 +8,18 @@ package com.leekwars.utils.reports;
  */
 public enum LWIcons {
     // Flag de combats
-    FIGHT_FLAG_PERFECT("http://leekwars.com/static/image/fight_flag/perfect.png", "Perfect", "Perfect"),
-    FIGHT_FLAG_STATIC("http://leekwars.com/static/image/fight_flag/static.png", "Static", "Static"),
+    FIGHT_FLAG_PERFECT("https://leekwars.com/static/image/fight_flag/perfect.png", "Perfect", "Perfect"),
+    FIGHT_FLAG_STATIC("https://leekwars.com/static/image/fight_flag/static.png", "Static", "Static"),
     // Drapeaux de pays
-    COUNTRY_FLAG_FR("http://leekwars.com/static/image/flag/32/fr.png", "Language=FR", "Langue=FR"),
-    COUNTRY_FLAG_EN("http://leekwars.com/static/image/flag/32/gb.png", "Language=EN", "Langue=EN"),
+    COUNTRY_FLAG_FR("https://leekwars.com/static/image/flag/32/fr.png", "Language=FR", "Langue=FR"),
+    COUNTRY_FLAG_EN("https://leekwars.com/static/image/flag/32/gb.png", "Language=EN", "Langue=EN"),
     //
-    DEAD("http://leekwars.com/static/image/cross.png", "Defeat", "Défaite"),
-    GARDEN("http://leekwars.com/static/image/icon/garden.png", "Garden", "Potager"),
-    FIGHT("http://leekwars.com/static/image/notif/fight.png", "Fight", "Combat"),
+    DEAD("https://leekwars.com/static/image/cross.png", "Defeat", "Défaite"),
+    GARDEN("https://leekwars.com/static/image/icon/garden.png", "Garden", "Potager"),
+    FIGHT("https://leekwars.com/static/image/notif/fight.png", "Fight", "Combat"),
     TTEAM_FIGHT("https://leekwars.com/static//image/notif/team_fight.png", "Team Fight", "Combat d'équipe"),
-    RANKING("http://leekwars.com/static/image/icon/ranking.png", "Ranking", "Classement"),
-    GEAR("http://leekwars.com/static/image/gearing_small_white.png", "Config", "Paramétrage"),
+    RANKING("https://leekwars.com/static/image/icon/ranking.png", "Ranking", "Classement"),
+    GEAR("https://leekwars.com/static/image/gearing_small_white.png", "Config", "Paramétrage"),
     SEARCH("https://leekwars.com/static/image/search.png", "Search", "Rechercher"),
     MAIL("https://leekwars.com/static/image/icon/message.png", "Mail", "Message"),
     TOURNAMENT_VICTORY("https://leekwars.com/static//image/notif/tournament_win.png", "Victory", "Victoire"),
@@ -29,12 +29,12 @@ public enum LWIcons {
     HAB("https://leekwars.com/static/image/hab.png", "Hab", "Hab"),
     CRYSTAL("https://leekwars.com/static/image/crystal.png", " Crystal", "Cristal"),
     // Entités
-    LEEK("http://leekwars.com/static/image/icon/house.png", "Leek", "Poireau"),
-    FARMER("http://leekwars.com/static/image/trophy/artist.png", "Farmer", "Eleveur"),
-    TEAM("http://leekwars.com/static/image/icon/team.png", "Team", "Equipe"),
+    LEEK("https://leekwars.com/static/image/icon/house.png", "Leek", "Poireau"),
+    FARMER("https://leekwars.com/static/image/trophy/artist.png", "Farmer", "Eleveur"),
+    TEAM("https://leekwars.com/static/image/icon/team.png", "Team", "Equipe"),
     // Menu
     MARKET("https://leekwars.com/static/image/icon/market.png", "Market", "Marché"),
-    EDITOR("http://leekwars.com/static/image/gearing_small_white.png", "Editor", "Editeur"),
+    EDITOR("https://leekwars.com/static/image/gearing_small_white.png", "Editor", "Editeur"),
     TROPHY("https://leekwars.com/static/image/icon/trophy.png", "Trophy", "Trophée"),
     HELP("https://leekwars.com/static/image/icon/help.png", "Help", "Aide"),
     CHAT("https://leekwars.com/static/image/icon/forum.png", "Chat", "Discussions"),

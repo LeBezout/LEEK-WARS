@@ -149,18 +149,18 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	private static Map<String, String> initIconsMap() {
 		Map<String, String> lMap = new HashMap<>(12, 1);
-		lMap.put("perfect", "<img src=\"http://leekwars.com/static/image/fight_flag/perfect.png\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("static", 	"<img src=\"http://leekwars.com/static/image/fight_flag/static.png\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("dead", 	"<img src=\"http://leekwars.com/static/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("garden", 	"<img src=\"http://leekwars.com/static/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("fight", 	"<img src=\"http://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("ranking", "<img src=\"http://leekwars.com/static/image/icon/ranking.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("gearing", "<img src=\"http://leekwars.com/static/image/gearing_small_white.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("flag_fr", "<img src=\"http://leekwars.com/static/image/flag/32/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("flag_en", "<img src=\"http://leekwars.com/static/image/flag/32/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("leek", 	"<img src=\"http://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("farmer", 	"<img src=\"http://leekwars.com/static/image/trophy/artist.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("team", 	"<img src=\"http://leekwars.com/static/image/icon/team.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("perfect", "<img src=\"https://leekwars.com/static/image/fight_flag/perfect.png\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("static", 	"<img src=\"https://leekwars.com/static/image/fight_flag/static.png\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("dead", 	"<img src=\"https://leekwars.com/static/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("garden", 	"<img src=\"https://leekwars.com/static/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("fight", 	"<img src=\"https://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("ranking", "<img src=\"https://leekwars.com/static/image/icon/ranking.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("gearing", "<img src=\"https://leekwars.com/static/image/gearing_small_white.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("flag_fr", "<img src=\"https://leekwars.com/static/image/flag/32/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("flag_en", "<img src=\"https://leekwars.com/static/image/flag/32/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("leek", 	"<img src=\"https://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("farmer", 	"<img src=\"https://leekwars.com/static/image/trophy/artist.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("team", 	"<img src=\"https://leekwars.com/static/image/icon/team.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		return Collections.unmodifiableMap(lMap);
 	}
 	private static String getIcon(final String pKey, int width, int height) {
@@ -177,7 +177,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		mHeadTitle = (isFR() ? "Rapport FastGarden pour " : "FastGarden Report for ") + pFarmer.getName();
 		mBody = new StringBuilder(15 * 1024); // 15kio
 		mFarmer = pFarmer;
-		addBodyLine(String.format("<h1 style=\"display:inline\"><img src=\"http://leekwars.com/static/image/logo.png\"/> %d - %s %s</h1>", mLWVersion, mPageTitle, getIcon("flag_" + mLang, 32, 32)));
+		addBodyLine(String.format("<h1 style=\"display:inline\"><img src=\"https://leekwars.com/static/image/logo.png\"/> %d - %s %s</h1>", mLWVersion, mPageTitle, getIcon("flag_" + mLang, 32, 32)));
 		addBodyLine("<br/>");
 		addBodyLine("<div class=\"container\">");
 	}
@@ -325,7 +325,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<br/>");
 		addBodyLine("</div>"); // container
 		addBodyLine("<div class=\"copyright\">");
-		addBodyLine(String.format("\t%s Version %s - <a href=\"https://leekwars.com/farmer/16748\">Bezout</a> (c) 2016 - %s <a href=\"https://leekwars.com/help/api\">%s</a> v%d %s",
+		addBodyLine(String.format("\t%s Version %s - <a href=\"https://leekwars.com/farmer/16748\">Bezout</a> (c) 2016-2019 - %s <a href=\"https://leekwars.com/help/api\">%s</a> v%d %s",
                     getIcon("fight", 12, 12),
                     VERSION_TEMPLATE,
 					isFR() ? "Généré en Java depuis" : "Java Powered by",
