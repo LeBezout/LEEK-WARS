@@ -45,7 +45,7 @@ public final class LWUtils {
      * @param <T>
      * @return
      */
-    public static  <T extends SimpleJSONResponse> T parseJson(final String pJSON, final Class<T> pType) {
+    public static  <T> T parseJson(final String pJSON, final Class<T> pType) {
 	    return GSON.fromJson(pJSON, pType);
     }
 
