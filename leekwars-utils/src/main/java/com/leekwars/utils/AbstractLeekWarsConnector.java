@@ -136,7 +136,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @param <T>
 	 * @return objet Java créé depuis la réponse JSON au format texte
 	 */
-	protected <T extends SimpleJSONResponse> T parseResponse(final HttpResponseWrapper pResponse,  final Class<T> pType) {
+	protected <T> T parseResponse(final HttpResponseWrapper pResponse,  final Class<T> pType) {
 		trace(pResponse, pType);
 		T lResponse = LWUtils.parseJson(pResponse.getResponseText(), pType);
 
@@ -144,45 +144,12 @@ public abstract class AbstractLeekWarsConnector {
 		return lResponse;
 	}
 
-//	/**
-//	 * Pour les réponses simples OK/KO sans besoin de retour
-//     * @param pResponse infos de la réponse HTTP
-//     * @param pDefaultMessage message d'erreur par défaut si pas la réponse JSON
-//     * @param pServiceAPIName nom du service appelé
-//     * @throws LWException e
-//	 * @since 1.4.0
-//	 */
-//	protected void validateResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final String pServiceAPIName) throws LWException {
-//		validateResponse(pResponse, pDefaultMessage, SimpleJSONResponse.class, pServiceAPIName);
-//	}
-
-//	/**
-//	 * Spécifique à l'inscription aux tournois
-//	 * @param pResponse infos de la réponse HTTP
-//	 * @param pDefaultMessage message d'erreur par défaut si pas la réponse JSON
-//     * @param pServiceAPIName nom du service appelé
-//	 * @return true si inscription réalisée, false si déjà inscrit
-//	 * @throws LWException e
-//	 */
-//	protected boolean validateRegisterTournamentResponse(final HttpResponseWrapper pResponse, final String pDefaultMessage, final String pServiceAPIName) throws LWException {
-//		trace(pResponse, SimpleJSONResponse.class);
-//		SimpleJSONResponse lBasicResponse = LWUtils.parseJson(pResponse.getResponseText(), SimpleJSONResponse.class);
-//		if (!lBasicResponse.isSuccess()) {
-//			if ("already_registered".equals(lBasicResponse.getError())) {
-//				return false; // déjà inscrit
-//			}
-//			throw new LWException(pServiceAPIName + " : " + (lBasicResponse.getError() == null ? pDefaultMessage : lBasicResponse.getError()));
-//		}
-//		// OK
-//		return true;
-//	}
-	
 	/**
 	 * Trace du flux JSON recu du serveur LW
 	 * @param pResponse flux JSON brut
 	 * @param pType type attendu en sortie (informatif)
 	 */
-	protected <T extends SimpleJSONResponse> void trace(final HttpResponseWrapper pResponse, final Class<T> pType) {
+	protected <T> void trace(final HttpResponseWrapper pResponse, final Class<T> pType) {
 		if (mTrace) {
 			try {
 				LOGGER_TRACE.info(LWConst.LOG_SEPARATOR);
@@ -538,8 +505,8 @@ public abstract class AbstractLeekWarsConnector {
 		final String lUrl = LEEK_WARS_ROOT_URL + "team/get-private/" + mFarmer.getTeam().getId();
 		try {
             final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
-            final GetTeamPrivateJSONResponse lTeam = parseResponse(lResponse,  GetTeamPrivateJSONResponse.class);
-            return lTeam.getTeam();
+            final TeamPrivate lTeam = parseResponse(lResponse, TeamPrivate.class);
+            return lTeam;
         } catch (HttpException e) {
             throw new LWException(e.getErrorMessage("Can't obtain team private data"));
         }
