@@ -15,11 +15,11 @@ import com.leekwars.utils.enums.FightContext;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.enums.FightType;
 import com.leekwars.utils.exceptions.LWException;
+import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.model.Identity;
 import com.leekwars.utils.model.LeekSummary;
-import com.leekwars.utils.model.SimpleJSONResponse;
 
 /**
  * Utilitaires divers
@@ -28,6 +28,17 @@ import com.leekwars.utils.model.SimpleJSONResponse;
 public final class LWUtils {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private LWUtils() {}
+
+    /**
+     * Retourne une entité inconnu
+     * @return Entity
+     * @since 1.6.0
+     */
+	public static Entity getUnknonwEntity() {
+        Entity unknown = new Entity();
+        unknown.setName("Unknown");
+        return unknown;
+    }
 
     /**
      * Formatte une chaine JSON

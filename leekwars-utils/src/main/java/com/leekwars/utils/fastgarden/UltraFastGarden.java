@@ -517,54 +517,62 @@ public abstract class UltraFastGarden {
 			
 			// interroger pour connaitre le résultat
 			lFightTmp = pConnector.getFight(lFight.getFightId());
-			lResult = LWUtils.getFightResult(lFarmer, lFightTmp);
-			switch (lResult) {
-				case UNKNOWN :
-					if (retry < mParams.getMaxRetryForFightResult()) {
-						i--; // on reste sur le meme combat
-						retry++;
-						LWUtils.waitFor(Math.max(1, mParams.getWaitTimeBeforeRetry())); // on attend pour retenter notre chance
-					} else {
-						pVisitor.onMessage(new MessageWrapper(lFight.getEntity(), 
-								"Impossible de récupérer le résultat du combat " + lFight.getFightId(), 
-								"Unable to retrieve result for fight " + lFight.getFightId()));
-						retry = 0; // reinit
-						/*
-						 * ON_RESULT(UNKNOWN, lFight)
-						 */
-						pVisitor.onResult(lFightTmp, FightResult.UNKNOWN);
-						lEntityStats.incTotalFights();
-					}
-					break;
-				case DRAW : 
-					retry = 0;
-					lEntityStats.incDraws();
-					lFight.setTurnCount(64);
-					break;
-				case VICTORY : 
-					retry = 0;
-					lEntityStats.incVictories();
-					lFight.setTurnCount(lFightTmp.getReport().getDuration());
-					break;
-				case DEFEAT :
-					retry = 0;
-					lEntityStats.incDefeats();
-					lFight.setTurnCount(lFightTmp.getReport().getDuration());
-					break; 
-				default: break;
-			}
-			
-			if (lResult == FightResult.UNKNOWN) {
-				LOGGER.info(LWConst.STR_TAB + lFight + " -- attente du résultat (" + retry + ") --");
-			} else {
-				LOGGER.info(LWConst.STR_TAB + lFight + " : " + lResult + " en " + lFight.getTurnCount() + " tours");
-				/*
-				 * ON_RESULT(lResult, lFight)
-				 */
-				pVisitor.onResult(lFightTmp, lResult);
-				lEntityStats.incTotalFights();
-				LWUtils.sleepMS(500);
-			}
+			if (lFightTmp == null) {
+                LOGGER.warn("getFight a retourné null pour l'identifiant " + lFight.getFightId());
+                pVisitor.onMessage(new MessageWrapper(lFight.getEntity(),
+                    "Impossible de récupérer le résultat du combat " + lFight.getFightId(),
+                    "Unable to retrieve result for fight " + lFight.getFightId()));
+            } else {
+                lResult = LWUtils.getFightResult(lFarmer, lFightTmp);
+                switch (lResult) {
+                    case UNKNOWN:
+                        if (retry < mParams.getMaxRetryForFightResult()) {
+                            i--; // on reste sur le meme combat
+                            retry++;
+                            LWUtils.waitFor(Math.max(1, mParams.getWaitTimeBeforeRetry())); // on attend pour retenter notre chance
+                        } else {
+                            pVisitor.onMessage(new MessageWrapper(lFight.getEntity(),
+                                "Impossible de récupérer le résultat du combat " + lFight.getFightId(),
+                                "Unable to retrieve result for fight " + lFight.getFightId()));
+                            retry = 0; // reinit
+                            /*
+                             * ON_RESULT(UNKNOWN, lFight)
+                             */
+                            pVisitor.onResult(lFightTmp, FightResult.UNKNOWN);
+                            lEntityStats.incTotalFights();
+                        }
+                        break;
+                    case DRAW:
+                        retry = 0;
+                        lEntityStats.incDraws();
+                        lFight.setTurnCount(64);
+                        break;
+                    case VICTORY:
+                        retry = 0;
+                        lEntityStats.incVictories();
+                        lFight.setTurnCount(lFightTmp.getReport().getDuration());
+                        break;
+                    case DEFEAT:
+                        retry = 0;
+                        lEntityStats.incDefeats();
+                        lFight.setTurnCount(lFightTmp.getReport().getDuration());
+                        break;
+                    default:
+                        break;
+                }
+
+                if (lResult == FightResult.UNKNOWN) {
+                    LOGGER.info(LWConst.STR_TAB + lFight + " -- attente du résultat (" + retry + ") --");
+                } else {
+                    LOGGER.info(LWConst.STR_TAB + lFight + " : " + lResult + " en " + lFight.getTurnCount() + " tours");
+                    /*
+                     * ON_RESULT(lResult, lFight)
+                     */
+                    pVisitor.onResult(lFightTmp, lResult);
+                    lEntityStats.incTotalFights();
+                    LWUtils.sleepMS(500);
+                }
+            }
 		}
 
 		/*
