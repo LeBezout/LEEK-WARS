@@ -36,7 +36,7 @@ public abstract class AbstractLeekWarsConnector {
 	private Farmer mFarmer;
 	private String mLang = "fr";
 	private int mVersion = -1;
-	
+
 	/**
 	 * @return login du compte LW
 	 */
@@ -55,7 +55,7 @@ public abstract class AbstractLeekWarsConnector {
 	protected final String getToken() {
 		return mToken;
 	}
-	
+
 	/**
 	 * Permet d'activer les traces des flux JSON recus dans un logger dédié nommé JSON_TRACE
 	 * @param pActiveTrace true pour logger les flux
@@ -63,14 +63,14 @@ public abstract class AbstractLeekWarsConnector {
 	public void setTrace(final boolean pActiveTrace) {
 		mTrace = pActiveTrace;
 	}
-	
+
 	/**
 	 * @return infos de l'éléveur
 	 */
 	public final Farmer getFarmer() {
 		return mFarmer;
 	}
-	
+
 	/**
 	 * @param pUsername login
 	 */
@@ -89,7 +89,7 @@ public abstract class AbstractLeekWarsConnector {
 	public final void setLang(final String pLang) {
 		mLang = pLang;
 	}
-	
+
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- OUTILS
 	//---------------------------------------------------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ public abstract class AbstractLeekWarsConnector {
 		}
 		throw new LWException(String.format("Leek %s not found", pLeekName));
 	}
-	
+
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- GENERIQUE
 	//---------------------------------------------------------------------------------------------------------------------------------
@@ -164,11 +164,11 @@ public abstract class AbstractLeekWarsConnector {
 			}
 		}
 	}
-	
+
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- CONNEXION / DECONNEXION
 	//---------------------------------------------------------------------------------------------------------------------------------
-	
+
 	/**
 	 * Connexion (récupération du token et du php session id) via l'API
 	 * @throws LWException e
@@ -189,7 +189,7 @@ public abstract class AbstractLeekWarsConnector {
 		    throw new LWException(e.getErrorMessage("Can't connect to LeekWars for user " + mUsername));
         }
 	}
-	
+
 	/**
 	 * Connexion (récupération du token et du php session id) via l'API seulement si pas déjà connecté.
 	 * @throws LWException e
@@ -199,7 +199,7 @@ public abstract class AbstractLeekWarsConnector {
 			connect();
 		}
 	}
-	
+
 	/**
 	 * @throws LWException e
 	 */
@@ -216,7 +216,7 @@ public abstract class AbstractLeekWarsConnector {
             throw new LWException(e.getErrorMessage("Bad token for user " + mUsername));
         }
 	}
-	
+
 	/**
 	 * Leve une exception si non connecté (pas de token récupéré)
 	 * @throws LWException e
@@ -376,7 +376,7 @@ public abstract class AbstractLeekWarsConnector {
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- TOURNOIS
 	//---------------------------------------------------------------------------------------------------------------------------------
-	
+
 	/**
 	 * Permet d'inscrire tous les poireaux et l'éleveur aux prochains tournois
 	 * @throws LWException e
@@ -388,7 +388,7 @@ public abstract class AbstractLeekWarsConnector {
 		mLogger.info(LWConst.LOG_SEPARATOR);
 		// 1. l'eleveur
 		registerFarmerForNextTournament();
-		
+
 		// 2. chacun des poireaux
 		registerLeeksForNextTournaments();
 
@@ -439,7 +439,7 @@ public abstract class AbstractLeekWarsConnector {
             }
 		}
 	}
-	
+
 	/**
 	 * Permet d'inscrire toutes les compositions de l'équipe aux prochains tournois
 	 * @throws LWException e
@@ -471,11 +471,11 @@ public abstract class AbstractLeekWarsConnector {
 		}
 		mLogger.info(LWConst.LOG_SEPARATOR);
 	}
-	
+
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- EQUIPE
 	//---------------------------------------------------------------------------------------------------------------------------------
-	
+
 	/**
 	 * Récupération de l'équipe du farmer.
 	 * ! CONNEXION NON NECESSAIRE !
@@ -493,7 +493,7 @@ public abstract class AbstractLeekWarsConnector {
             throw new LWException(e.getErrorMessage("Can't obtain team"));
         }
 	}
-	
+
 	/**
 	 * Récupération des informations privées (compositions par exemples) de l'équipe du farmer.
 	 * @return TeamPrivate
@@ -515,7 +515,7 @@ public abstract class AbstractLeekWarsConnector {
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- POTAGER
 	//---------------------------------------------------------------------------------------------------------------------------------
-	
+
 	/**
      * Obtention du potager
 	 * @return Garden
@@ -639,7 +639,7 @@ public abstract class AbstractLeekWarsConnector {
             throw new LWException(e.getErrorMessage("Can't start fight for farmer " + mFarmer.getName() + " against farmer " + pEnemyId));
         }
 	}
-	
+
 	/**
 	 * Démarre un combat d'équipe et retourne son id si OK
 	 * @param pCompoId
@@ -658,11 +658,11 @@ public abstract class AbstractLeekWarsConnector {
             throw new LWException(e.getErrorMessage("Can't start fight for team " + pCompoId + " against team " + pTargetTeamCompoId));
         }
 	}
-	
+
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//-------------------- COMBATS
 	//---------------------------------------------------------------------------------------------------------------------------------
-	
+
 	/**
 	 * Récupère les informations d'un combat, utile pour connaitre le resultat après avoir lancé le combat en asynchrone.
 	 * ! CONNEXION NON NECESSAIRE !
@@ -674,13 +674,14 @@ public abstract class AbstractLeekWarsConnector {
 		final String lUrl = LEEK_WARS_ROOT_URL + "fight/get/" + pFightId;
 		try {
             final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, NO_TOKEN);
-            final GetFightJSONResponse lFightResponse = parseResponse(lResponse, GetFightJSONResponse.class);
-            return lFightResponse.getFight();
+//            final GetFightJSONResponse lFightResponse = parseResponse(lResponse, GetFightJSONResponse.class);
+//            return lFightResponse.getFight();
+            return parseResponse(lResponse, Fight.class);
         } catch (HttpException e) {
             throw new LWException(e.getErrorMessage("Can't get fight " + pFightId));
         }
 	}
-	
+
 //	/**
 //	 * @param pFightId id du combat
 //	 * @throws LWException e

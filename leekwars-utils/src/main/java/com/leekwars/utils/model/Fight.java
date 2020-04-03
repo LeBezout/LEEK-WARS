@@ -8,7 +8,8 @@ import java.util.Map;
  */
 public class Fight extends Identity {
 	private long date;
-	private int type;
+	//private int year;
+    private int type;
 	private int context;
 	private int status; // 0=en cours, 1=terminé
 	private int winner;
@@ -18,17 +19,20 @@ public class Fight extends Identity {
 	
 	private Map<String, Identity> farmers1;
 	private Map<String, Identity> farmers2;
-	
+
+    private FightReport report;
+
+    private String[] comments;
+    private long tournament;
+    // views
+    // starter
+    // trophies []
 	private long team1;
 	private long team2;
 	private String team1_name;
 	private String team2_name;
-	
-	private String[] comments;
-	private FightReport report;
-	
-	private long tournament;
-	
+	// data
+
 	/**
 	 * @return the date
 	 */

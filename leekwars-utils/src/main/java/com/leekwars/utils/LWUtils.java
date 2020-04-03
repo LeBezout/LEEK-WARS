@@ -30,11 +30,11 @@ public final class LWUtils {
 	private LWUtils() {}
 
     /**
-     * Retourne une entité inconnu
+     * Retourne une entité inconnue
      * @return Entity
-     * @since 1.6.0
+     * @since 1.6.1
      */
-	public static Entity getUnknonwEntity() {
+	public static Entity getUnknownEntity() {
         Entity unknown = new Entity();
         unknown.setName("Unknown");
         return unknown;
@@ -192,7 +192,6 @@ public final class LWUtils {
 	 */
 	public static FightResult getFightResult(final Farmer pFarmer, final Fight pFight) {
 		switch (pFight.getWinner()) {
-			case -1 /* status==0 */ : return FightResult.UNKNOWN;
 			case 0 : return FightResult.DRAW;
 			case 1 : 
 				switch (getFightType(pFight)) {

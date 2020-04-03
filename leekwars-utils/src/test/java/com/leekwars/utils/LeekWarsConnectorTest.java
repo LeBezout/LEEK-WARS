@@ -1,5 +1,6 @@
 package com.leekwars.utils;
 
+import com.leekwars.utils.model.Fight;
 import org.junit.Test;
 
 import com.leekwars.utils.exceptions.LWException;
@@ -33,14 +34,24 @@ public class LeekWarsConnectorTest {
 		//lConnector.getGarden();
 		//lConnector.startSoloFight(18906, 18428);
 		//lConnector.startFarmerFight(693);
-		
-		//Fight lFight = lConnector.getFight(15512269);
-		//System.out.println(LWUtils.getFightResult(lConnector.getFarmer(), lFight));
-		
+
 		//lConnector.registerAllTournaments();
 		
 		//lConnector.getTeamCompositions();
 		
 		System.out.println("[JUNIT] Fin ...");
 	}
+
+
+    @Test
+    @org.junit.Ignore
+    public void tesGetFight() throws LWException {
+        DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("ignored", "ignored");
+        Fight lFight = lConnector.getFight(30998653);
+        if (lFight == null) {
+            System.out.println("NULL");
+        } else {
+            System.out.println(LWUtils.getFightResult(lConnector.getFarmer(), lFight)); //TODO Farmer bidon
+        }
+    }
 }

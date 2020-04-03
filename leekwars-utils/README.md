@@ -1,6 +1,6 @@
 # LEEK-WARS - Utility and API Project
 
-## Environnment
+## Environment
 
 * UTF-8 IDE Workspace
 * Maven 3

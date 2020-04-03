@@ -6,7 +6,9 @@ import com.leekwars.utils.model.SimpleJSONResponse;
 /**
  * Informations sur un combat suite à un appel à "fight/get".
  * @author Bezout
+ * @deprecated  since 1.6.1 (evol API)
  */
+@Deprecated
 public class GetFightJSONResponse extends SimpleJSONResponse {
 	private Fight fight;
 
