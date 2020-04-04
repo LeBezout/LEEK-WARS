@@ -1,14 +1,39 @@
 package com.leekwars.utils;
 
 import com.leekwars.utils.enums.RankType;
-import com.leekwars.utils.http.HttpException;
-import com.leekwars.utils.io.*;
-import com.leekwars.utils.model.*;
-import org.apache.log4j.Logger;
-
 import com.leekwars.utils.exceptions.LWException;
+import com.leekwars.utils.http.HttpException;
 import com.leekwars.utils.http.HttpResponseWrapper;
 import com.leekwars.utils.http.HttpUtils;
+import com.leekwars.utils.io.GetFarmerJSONResponse;
+import com.leekwars.utils.io.GetFarmerOpponentsJSONResponse;
+import com.leekwars.utils.io.GetFarmerTrophiesJSONResponse;
+import com.leekwars.utils.io.GetFunRankingsJSONResponse;
+import com.leekwars.utils.io.GetGardenJSONResponse;
+import com.leekwars.utils.io.GetLWVersionJSONResponse;
+import com.leekwars.utils.io.GetLeekOpponentsJSONResponse;
+import com.leekwars.utils.io.GetRankJSONResponse;
+import com.leekwars.utils.io.GetRegistersJSONResponse;
+import com.leekwars.utils.io.GetTeamJSONResponse;
+import com.leekwars.utils.io.GetTeamOpponentsJSONResponse;
+import com.leekwars.utils.io.LoginJSONResponse;
+import com.leekwars.utils.io.StartFightJSONResponse;
+import com.leekwars.utils.model.Entity;
+import com.leekwars.utils.model.Farmer;
+import com.leekwars.utils.model.FarmerSummary;
+import com.leekwars.utils.model.Fight;
+import com.leekwars.utils.model.FunRanking;
+import com.leekwars.utils.model.Garden;
+import com.leekwars.utils.model.GardenEnemyTeamComposition;
+import com.leekwars.utils.model.KeyValueCouple;
+import com.leekwars.utils.model.LeekSummary;
+import com.leekwars.utils.model.SimpleJSONResponse;
+import com.leekwars.utils.model.Team;
+import com.leekwars.utils.model.TeamComposition;
+import com.leekwars.utils.model.TeamPrivate;
+import com.leekwars.utils.model.Trophy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +46,13 @@ import java.util.Map;
  * @version 1.6
  */
 public abstract class AbstractLeekWarsConnector {
-	protected static final Logger LOGGER_TRACE = Logger.getLogger("JSON_TRACE");
+	protected static final Logger LOGGER_TRACE = LoggerFactory.getLogger("JSON_TRACE");
 
 	protected static final String LEEK_WARS_ROOT_URL = "https://leekwars.com/api/";
     protected static final String NO_TOKEN = null;
     protected static final String NO_PHPSESSID = null;
 
-    protected final Logger mLogger = Logger.getLogger(getClass().getName());
+    protected final Logger mLogger = LoggerFactory.getLogger(getClass().getName());
 	protected boolean mTrace;
 	private String mUsername;
 	private String mPassword;

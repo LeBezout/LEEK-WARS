@@ -1,19 +1,19 @@
 package com.leekwars.utils.registers;
 
-import com.leekwars.utils.LWConst;
-import org.apache.log4j.Logger;
-
 import com.leekwars.utils.AbstractLeekWarsConnector;
+import com.leekwars.utils.LWConst;
 import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.LeekSummary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Classe outils pour réinitialisation des registres de poireaux
  * @author Bezout
  */
 public abstract class ReinitRegisters {
-	private static final Logger LOGGER = Logger.getLogger(ReinitRegisters.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReinitRegisters.class.getName());
 
 	/**
 	 * @param pConnector

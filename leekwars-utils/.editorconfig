@@ -11,6 +11,12 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 charset = utf-8
-
 # Extended properties (https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties)
 spaces_around_operators = true
+# IntelliJ specific
+ij_visual_guides = 160
+
+# ISO LATIN for properties files
+[*.properties]
+charset = latin1
+trim_trailing_whitespace = false

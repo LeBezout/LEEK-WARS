@@ -1,21 +1,21 @@
 package com.leekwars.utils.registers.impl;
 
 import com.leekwars.utils.LWConst;
-import org.apache.log4j.Logger;
-
 import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.KeyValueCouple;
 import com.leekwars.utils.model.LeekSummary;
 import com.leekwars.utils.registers.CheckRegistersThresholds;
 import com.leekwars.utils.registers.RegistersVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implémentation basique de type logging uniquement
  * @author Bezout
  */
 public class DefaultRegistersVisitor implements RegistersVisitor {
-	private static final Logger LOGGER = Logger.getLogger(DefaultRegistersVisitor.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRegistersVisitor.class.getName());
 
 	@Override
 	public int getLeniency() {

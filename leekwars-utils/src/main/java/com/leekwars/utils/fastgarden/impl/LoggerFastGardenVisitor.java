@@ -1,8 +1,7 @@
 package com.leekwars.utils.fastgarden.impl;
 
 import com.leekwars.utils.LWConst;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
@@ -12,6 +11,8 @@ import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
 import com.leekwars.utils.wrappers.MessageWrapper;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 /**
  * Implementation de FastGardenVisitor qui loggue.
@@ -33,14 +34,14 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 * @param pLoggerName
 	 */
 	public LoggerFastGardenVisitor(final String pLoggerName) {
-		mLogger = Logger.getLogger(pLoggerName);
+		mLogger = LoggerFactory.getLogger(pLoggerName);
 	}
 	/**
 	 * Constructeur avec nom de classe
 	 * @param pClass
 	 */
 	public LoggerFastGardenVisitor(final Class<?> pClass) {
-		mLogger = Logger.getLogger(pClass.getName());
+		mLogger = LoggerFactory.getLogger(pClass.getName());
 	}
 	
 	/**
@@ -58,9 +59,9 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onInit(Farmer pFarmer) {
-		mLogger.log(mLevel, "----------------------------------------------------------------------------------");
-		mLogger.log(mLevel, String.format("Debut des combats pour %d %s", pFarmer.getId(), pFarmer.getName()));
-		mLogger.log(mLevel, "----------------------------------------------------------------------------------");
+		log("----------------------------------------------------------------------------------");
+		log(String.format("Debut des combats pour %d %s", pFarmer.getId(), pFarmer.getName()));
+		log("----------------------------------------------------------------------------------");
 	}
 
 	/* (non-Javadoc)
@@ -77,13 +78,13 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onEntityChange(EntityType pEntityType, Entity pEntity) {
-		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
+		log(LWConst.LOG_SEPARATOR);
 		if (pEntityType == EntityType.FARMER) {
-			mLogger.log(mLevel, "Résultats pour l'éleveur " + pEntity.getName());
+			log("Résultats pour l'éleveur " + pEntity.getName());
 		} else if (pEntityType == EntityType.LEEK) {
-			mLogger.log(mLevel, "Résultats pour le poireau " + pEntity.getName());
+			log("Résultats pour le poireau " + pEntity.getName());
 		}
-		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
+		log(LWConst.LOG_SEPARATOR);
 	}
 
 	/* (non-Javadoc)
@@ -92,9 +93,9 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	@Override
 	public void onResult(final Fight pFight, final FightResult pResult) {
 		if (pResult == FightResult.UNKNOWN) {
-			mLogger.log(mLevel, pFight.toString() + " -- pas de résultat");
+			log(pFight.toString() + " -- pas de résultat");
 		} else {
-			mLogger.log(mLevel, pFight.toString() + " : " + pResult + " en " + pFight.getReport().getDuration() + " tours");
+			log(pFight.toString() + " : " + pResult + " en " + pFight.getReport().getDuration() + " tours");
 		}
 	}
 
@@ -103,9 +104,9 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onBeforeStat() {
-		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
-		mLogger.log(mLevel, " STATISTIQUES ");
-		mLogger.log(mLevel, LWConst.LOG_SEPARATOR);
+		log(LWConst.LOG_SEPARATOR);
+		log(" STATISTIQUES ");
+		log(LWConst.LOG_SEPARATOR);
 	}
 	
 	/* (non-Javadoc)
@@ -113,7 +114,7 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	 */
 	@Override
 	public void onStat(GardenStatsWrapper pStat) {
-		mLogger.log(mLevel, pStat);
+		log(pStat.toString());
 	}
 	
 	/* (non-Javadoc)
@@ -123,4 +124,16 @@ public class LoggerFastGardenVisitor implements FastGardenVisitor {
 	public void onEnd() {
 		// rien à faire dans cette implémentation
 	}
+	
+	private void log(String msg) {
+	    switch (mLevel) {
+            case TRACE: mLogger.trace(msg); return;
+            case INFO: mLogger.info(msg); return;
+            case WARN: mLogger.warn(msg); return;
+            case ERROR: mLogger.error(msg); return;
+            case DEBUG:
+            default:
+                mLogger.debug(msg);
+        }
+    }
 }

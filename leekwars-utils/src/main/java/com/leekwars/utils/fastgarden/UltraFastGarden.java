@@ -1,20 +1,12 @@
 package com.leekwars.utils.fastgarden;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.leekwars.utils.LWConst;
-import com.leekwars.utils.fastgarden.impl.FastGardenParamImpl;
-import org.apache.log4j.Logger;
-
 import com.leekwars.utils.AbstractLeekWarsConnector;
+import com.leekwars.utils.LWConst;
 import com.leekwars.utils.LWUtils;
 import com.leekwars.utils.enums.EntityType;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.exceptions.LWException;
+import com.leekwars.utils.fastgarden.impl.FastGardenParamImpl;
 import com.leekwars.utils.model.Entity;
 import com.leekwars.utils.model.Farmer;
 import com.leekwars.utils.model.FarmerSummary;
@@ -28,6 +20,14 @@ import com.leekwars.utils.model.TeamPrivate;
 import com.leekwars.utils.wrappers.FightWrapper;
 import com.leekwars.utils.wrappers.GardenStatsWrapper;
 import com.leekwars.utils.wrappers.MessageWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * UltraFastGarden : lance tous les combats disponibles
@@ -35,7 +35,7 @@ import com.leekwars.utils.wrappers.MessageWrapper;
  * @version 1.1
  */
 public abstract class UltraFastGarden {
-	private static final Logger LOGGER = Logger.getLogger(UltraFastGarden.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UltraFastGarden.class.getName());
 	
 	private static FastGardenParam mParams = new FastGardenParamImpl();
 

@@ -1,5 +1,12 @@
 package com.leekwars.utils.http;
 
+import com.leekwars.utils.LWConst;
+import com.leekwars.utils.LWUtils;
+import com.leekwars.utils.exceptions.LWException;
+import com.leekwars.utils.model.ErrorResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -7,19 +14,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
-import com.leekwars.utils.LWConst;
-import com.leekwars.utils.model.ErrorResponse;
-import org.apache.log4j.Logger;
-
-import com.leekwars.utils.LWUtils;
-import com.leekwars.utils.exceptions.LWException;
-
 /**
  * Outillage pour appel de l'API LW en HTTP
  * @author Bezout
  */
 public final class HttpUtils {
-	private static final Logger LOGGER = Logger.getLogger(HttpUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class.getName());
 	/** Timeout de connexion en secondes */
 	private static final int HTTP_CONNECT_TIMEOUT = 10;
 	/** Timeout de lecture de réponse en secondes */

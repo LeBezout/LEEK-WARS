@@ -46,7 +46,7 @@ public class LeekWarsConnectorTest {
     @Test
     @org.junit.Ignore
     public void tesGetFight() throws LWException {
-        DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("ignored", "ignored");
+        DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector();
         Fight lFight = lConnector.getFight(30998653);
         if (lFight == null) {
             System.out.println("NULL");

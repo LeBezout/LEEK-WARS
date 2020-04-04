@@ -14,7 +14,6 @@ import com.leekwars.utils.enums.FightContext;
 import com.leekwars.utils.enums.FightStatus;
 import com.leekwars.utils.enums.FightType;
 import com.leekwars.utils.exceptions.LWException;
-import com.leekwars.utils.io.GetFightJSONResponse;
 import com.leekwars.utils.model.Fight;
 import com.leekwars.utils.model.FightReport;
 import com.leekwars.utils.model.Identity;
@@ -186,7 +185,8 @@ public class FightBuilder {
 	 */
 	public static Fight fromJSONAPIResponse(final String pJSON) throws LWException {
 		try {
-			return gson.fromJson(pJSON, GetFightJSONResponse.class).getFight();
+			//return gson.fromJson(pJSON, GetFightJSONResponse.class).getFight();
+            return gson.fromJson(pJSON, Fight.class);
 		} catch (Exception e) {
 			throw new LWException(e);
 		}
