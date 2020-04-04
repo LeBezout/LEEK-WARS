@@ -1,6 +1,6 @@
 # LEEK-WARS
 
-Leek Wars JAVA Utilities for Farmers - version 1.6.1
+Leek Wars JAVA Utilities for Farmers - version 1.7
 
 ## Liens
 
@@ -30,6 +30,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.6.1
 * 1.5 : prise en compte de la version 2.0.2 de LeekWars : le token est désormais passé au format JWT le header `Authorization: Bearer <token>`
 * 1.6 : prise en compte des évolutions de l'API (après la 2.0.2) : erreur via le statut HTTP désormais
 * 1.6.1 : prise en compte du changement dans l'API sur la récupération d'un combat
+* 1.7 : migration log4j 1.x vers SLF4J / logback
 
 ## Infos développeurs
 
@@ -38,7 +39,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.6.1
 * Workspace en UTF-8
 * Maven 3
 * Java 7
-* Libs : JUnit 4, log4j, google gson
+* Libs : JUnit 4, slf4j, google gson
     
 ### Eléments de l'API utilisés
 
