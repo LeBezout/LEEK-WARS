@@ -3,6 +3,7 @@ package com.leekwars.utils;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.GregorianCalendar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import com.leekwars.utils.enums.FightContext;
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.enums.FightType;
@@ -46,7 +48,8 @@ public final class LWUtils {
      * @return JSON formatté
      */
 	public static String formatJsonString(final String pJSON) {
-	    return GSON.toJson(new JsonParser().parse(pJSON));
+        JsonReader reader = new JsonReader(new StringReader(pJSON));
+	    return GSON.toJson(new JsonParser().parse(reader));
     }
 
     /**
@@ -87,13 +90,13 @@ public final class LWUtils {
 	 * @param pSeconds nb sec
 	 */
 	public static void waitFor(final int pSeconds) {
-		if (pSeconds < 1) return; 
+		if (pSeconds < 1) return;
 		for (int i = pSeconds; i >= 0; i--) {
 			sleep(1);
 			System.out.println("...waiting.. " + i);
 		}
 	}
-	
+
 	/**
 	 * Permet d'ouvrir un fichier dans un browser
 	 * @param pFile fichier à ouvrir
@@ -109,7 +112,7 @@ public final class LWUtils {
 			throw new LWException(e);
 		}
 	}
-	
+
 	/**
 	 * Conversion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
 	 * @param pValue
@@ -128,7 +131,7 @@ public final class LWUtils {
 		lCal.setTimeInMillis(1000 * pValue);
 		return lCal;
 	}
-	
+
 	/**
 	 * Formatte une date
 	 * @param pCal
@@ -147,7 +150,7 @@ public final class LWUtils {
 	public static String defaultIfNull(final String pValue, final String pDefault) {
 		return pValue == null ? pDefault : pValue;
 	}
-	
+
 	/**
 	 * Détermine si le talent de l'adversaire n'est pas trop élevé
 	 * @param pRefTalent
@@ -162,7 +165,7 @@ public final class LWUtils {
 		// regarde si le talent adverse est en dessous
 		return pOtherTalent <= lMax;
 	}
-	
+
 	/**
 	 * Récupère les infos d'un poireau depuis son nom
 	 * @param pFarmer eleveur récupéré lors du login
@@ -181,10 +184,10 @@ public final class LWUtils {
 		}
 		throw new LWException(String.format("Leek %s doesn't exists for farmer %s.", pLeekName, pFarmer.getName()));
 	}
-	
-	
+
+
 	/**
-	 * Détermine le résultat d'un combat par rapport à un éléveur donné 
+	 * Détermine le résultat d'un combat par rapport à un éléveur donné
 	 * NE FONCTIONNE QUE POUR LES POIREAUX DU FARMER EN PARAMETRE
 	 * @param pFarmer eleveur récupéré lors du login
 	 * @param pFight
@@ -193,41 +196,41 @@ public final class LWUtils {
 	public static FightResult getFightResult(final Farmer pFarmer, final Fight pFight) {
 		switch (pFight.getWinner()) {
 			case 0 : return FightResult.DRAW;
-			case 1 : 
+			case 1 :
 				switch (getFightType(pFight)) {
-					case SOLO : 
+					case SOLO :
 						final LeekSummary[] leeks1 = pFight.getLeeks1();
 						for (LeekSummary lLeek : leeks1) {
 							if (pFarmer.getLeekFromId(lLeek.getId()) != null) return FightResult.VICTORY;
 						}
 						return FightResult.DEFEAT;
-					case FARMER : 
+					case FARMER :
 						return pFight.getFarmers1().get(String.valueOf(pFarmer.getId())) != null ? FightResult.VICTORY : FightResult.DEFEAT;
-					case TEAM : 
+					case TEAM :
 						return pFight.getTeam1() == pFarmer.getTeam().getId() ? FightResult.VICTORY : FightResult.DEFEAT;
-					default : 
+					default :
 						return FightResult.UNKNOWN;
 				}
-			case 2 : 
+			case 2 :
 				switch (getFightType(pFight)) {
-					case SOLO : 
+					case SOLO :
 						final LeekSummary[] leeks2 = pFight.getLeeks2();
 						for (LeekSummary lLeek : leeks2) {
 							if (pFarmer.getLeekFromId(lLeek.getId()) != null) return FightResult.VICTORY;
 						}
 						return FightResult.DEFEAT;
-					case FARMER : 
+					case FARMER :
 						return pFight.getFarmers2().get(String.valueOf(pFarmer.getId())) != null ? FightResult.VICTORY : FightResult.DEFEAT;
-					case TEAM : 
+					case TEAM :
 						return pFight.getTeam2() == pFarmer.getTeam().getId() ? FightResult.VICTORY : FightResult.DEFEAT;
-					default : 
+					default :
 						return FightResult.UNKNOWN;
 				}
-			default : 
+			default :
 				return FightResult.UNKNOWN;
-		}	
+		}
 	}
-	
+
 	/**
 	 * Détermine si dans un combat on est en position 1 ou 2
 	 * @param pFarmer
@@ -237,7 +240,7 @@ public final class LWUtils {
 	public static boolean isFarmer1(final Farmer pFarmer, final Fight pFight) {
 		return pFight.getFarmers1().get(String.valueOf(pFarmer.getId())) != null;
 	}
-	
+
 	/**
 	 * Détermine pour un combat le nom de l'ennemi
 	 * @param pFarmer
@@ -246,7 +249,7 @@ public final class LWUtils {
 	 */
 	public static String getTargetEnemyName(final Farmer pFarmer, final Fight pFight) {
 		switch (getFightType(pFight)) {
-			case SOLO : 
+			case SOLO :
 				if (isFarmer1(pFarmer, pFight)) { // si on est farmer1 alors ennemi = leek2
 					return pFight.getLeeks2().length > 0 ? pFight.getLeeks2()[0].getName() : "?";
 				} else {
@@ -254,19 +257,19 @@ public final class LWUtils {
 				}
 			case FARMER :
 				if (isFarmer1(pFarmer, pFight)) { // si on est farmer1 alors ennemi = farmer2
-					Identity farmer = pFight.getFarmers2().values().isEmpty() ? null : pFight.getFarmers2().values().iterator().next(); 
+					Identity farmer = pFight.getFarmers2().values().isEmpty() ? null : pFight.getFarmers2().values().iterator().next();
 					return farmer == null ? "?" : farmer.getName();
 				} else {
-					Identity farmer = pFight.getFarmers1().values().isEmpty() ? null : pFight.getFarmers1().values().iterator().next(); 
+					Identity farmer = pFight.getFarmers1().values().isEmpty() ? null : pFight.getFarmers1().values().iterator().next();
 					return farmer == null ? "?" : farmer.getName();
 				}
 			case TEAM : // si on est farmer1 alors ennemi = Team2
 				return isFarmer1(pFarmer, pFight) ? pFight.getTeam2_name() : pFight.getTeam1_name();
-			default : 
+			default :
 				return "?";
 		}
 	}
-	
+
 	/**
 	 * Conversion d'un code en FightContext
 	 * @param pCode
@@ -289,7 +292,7 @@ public final class LWUtils {
 	public static FightContext getFightContext(final Fight pFight) {
 		return pFight == null ? null : getFightContext(pFight.getContext());
 	}
-	
+
 	/**
 	 * Conversion d'un code en FightType
 	 * @param pCode
@@ -311,7 +314,7 @@ public final class LWUtils {
 	public static FightType getFightType(final Fight pFight) {
 		return pFight == null ? FightType.UNKNOWN : getFightType(pFight.getType());
 	}
-	
+
 	/**
 	 * Utilisable comme un toString sur un objet Fight.
 	 * @param pFight
