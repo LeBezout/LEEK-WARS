@@ -46,7 +46,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	private String mHeadTitle;
 	private String mPageTitle;
 	private int mLWVersion;
-	
+
 	/**
 	 * Constructeur avec files
 	 * @param pTemplate le template HTML
@@ -66,9 +66,9 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		mLWVersion = pVersion;
 		return this;
 	}
-	
+
 	// ------ POUR CHANGER LE PARAMETRAGE PAR DEFAUT ------
-	
+
 	/**
 	 * Offre la possibilité de changer le charset du fichier template (UTF-8 par défaut)
 	 * @param pCS
@@ -112,13 +112,13 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		//else ne fait rien
 		return this;
 	}
-	
+
 	// ------ GESTION INTERNE ------
-	
+
 	private boolean isFR() {
 		return "fr".equals(mLang);
 	}
-	
+
 	private HtmlReportFastGardenVisitor addBodyLine(final String pLine) {
 		mBody.append(pLine).append(LINE_SEPARATOR);
 		return this;
@@ -149,25 +149,25 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	private static Map<String, String> initIconsMap() {
 		Map<String, String> lMap = new HashMap<>(12, 1);
-		lMap.put("perfect", "<img src=\"https://leekwars.com/static/image/fight_flag/perfect.png\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("static", 	"<img src=\"https://leekwars.com/static/image/fight_flag/static.png\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("dead", 	"<img src=\"https://leekwars.com/static/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("garden", 	"<img src=\"https://leekwars.com/static/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("fight", 	"<img src=\"https://leekwars.com/static/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("ranking", "<img src=\"https://leekwars.com/static/image/icon/ranking.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("gearing", "<img src=\"https://leekwars.com/static/image/gearing_small_white.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("flag_fr", "<img src=\"https://leekwars.com/static/image/flag/32/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("flag_en", "<img src=\"https://leekwars.com/static/image/flag/32/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("leek", 	"<img src=\"https://leekwars.com/static/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("farmer", 	"<img src=\"https://leekwars.com/static/image/trophy/artist.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("team", 	"<img src=\"https://leekwars.com/static/image/icon/team.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("perfect", "<img src=\"https://leekwars.com/image/fight_flag/perfect.png\" title=\"Perfect\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("static", 	"<img src=\"https://leekwars.com/image/fight_flag/static.png\" title=\"Static\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("dead", 	"<img src=\"https://leekwars.com/image/cross.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("garden", 	"<img src=\"https://leekwars.com/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("fight", 	"<img src=\"https://leekwars.com/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("ranking", "<img src=\"https://leekwars.com/image/icon/ranking.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("gearing", "<img src=\"https://leekwars.com/image/gearing_small_white.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("flag_fr", "<img src=\"https://leekwars.com/image/flag/32/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("flag_en", "<img src=\"https://leekwars.com/image/flag/32/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("leek", 	"<img src=\"https://leekwars.com/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("farmer", 	"<img src=\"https://leekwars.com/image/trophy/artist.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("team", 	"<img src=\"https://leekwars.com/image/icon/team.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		return Collections.unmodifiableMap(lMap);
 	}
 	private static String getIcon(final String pKey, int width, int height) {
 		String value = MAP_ICONS.get(pKey);
 		return value == null ? pKey : String.format(value, width, height);
 	}
-	
+
 	// ------ EVENEMENTS LIES A L'IMPLEMENTATION DU VISITOR ------
 
 	@Override
@@ -177,7 +177,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		mHeadTitle = (isFR() ? "Rapport FastGarden pour " : "FastGarden Report for ") + pFarmer.getName();
 		mBody = new StringBuilder(15 * 1024); // 15kio
 		mFarmer = pFarmer;
-		addBodyLine(String.format("<h1 style=\"display:inline\"><img src=\"https://leekwars.com/static/image/logo.png\"/> %d - %s %s</h1>", mLWVersion, mPageTitle, getIcon("flag_" + mLang, 32, 32)));
+		addBodyLine(String.format("<h1 style=\"display:inline\"><img src=\"https://leekwars.com/image/logo.png\"/> %d - %s %s</h1>", mLWVersion, mPageTitle, getIcon("flag_" + mLang, 32, 32)));
 		addBodyLine("<br/>");
 		addBodyLine("<div class=\"container\">");
 	}
@@ -186,13 +186,13 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	public void onMessage(final MessageWrapper pMessage) {
 		mMessages.add(pMessage);
 	}
-	
+
 	@Override
 	public void onEntityChange(EntityType pEntityType, Entity pEntity) {
 		mCount = 0;
 		if (tableOpened) {
 			tableOpened = false;
-			addBodyLine("</table>"); 
+			addBodyLine("</table>");
 		}
 		addBodyLine("<br/>");
 		addBodyLine(String.format("<h2>%s %s %s <a href=\"https://leekwars.com/%s/%d\">%s</a></h2>",  // Talent si besoin :  (<span class=\"talent\" title=\"Talent\">%d</span>)
@@ -226,7 +226,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine(String.format("\t\t<td>%d</td>", mCount));
 		addBodyLine(String.format("\t\t<td>%d</td>", pFight.getId()));
 		addBodyLine(String.format("\t\t<td><a href=\"https://leekwars.com/fight/%d\">%s</a> | <a href=\"https://leekwars.com/report/%d\">%s</a></td>",
-				pFight.getId(), 
+				pFight.getId(),
 				isFR() ? "Combat" : "Fight",
 				pFight.getId(),
 				isFR() ? "Rapport" : "Report")
@@ -267,7 +267,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	public void onBeforeStat() {
 		if (tableOpened) {
 			tableOpened = false;
-			addBodyLine("</table>"); 
+			addBodyLine("</table>");
 		}
 		addBodyLine("<br/>");
 		addBodyLine("<h2>"+getIcon("ranking", 22, 22) + (isFR() ? " Statistiques" :" Statistics") + "</h2>");
@@ -342,7 +342,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		}
 		return "msg";
 	}
-	
+
 	// ------ METHODES POUR GENERER LE RAPPORT FINAL ------
 
 	/**

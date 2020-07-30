@@ -31,6 +31,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.7
 * 1.6 : prise en compte des évolutions de l'API (après la 2.0.2) : erreur via le statut HTTP désormais
 * 1.6.1 : prise en compte du changement dans l'API sur la récupération d'un combat
 * 1.7 : migration log4j 1.x vers SLF4J / logback
+* 1.7.1 : correction logging + nouveau chemin des images statiques depuis la 2.12.0
 
 ## Infos développeurs
 
