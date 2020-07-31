@@ -11,19 +11,16 @@ public enum LWIcons {
     FIGHT_FLAG_PERFECT("https://leekwars.com/image/fight_flag/perfect.png", "Perfect", "Perfect"),
     FIGHT_FLAG_STATIC("https://leekwars.com/image/fight_flag/static.png", "Static", "Static"),
     // Drapeaux de pays
-    COUNTRY_FLAG_FR("https://leekwars.com/image/flag/32/fr.png", "Language=FR", "Langue=FR"),
-    COUNTRY_FLAG_EN("https://leekwars.com/image/flag/32/gb.png", "Language=EN", "Langue=EN"),
+    COUNTRY_FLAG_FR("https://leekwars.com/image/flag/fr.png", "Language=FR", "Langue=FR"),
+    COUNTRY_FLAG_EN("https://leekwars.com/image/flag/gb.png", "Language=EN", "Langue=EN"),
     // Divers
     DEAD("https://leekwars.com/image/cross.png", "Defeat", "Défaite"),
     GARDEN("https://leekwars.com/image/icon/garden.png", "Garden", "Potager"),
     FIGHT("https://leekwars.com/image/notif/fight.png", "Fight", "Combat"),
     TEAM_FIGHT("https://leekwars.com//image/notif/team_fight.png", "Team Fight", "Combat d'équipe"),
     RANKING("https://leekwars.com/image/icon/ranking.png", "Ranking", "Classement"),
-    GEAR("https://leekwars.com/image/gearing_small_white.png", "Config", "Paramétrage"),
     SEARCH("https://leekwars.com/image/search.png", "Search", "Rechercher"),
-    MAIL("https://leekwars.com/image/icon/message.png", "Mail", "Message"),
     TOURNAMENT_VICTORY("https://leekwars.com//image/notif/tournament_win.png", "Victory", "Victoire"),
-    NOTIFICATION("https://leekwars.com/image/icon/notification.png", "Notification", "Notification"),
     TALENT("https://leekwars.com/image/icon/talent.png", "Talent", "Talent"),
     CONSOLE("https://leekwars.com/image/console.png", "Console", "Console"),
     HAB("https://leekwars.com/image/hab.png", "Hab", "Hab"),
@@ -34,17 +31,10 @@ public enum LWIcons {
     TEAM("https://leekwars.com/image/icon/team.png", "Team", "Équipe"),
     // Menu
     MARKET("https://leekwars.com/image/icon/market.png", "Market", "Marché"),
-    EDITOR("https://leekwars.com/image/gearing_small_white.png", "Editor", "Éditeur"),
     TROPHY("https://leekwars.com/image/icon/trophy.png", "Trophy", "Trophée"),
-    HELP("https://leekwars.com/image/icon/help.png", "Help", "Aide"),
     CHAT("https://leekwars.com/image/icon/forum.png", "Chat", "Discussions"),
     FORUM("https://leekwars.com/image/icon/forum.png", "Forum", "Salons de discussions"),
     RESPONSE("https://leekwars.com/image/notif/forum_response.png", "Response", "Réponse"),
-    // Flèches
-    LEFT("https://leekwars.com/image/chevron_left_white.png", "Fold", "Replier"),
-    RIGHT("https://leekwars.com/image/chevron_right_white.png", "Unfold", "Déplier"),
-    EXPAND("https://leekwars.com//image/expand.png", "Expand", "Déplier"),
-    COLLAPSE("https://leekwars.com/image/collapse.png", "Collapse", "Replier"),
     ;
 
     private final String mURL;
