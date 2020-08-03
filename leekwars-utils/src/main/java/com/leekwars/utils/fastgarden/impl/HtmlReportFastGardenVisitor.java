@@ -155,7 +155,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		lMap.put("garden", 	"<img src=\"https://leekwars.com/image/icon/garden.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("fight", 	"<img src=\"https://leekwars.com/image/notif/fight.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("ranking", "<img src=\"https://leekwars.com/image/icon/ranking.png\" width=\"%dpx\" height=\"%dpx\"/>");
-		lMap.put("message", "<img src=\"https://leekwars.com/image/forum.png\" width=\"%dpx\" height=\"%dpx\"/>");
+		lMap.put("message", "<img src=\"https://leekwars.com/image/icon/forum.png\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("flag_fr", "<img src=\"https://leekwars.com/image/flag/fr.png\" title=\"Langue=FR\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("flag_en", "<img src=\"https://leekwars.com/image/flag/gb.png\" title=\"Language=EN\" width=\"%dpx\" height=\"%dpx\"/>");
 		lMap.put("leek", 	"<img src=\"https://leekwars.com/image/icon/house.png\" width=\"%dpx\" height=\"%dpx\"/>");
