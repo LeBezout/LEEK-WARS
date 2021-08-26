@@ -1,6 +1,6 @@
 # LEEK-WARS
 
-Leek Wars JAVA Utilities for Farmers - version 1.7
+Leek Wars JAVA Utilities for Farmers - version 1.8
 
 ## Liens
 
@@ -32,6 +32,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.7
 * 1.6.1 : prise en compte du changement dans l'API sur la récupération d'un combat
 * 1.7 : migration log4j 1.x vers SLF4J / logback
 * 1.7.1 : correction logging + nouveau chemin des images statiques depuis la 2.12.0
+* 1.8 : migration Java SE 8 et JUnit 5, correction récupération des trophées suite changement dans l'API v2.25
 
 ## Infos développeurs
 
@@ -39,8 +40,8 @@ Leek Wars JAVA Utilities for Farmers - version 1.7
 
 * Workspace en UTF-8
 * Maven 3
-* Java 7
-* Libs : JUnit 4, slf4j, google gson
+* Java 8
+* Libs : JUnit 5, slf4j, google gson
     
 ### Eléments de l'API utilisés
 

@@ -3,24 +3,25 @@ package com.leekwars.utils.io;
 import com.leekwars.utils.model.SimpleJSONResponse;
 import com.leekwars.utils.model.Trophy;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * Informations recues suite à un appel à "trophy/get-farmer-trophies".
  * @author Bezout
+ * @version API v2.25
  */
 public class GetFarmerTrophiesJSONResponse extends SimpleJSONResponse {
 
-    private Map<String, Trophy> trophies;
+    private List<Trophy> trophies;
     private int count;
     private int total;
-    private String farmer_name;
 
-    public Map<String, Trophy> getTrophies() {
+    public List<Trophy> getTrophies() {
         return trophies;
     }
 
-    public void setTrophies(Map<String, Trophy> pTrophies) {
+    public void setTrophies(List<Trophy> pTrophies) {
         trophies = pTrophies;
     }
 
@@ -38,13 +39,5 @@ public class GetFarmerTrophiesJSONResponse extends SimpleJSONResponse {
 
     public void setTotal(int pTotal) {
         total = pTotal;
-    }
-
-    public String getFarmerName() {
-        return farmer_name;
-    }
-
-    public void setFarmerName(String pFarmer_name) {
-        farmer_name = pFarmer_name;
     }
 }

@@ -3,22 +3,24 @@ package com.leekwars.utils;
 import java.util.Calendar;
 
 import com.google.gson.JsonSyntaxException;
-import org.junit.Test;
 
 import com.leekwars.utils.enums.FightResult;
 import com.leekwars.utils.exceptions.LWException;
 import com.leekwars.utils.model.Fight;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-public class LWUtilsTest {
+class LWUtilsTest {
 
 	@Test
-	public void testLongToDate() {
+	void testLongToDate() {
 		//System.out.println(System.currentTimeMillis());
 		System.out.println(LWUtils.longToDate(System.currentTimeMillis() / 1000));
 		System.out.println(LWUtils.longToDate(1434816754));
 	}
 	@Test
-	public void testLongToCalendar() {
+	void testLongToCalendar() {
 //		System.out.println(System.currentTimeMillis());
 //		System.out.println(System.currentTimeMillis() - 1410895414);
 		Calendar lCal = LWUtils.longToCalendar(System.currentTimeMillis() / 1000);
@@ -29,25 +31,27 @@ public class LWUtilsTest {
 	}
 
 	@Test
-	public void testAcceptTalent() {
+	void testAcceptTalent() {
 		System.out.println(LWUtils.acceptTalent(2462, 2100, 20));
 		System.out.println(LWUtils.acceptTalent(2462, 2666, 20));
 		System.out.println(LWUtils.acceptTalent(2462, 3005, 20));
 	}
 
 	@Test
-    public void test_formatJsonString_OK() {
+    void test_formatJsonString_OK() {
        String json =  LWUtils.formatJsonString("{\"A\": \"B\"}");
        System.out.println(json);
     }
-    @Test(expected = JsonSyntaxException.class)
+    @Test
     public void test_formatJsonString_Error() {
-        LWUtils.formatJsonString("}non_json_string{");
+        Assertions.assertThrows(JsonSyntaxException.class,
+            () -> LWUtils.formatJsonString("}non_json_string{")
+        );
     }
 
 	@Test
-	@org.junit.Ignore
-	public void testIsFarmer1() throws LWException {
+    @Disabled
+	void testIsFarmer1() throws LWException {
 		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("TODO", "TODO");
 		lConnector.connect();
 
@@ -58,8 +62,8 @@ public class LWUtilsTest {
 	}
 
 	@Test
-	@org.junit.Ignore
-	public void testGetFightResult_Team() throws LWException {
+	@Disabled
+	void testGetFightResult_Team() throws LWException {
 		DefaultLeekWarsConnector lConnector = new DefaultLeekWarsConnector("TODO", "TODO");
 		lConnector.connect();
 		final long lFightId = 16311083;
