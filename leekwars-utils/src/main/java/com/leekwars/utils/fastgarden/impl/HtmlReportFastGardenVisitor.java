@@ -49,7 +49,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 
 	/**
 	 * Constructeur avec files
-	 * @param pTemplate le template HTML
+	 * @param pTemplate le modèle HTML
 	 * @param pOutput le fichier à générer
 	 */
 	public HtmlReportFastGardenVisitor(final File pTemplate, final File pOutput) {
@@ -59,7 +59,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	/**
 	 * Offre la possibilité de définir la version de l'API LW utilisée
-	 * @param pVersion
+	 * @param pVersion version
 	 * @return this pour chainage
 	 */
 	public HtmlReportFastGardenVisitor setLWVersion(final int pVersion) {
@@ -71,7 +71,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 
 	/**
 	 * Offre la possibilité de changer le charset du fichier template (UTF-8 par défaut)
-	 * @param pCS
+	 * @param pCS charset
 	 * @return this pour chainage
 	 */
 	public HtmlReportFastGardenVisitor setTemplateCharset(final String pCS) {
@@ -80,7 +80,7 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	}
 	/**
 	 * Offre la possibilité de changer le charset de la page générée (UTF-8 par défaut)
-	 * @param pCS
+	 * @param pCS charset
 	 * @return this pour chainage
 	 */
 	public HtmlReportFastGardenVisitor setReportCharset(final String pCS) {
@@ -168,6 +168,10 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		return value == null ? pKey : String.format(value, width, height);
 	}
 
+    private static String getFlag(int value, int width, int height) {
+        return String.format("<img src=\"https://leekwars.com/image/fight_flag/flag_%s.svg\" width=\"%dpx\" height=\"%dpx\"/>", value, width, height);
+    }
+
 	// ------ EVENEMENTS LIES A L'IMPLEMENTATION DU VISITOR ------
 
 	@Override
@@ -207,17 +211,14 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 		addBodyLine("<table class=\"result\">");
 		addBodyLine("\t<tr class=\"header\">");
 		if (isFR()) {
-			addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"10%\">Id</th><th width=\"25%\">Visualisation</th><th width=\"15%\" colspan=\"2\">Flag</th><th width=\"25%\">Contre</th><th width=\"15%\">Nombre de tours</th>");
+			addBodyLine("\t\t<th width=\"10%\">Numéro</th><th width=\"10%\">Id</th><th width=\"25%\">Visualisation</th><th width=\"15%\" colspan=\"2\">Flags</th><th width=\"25%\">Contre</th><th width=\"15%\">Nombre de tours</th>");
 		} else {
-			addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"10%\">Id</th><th width=\"25%\">View</th><th width=\"15%\" colspan=\"2\">Flag</th><th width=\"25%\">Against</th><th width=\"15%\">Turns</th>");
+			addBodyLine("\t\t<th width=\"10%\">Number</th><th width=\"10%\">Id</th><th width=\"25%\">View</th><th width=\"15%\" colspan=\"2\">Flags</th><th width=\"25%\">Against</th><th width=\"15%\">Turns</th>");
 		}
 		addBodyLine("\t</tr>");
 		tableOpened = true;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.leekwars.utils.fastgarden.FastGardenVisitor#onResult(com.leekwars.utils.model.Fight, com.leekwars.utils.enums.FightResult)
-	 */
 	@Override
 	public void onResult(final Fight pFight, final FightResult pResult) {
 		mCount++;
@@ -232,14 +233,14 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 				isFR() ? "Rapport" : "Report")
 			);
 		mBody.append("\t\t<td>");
-		final boolean isFamer1 = LWUtils.isFarmer1(mFarmer, pFight);
+		final boolean isFarmer1 = LWUtils.isFarmer1(mFarmer, pFight);
 		if (pResult == FightResult.UNKNOWN) {
 			mBody.append("</td><td>");
 		} else {
-			String[] lFlags = isFamer1 ? pFight.getReport().getFlags1() : pFight.getReport().getFlags2();
+			int[] lFlags = isFarmer1 ? pFight.getReport().getFlags1() : pFight.getReport().getFlags2();
 			if (lFlags != null && lFlags.length > 0) {
-				for (String lFlag : lFlags) {
-					mBody.append(' ').append(getIcon(lFlag, 20, 20));
+				for (int lFlag : lFlags) {
+					mBody.append(' ').append(getFlag(lFlag, 20, 20));
 				}
 				mBody.append(' ');
 			}
@@ -247,10 +248,10 @@ public class HtmlReportFastGardenVisitor implements FastGardenVisitor {
 	//			mBody.append(getIcon("dead"));
 	//		}
 			mBody.append("</td><td>");
-			lFlags = isFamer1 ? pFight.getReport().getFlags2() : pFight.getReport().getFlags1();
+			lFlags = isFarmer1 ? pFight.getReport().getFlags2() : pFight.getReport().getFlags1();
 			if (lFlags != null && lFlags.length > 0) {
-				for (String lFlag : lFlags) {
-					mBody.append(' ').append(getIcon(lFlag, 20, 20));
+				for (int lFlag : lFlags) {
+					mBody.append(' ').append(getFlag(lFlag, 20, 20));
 				}
 				mBody.append(' ');
 			}

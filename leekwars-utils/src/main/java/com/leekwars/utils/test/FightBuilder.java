@@ -32,9 +32,9 @@ public class FightBuilder {
 	private Map<String, Identity> farmers1 = new LinkedHashMap<>();
 	private Map<String, Identity> farmers2 = new LinkedHashMap<>();
 	private final FightReport mReport = new FightReport();
-	private final List<String> flags1 = new LinkedList<>();
-	private final List<String> flags2 = new LinkedList<>();
-	
+	private final List<Integer> flags1 = new LinkedList<>();
+	private final List<Integer> flags2 = new LinkedList<>();
+
 	/**
 	 * Constructeur
 	 */
@@ -48,7 +48,7 @@ public class FightBuilder {
 		mFight.setWinner(-1); // Unknown
 		mReport.setDuration(-1);// Unknown
 	}
-	
+
 	public FightBuilder setType(FightType pType) {
 		mFight.setType(pType.ordinal());
 		return this;
@@ -71,7 +71,7 @@ public class FightBuilder {
 	}
 	public FightBuilder setWinner(int pWinner) {
 		switch (pWinner) {
-			case -1 : 
+			case -1 :
 			case 0 :
 			case 1 :
 			case 2 :
@@ -124,11 +124,11 @@ public class FightBuilder {
 		mReport.setBonus(pBonus);
 		return this;
 	}
-	public FightBuilder addFlag1(String pFlag) {
+	public FightBuilder addFlag1(int pFlag) {
 		flags1.add(pFlag);
 		return this;
 	}
-	public FightBuilder addFlag2(String pFlag) {
+	public FightBuilder addFlag2(int pFlag) {
 		flags2.add(pFlag);
 		return this;
 	}
@@ -146,25 +146,25 @@ public class FightBuilder {
 	public FightBuilder addFarmer2(long pFamerId, String pFarmerName) {
 		return addFarmer2(new Identity(pFamerId, pFarmerName));
 	}
-	
+
 	/**
 	 * @return Fight
 	 */
 	public Fight build() {
-		mFight.setLeeks1(leeks1.toArray(new LeekSummary[leeks1.size()]));
-		mFight.setLeeks2(leeks2.toArray(new LeekSummary[leeks2.size()]));
+		mFight.setLeeks1(leeks1.toArray(new LeekSummary[0]));
+		mFight.setLeeks2(leeks2.toArray(new LeekSummary[0]));
 		mFight.setFarmers1(farmers1);
 		mFight.setFarmers2(farmers2);
 		if (mReport.getDuration() > 0) {
-			mReport.setFlags1(flags1.toArray(new String[flags1.size()]));
-			mReport.setFlags2(flags2.toArray(new String[flags2.size()]));
+			mReport.setFlags1(flags1.stream().mapToInt(Integer::intValue).toArray());
+			mReport.setFlags2(flags2.stream().mapToInt(Integer::intValue).toArray());
 			mFight.setReport(mReport);
 		}
 		return mFight;
 	}
-	
+
 	// - STATIC --------------------------------------------------------------------------
-	
+
 	/**
 	 * @param pJSON flux fight uniquement
 	 * @return instance
@@ -177,7 +177,7 @@ public class FightBuilder {
 			throw new LWException(e);
 		}
 	}
-	
+
 	/**
 	 * @param pJSON flux complet (avec champs sucess + fight)
 	 * @return instance
@@ -191,7 +191,7 @@ public class FightBuilder {
 			throw new LWException(e);
 		}
 	}
-	
+
 	/**
 	 * Se connecte à LW et récupère les infos d'un combat (fight/get)
 	 * @param pId du combat

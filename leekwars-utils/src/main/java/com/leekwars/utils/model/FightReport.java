@@ -4,8 +4,8 @@ public class FightReport {
 	private int bonus;
 	private int duration;
 	private int win;
-	private String[] flags1;
-	private String[] flags2;
+	private int[] flags1;
+	private int[] flags2;
 	/**
 	 * @return the bonus
 	 */
@@ -45,25 +45,25 @@ public class FightReport {
 	/**
 	 * @return the flags1
 	 */
-	public String[] getFlags1() {
+	public int[] getFlags1() {
 		return flags1;
 	}
 	/**
 	 * @param pFlags1 the flags1 to set
 	 */
-	public void setFlags1(String[] pFlags1) {
+	public void setFlags1(int[] pFlags1) {
 		flags1 = pFlags1;
 	}
 	/**
 	 * @return the flags2
 	 */
-	public String[] getFlags2() {
+	public int[] getFlags2() {
 		return flags2;
 	}
 	/**
 	 * @param pFlags2 the flags2 to set
 	 */
-	public void setFlags2(String[] pFlags2) {
+	public void setFlags2(int[] pFlags2) {
 		flags2 = pFlags2;
 	}
 }

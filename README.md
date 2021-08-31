@@ -1,6 +1,6 @@
 # LEEK-WARS
 
-Leek Wars JAVA Utilities for Farmers - version 1.8
+Leek Wars JAVA Utilities for Farmers - version 1.8.1
 
 ## Liens
 
@@ -33,6 +33,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8
 * 1.7 : migration log4j 1.x vers SLF4J / logback
 * 1.7.1 : correction logging + nouveau chemin des images statiques depuis la 2.12.0
 * 1.8 : migration Java SE 8 et JUnit 5, correction récupération des trophées suite changement dans l'API v2.25
+* 1.8.1 : correction affichage des flags
 
 ## Infos développeurs
 
@@ -70,14 +71,14 @@ Leek Wars JAVA Utilities for Farmers - version 1.8
 * Obtenir les classements Fun : `ranking/fun/[token]`
 * Obtenir la version  courante de l'API : `leek-wars/version`
 
-### Configuration HTTPS
+### ~~Configuration HTTPS~~
 
-* Récupérer les fichiers `leekwars-utils/src/main/security/jssecacerts` et `leekwars-utils/src/main/security/lw.jks`
-* Les copier dans un dossier. Exemples "res", "resources",  ...
-* Rajouter aux options de la JVM :
+* ~~Récupérer les fichiers `leekwars-utils/src/main/security/jssecacerts` et `leekwars-utils/src/main/security/lw.jks`~~
+* ~~Les copier dans un dossier. Exemples "res", "resources",  ...~~
+* ~~Rajouter aux options de la JVM :~~
   * `-Djavax.net.ssl.keyStore=${APP_HOME}/res/lw.jks`
   * `-Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts`
-* Ou dans un test unitaire :
+* ~~Ou dans un test unitaire :~~
 
 ```java
 	@BeforeClass
@@ -86,8 +87,8 @@ Leek Wars JAVA Utilities for Farmers - version 1.8
 		System.setProperty("javax.net.ssl.trustStore", "/chemin/vers/jssecacerts");
 	}
 ```
-* _Les certificats LeekWars ont généralement une durée de validité de 3 mois_
-* La classe outil `com.leekwars.utils.tools.InstallCert` permet de générer le fichier "trust store"
+* ~~_Les certificats LeekWars ont généralement une durée de validité de 3 mois_~~
+* ~~La classe outil `com.leekwars.utils.tools.InstallCert` permet de générer le fichier "trust store"~~
 
 ## How To
 
