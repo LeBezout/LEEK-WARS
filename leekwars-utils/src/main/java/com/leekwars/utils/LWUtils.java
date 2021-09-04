@@ -43,20 +43,20 @@ public final class LWUtils {
     }
 
     /**
-     * Formatte une chaine JSON
+     * Formate une chaine JSON
      * @param pJSON chaine JSON
      * @return JSON formatté
      */
 	public static String formatJsonString(final String pJSON) {
         JsonReader reader = new JsonReader(new StringReader(pJSON));
-	    return GSON.toJson(new JsonParser().parse(reader));
+	    return GSON.toJson(JsonParser.parseReader(reader));
     }
 
     /**
      * Convertit une chaine JSON en objet Java
      * @param pJSON chaine JSON
      * @param pType type du wrapper de réponse
-     * @param <T>
+     * @param <T> type lu
      * @return
      */
     public static  <T> T parseJson(final String pJSON, final Class<T> pType) {
@@ -65,12 +65,13 @@ public final class LWUtils {
 
     /**
 	 * Attente en secondes
-	 * @param pSeconds
+	 * @param pSeconds nb de secondes
 	 */
 	public static void sleep(final int pSeconds) {
 		try {
 			Thread.sleep((long) pSeconds * 1000);
 		} catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
 			throw new RuntimeException(e);
 		}
 	}
@@ -82,6 +83,7 @@ public final class LWUtils {
 		try {
 			Thread.sleep(pMs);
 		} catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
 			throw new RuntimeException(e);
 		}
 	}
@@ -100,7 +102,7 @@ public final class LWUtils {
 	/**
 	 * Permet d'ouvrir un fichier dans un browser
 	 * @param pFile fichier à ouvrir
-	 * @throws LWException
+	 * @throws LWException erreur
 	 */
 	public static void openFileInDefaultBrowser(final File pFile) throws LWException {
 		if (!Desktop.isDesktopSupported()) {
@@ -115,7 +117,7 @@ public final class LWUtils {
 
 	/**
 	 * Conversion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
-	 * @param pValue
+	 * @param pValue nb de secondes
 	 * @return Date
 	 */
 	public static Date longToDate(final long pValue) {
@@ -123,7 +125,7 @@ public final class LWUtils {
 	}
 	/**
 	 * Conversion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
-	 * @param pValue
+	 * @param pValue nb de secondes
 	 * @return Calendar
 	 */
 	public static Calendar longToCalendar(final long pValue) {
@@ -133,8 +135,8 @@ public final class LWUtils {
 	}
 
 	/**
-	 * Formatte une date
-	 * @param pCal
+	 * Formate une date
+	 * @param pCal calendar à formatter
 	 * @return chaine
 	 */
 	public static String formatCalendar(final Calendar pCal) {
@@ -143,8 +145,8 @@ public final class LWUtils {
 	}
 	/**
 	 * Retourne une valeur par défaut si le paramètre est null
-	 * @param pValue
-	 * @param pDefault
+	 * @param pValue valeur
+	 * @param pDefault valeur par défaut
 	 * @return chaine
 	 */
 	public static String defaultIfNull(final String pValue, final String pDefault) {
@@ -153,8 +155,8 @@ public final class LWUtils {
 
 	/**
 	 * Détermine si le talent de l'adversaire n'est pas trop élevé
-	 * @param pRefTalent
-	 * @param pOtherTalent
+	 * @param pRefTalent talent 1
+	 * @param pOtherTalent talent 2
 	 * @param pAcceptance pourcentage accepté d'écart entre 2 talents
 	 * @return true si ok
 	 */
@@ -168,7 +170,7 @@ public final class LWUtils {
 
 	/**
 	 * Récupère les infos d'un poireau depuis son nom
-	 * @param pFarmer eleveur récupéré lors du login
+	 * @param pFarmer éleveur récupéré lors du login
 	 * @param pLeekName nom dui poireau recherché
 	 * @return LeekSummary
 	 * @throws LWException si non trouvé ou paramètres invalides
@@ -189,8 +191,8 @@ public final class LWUtils {
 	/**
 	 * Détermine le résultat d'un combat par rapport à un éléveur donné
 	 * NE FONCTIONNE QUE POUR LES POIREAUX DU FARMER EN PARAMETRE
-	 * @param pFarmer eleveur récupéré lors du login
-	 * @param pFight
+	 * @param pFarmer éleveur récupéré lors du login
+	 * @param pFight données du combat
 	 * @return FightResult
 	 */
 	public static FightResult getFightResult(final Farmer pFarmer, final Fight pFight) {
@@ -233,8 +235,8 @@ public final class LWUtils {
 
 	/**
 	 * Détermine si dans un combat on est en position 1 ou 2
-	 * @param pFarmer
-	 * @param pFight
+	 * @param pFarmer données de l'éleveur
+	 * @param pFight données du combat
 	 * @return true si en position 1
 	 */
 	public static boolean isFarmer1(final Farmer pFarmer, final Fight pFight) {
@@ -243,8 +245,8 @@ public final class LWUtils {
 
 	/**
 	 * Détermine pour un combat le nom de l'ennemi
-	 * @param pFarmer
-	 * @param pFight
+	 * @param pFarmer données de l'éleveur
+	 * @param pFight données du combat
 	 * @return nom de l'ennemi
 	 */
 	public static String getTargetEnemyName(final Farmer pFarmer, final Fight pFight) {
@@ -272,7 +274,7 @@ public final class LWUtils {
 
 	/**
 	 * Conversion d'un code en FightContext
-	 * @param pCode
+	 * @param pCode valeur entière du contexte
 	 * @return FightContext
 	 */
 	public static FightContext getFightContext(final int pCode) {
@@ -286,7 +288,7 @@ public final class LWUtils {
 	}
 	/**
 	 * Détermine le contexte d'un combat
-	 * @param pFight
+	 * @param pFight données du combat
 	 * @return FightContext
 	 */
 	public static FightContext getFightContext(final Fight pFight) {
@@ -295,7 +297,7 @@ public final class LWUtils {
 
 	/**
 	 * Conversion d'un code en FightType
-	 * @param pCode
+	 * @param pCode valeur entière du type
 	 * @return FightType
 	 */
 	public static FightType getFightType(final int pCode) {
@@ -308,7 +310,7 @@ public final class LWUtils {
 	}
 	/**
 	 * Détermine le type d'un combat
-	 * @param pFight
+	 * @param pFight données du combat
 	 * @return FightType
 	 */
 	public static FightType getFightType(final Fight pFight) {
@@ -317,7 +319,7 @@ public final class LWUtils {
 
 	/**
 	 * Utilisable comme un toString sur un objet Fight.
-	 * @param pFight
+	 * @param pFight données du combat
 	 * @return string
 	 */
 	public static String fightToString(final Fight pFight) {
