@@ -34,6 +34,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.1
 * 1.7.1 : correction logging + nouveau chemin des images statiques depuis la 2.12.0
 * 1.8 : migration Java SE 8 et JUnit 5, correction récupération des trophées suite changement dans l'API v2.25
 * 1.8.1 : correction affichage des flags
+* 1.8.2 : correction suite à _breaking change_ dans l'API de login depuis la 2.27.0
 
 ## Infos développeurs
 

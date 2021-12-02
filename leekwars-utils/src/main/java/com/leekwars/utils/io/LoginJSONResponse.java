@@ -10,7 +10,10 @@ import com.leekwars.utils.model.SimpleJSONResponse;
 public class LoginJSONResponse extends SimpleJSONResponse {
 	private Farmer farmer;
 	private String token;
-	
+    // farmers: int
+    // notifications[]
+    // conversations[]
+
 	/**
 	 * @return the farmer
 	 */

@@ -5,12 +5,28 @@ package com.leekwars.utils.model;
  * @author Bezout
  */
 public class LeekSummary extends Entity {
-	//"id":18906,"name":"CapitaineFlirt","color":"#000000","capital":0,"level":301,"talent":2510,"skin":12,"hat":null
 	private String color;
 	private int capital;
 	private int skin;
-	private int hat;
-	
+    //private int ai;
+    //private int weapon;
+    //private int life;
+    //private int strength;
+    //private int wisdom;
+    //private int agility;
+    //private int resistance;
+    //private int science;
+    //private int magic;
+    //private int frequency;
+    //private int tp;
+    //private int mp;
+	//private Hat hat; // since 2.27 => (avant int) {
+    //          "id": 1011300,
+    //          "template": 69,
+    //          "hat_template": 1,
+    //          "quantity": 1
+    //        }
+
 	/**
 	 * @return the color
 	 */
@@ -47,16 +63,16 @@ public class LeekSummary extends Entity {
 	public void setSkin(int pSkin) {
 		skin = pSkin;
 	}
-	/**
-	 * @return the hat
-	 */
-	public int getHat() {
-		return hat;
-	}
-	/**
-	 * @param pHat the hat to set
-	 */
-	public void setHat(int pHat) {
-		hat = pHat;
-	}
+//	/**
+//	 * @return the hat
+//	 */
+//	public Hat getHat() {
+//		return hat;
+//	}
+//	/**
+//	 * @param pHat the hat to set
+//	 */
+//	public void setHat(Hat pHat) {
+//		hat = pHat;
+//	}
 }
