@@ -15,12 +15,12 @@ import com.leekwars.utils.model.LeekSummary;
  * @author Bezout
  */
 public abstract class CheckRegistersThresholds {
-	
+
 	/** capacité maximale des registres pour 1 poireau */
 	public static final int REGISTERS_MAX_CAPACITY = 100;
 
 	/**
-	 * Méthode de parcours des registres de tous les poireaux de l'eleveur concerné
+	 * Méthode de parcours des registres de tous les poireaux de l'éleveur concerné
 	 * @param pConnector
 	 * @param pVisitor
 	 * @throws LWException
@@ -31,7 +31,7 @@ public abstract class CheckRegistersThresholds {
 		final Farmer lFarmer = pConnector.getFarmer();
 		pVisitor.onInit(lFarmer);
 		try {
-			// Pour chaque poireau de l'éléveur
+			// Pour chaque poireau de l'éleveur
 			KeyValueCouple[] lRegisters;
 			for (LeekSummary lLeek : lFarmer.getLeeks().values()) {
 				lRegisters = pConnector.getRegisters(lLeek.getId());

@@ -30,14 +30,14 @@ public final class HttpUtils {
 	private static final int HTTP_READ_BUFFER_CAPACITY = 1024;
 
 	private HttpUtils() {}
-	
+
 	//TODO peut être lever des exceptions agnostiques ! (HttpException)
-	
+
 	/**
 	 * Encode un paramètre ou élément de path d'URL
-	 * @param pValue
+	 * @param pValue param
 	 * @return encoded value
-	 * @throws LWException
+	 * @throws LWException e
 	 */
 	public static String encodeUrlParam(final String pValue) throws LWException {
 		try {
@@ -46,31 +46,31 @@ public final class HttpUtils {
 			 throw new LWException(e);
 		}
 	}
-	
+
 	/** ------- GET DATA ---------
 	 * @param pURL url to call
 	 * @param pPHPSESSID cookie value
      * @param pToken token JWT
 	 * @return response wrapper
-	 * @throws LWException
-     * @throws HttpException
+	 * @throws LWException e
+     * @throws HttpException e
 	 */
 	public static HttpResponseWrapper get(final String pURL, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
 		final HttpURLConnection lConnection = getHttpConnection(pURL, "GET", pPHPSESSID,  pToken);
 		int lCode = 0;
 		try {
 			lConnection.connect();
-			LOGGER.debug("Connected at " + pURL);
+			LOGGER.debug("Connected at {}", pURL);
 			lCode = lConnection.getResponseCode();
 		} catch (IOException e) {
 			throw new LWException(e);
 		}
-		LOGGER.debug("HEADERS="+lConnection.getHeaderFields());
+		LOGGER.debug("HEADERS={}", lConnection.getHeaderFields());
 		final String lResponse = readHttpResponse(lConnection);
-		LOGGER.debug("Receiving " + lResponse);
+		LOGGER.debug("Receiving {}", lResponse);
 		return new HttpResponseWrapper(pURL, lCode, lConnection.getHeaderFields(), lResponse.trim());
 	}
-	
+
 	/** ------- POST DATA ---------
 	 * @param pURL url to call
 	 * @param pData data to send
@@ -89,10 +89,10 @@ public final class HttpUtils {
 				final byte[] lBytes = pData.getBytes(LWConst.DEFAULT_ENCODING);
 				lConnection.setRequestProperty("Content-Encoding", LWConst.DEFAULT_ENCODING);
 				lConnection.setRequestProperty("Content-Length", String.valueOf(lBytes.length));
-				LOGGER.debug("Content-Length : " + lBytes.length);
+				LOGGER.debug("Content-Length : {}", lBytes.length);
 				lConnection.connect();
-				LOGGER.debug("Connected at " + pURL);
-				LOGGER.debug("Sending " + pData);
+				LOGGER.debug("Connected at {}", pURL);
+				LOGGER.debug("Sending {}", pData);
 				lConnection.getOutputStream().write(lBytes);
 				lConnection.getOutputStream().flush();
 				lCode = lConnection.getResponseCode();
@@ -102,16 +102,16 @@ public final class HttpUtils {
 		} else {
 			try {
 				lConnection.connect();
-				LOGGER.debug("Connected at " + pURL);
+				LOGGER.debug("Connected at {}", pURL);
 				lCode = lConnection.getResponseCode();
 			} catch (IOException e) {
 				throw new LWException(e);
 			}
 		}
-		LOGGER.debug("HEADERS="+lConnection.getHeaderFields());
+		LOGGER.debug("HEADERS={}", lConnection.getHeaderFields());
 		final String lResponse = readHttpResponse(lConnection);
 		// exemple d'erreur : {"success":false,"error":"missing_parameter","parameter":"login","module":"farmer","function":"login-token"}
-		LOGGER.debug("Receiving " + lResponse);
+		LOGGER.debug("Receiving {}", lResponse);
 		return new HttpResponseWrapper(pURL, lCode, lConnection.getHeaderFields(), lResponse.trim());
 	}
 
@@ -148,29 +148,30 @@ public final class HttpUtils {
 			throw new LWException(e);
 		}
 	}
-	
+
 	/**
 	 * Lecture du flux de réponse HTTP
-	 * @param connection
+	 * @param connection connexion
 	 * @return réponse texte
-     * @throws LWException
-     * @throws HttpException
+     * @throws LWException e
+     * @throws HttpException e
 	 */
 	public static String readHttpResponse(final HttpURLConnection connection) throws LWException, HttpException {
 		try {
 			final int retCode = connection.getResponseCode();
-			LOGGER.debug("HTTP RETURN CODE " + retCode);
+			LOGGER.debug("HTTP RETURN CODE : {}", retCode);
 			if (retCode >= HttpURLConnection.HTTP_OK && retCode < HttpURLConnection.HTTP_MULT_CHOICE) {
 				return readResponse(connection.getInputStream(), connection.getContentEncoding());
 			} else {
                 String errorMessage = readResponse(connection.getErrorStream(), connection.getContentEncoding());
-                if (errorMessage.isEmpty() || "{}".equals(errorMessage) || "[]".equals(errorMessage)) {
-                    LOGGER.error("Erreur " + retCode + " lors de l'appel de " + connection.getURL() + " : " + connection.getResponseMessage());
-                    throw new HttpException("HTTP ERROR : " + retCode + " : " + connection.getResponseMessage(), retCode, connection.getResponseMessage());
-                } else {
-                    LOGGER.error("Erreur " + retCode + " lors de l'appel de " + connection.getURL() + " : " + LWUtils.formatJsonString(errorMessage));
+                LOGGER.debug("HTTP RESPONSE BODY : {}", errorMessage);
+                if (seemsValidJsonMessage(errorMessage)) {
+                    LOGGER.error("Erreur {} lors de l'appel de {} : {}", retCode, connection.getURL(), LWUtils.formatJsonString(errorMessage));
                     ErrorResponse errorResponse = LWUtils.parseJson(errorMessage, ErrorResponse.class);
                     throw new HttpException(errorResponse, retCode, connection.getResponseMessage());
+                } else {
+                    LOGGER.error("Erreur {} lors de l'appel de {} : {}", retCode, connection.getURL(), connection.getResponseMessage());
+                    throw new HttpException("HTTP ERROR : " + retCode + " : " + connection.getResponseMessage(), retCode, connection.getResponseMessage());
                 }
 			}
 		} catch (IOException e) {
@@ -178,18 +179,30 @@ public final class HttpUtils {
 		}
 	}
 
+    private static boolean seemsValidJsonMessage(String message) {
+        // Non-empty
+        if (message.isEmpty() || "{}".equals(message) || "[]".equals(message)) {
+            return false;
+        }
+        if (message.startsWith("{") && message.endsWith("}")) {
+            return true;
+        }
+
+        if (message.startsWith("[") && message.endsWith("]")) {
+            return true;
+        }
+        return false;
+    }
+
 	/*
 	 * Lecture du stream de réponse
 	 */
 	private static String readResponse(final InputStream pStream, final String pEncoding) {
         final StringBuilder lResponseStr = new StringBuilder(HTTP_READ_BUFFER_CAPACITY);
-        final Scanner lScanner = new Scanner(pStream, LWUtils.defaultIfNull(pEncoding, LWConst.DEFAULT_ENCODING));
-        try {
+        try (Scanner lScanner = new Scanner(pStream, LWUtils.defaultIfNull(pEncoding, LWConst.DEFAULT_ENCODING))) {
             while (lScanner.hasNextLine()) {
                 lResponseStr.append(lScanner.nextLine());
             }
-        } finally {
-            lScanner.close();
         }
         return lResponseStr.toString();
     }
