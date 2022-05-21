@@ -6,7 +6,7 @@ package com.leekwars.utils.model;
  */
 public class LeekSummary extends Entity {
 	private String color;
-	private int capital;
+	//private int capital;
 	private int skin;
     //private int ai;
     //private int weapon;
@@ -39,18 +39,18 @@ public class LeekSummary extends Entity {
 	public void setColor(String pColor) {
 		color = pColor;
 	}
-	/**
-	 * @return the capital
-	 */
-	public int getCapital() {
-		return capital;
-	}
-	/**
-	 * @param pCapital the capital to set
-	 */
-	public void setCapital(int pCapital) {
-		capital = pCapital;
-	}
+//	/**
+//	 * @return the capital
+//	 */
+//	public int getCapital() {
+//		return capital;
+//	}
+//	/**
+//	 * @param pCapital the capital to set
+//	 */
+//	public void setCapital(int pCapital) {
+//		capital = pCapital;
+//	}
 	/**
 	 * @return the skin
 	 */

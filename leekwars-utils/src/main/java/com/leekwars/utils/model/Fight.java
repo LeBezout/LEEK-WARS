@@ -13,10 +13,10 @@ public class Fight extends Identity {
 	private int context;
 	private int status; // 0=en cours, 1=terminé
 	private int winner;
-	
+
 	private LeekSummary[] leeks1;
 	private LeekSummary[] leeks2;
-	
+
 	private Map<String, Identity> farmers1;
 	private Map<String, Identity> farmers2;
 
@@ -27,8 +27,10 @@ public class Fight extends Identity {
     // views
     // starter
     // trophies []
-	private long team1;
-	private long team2;
+    // farmer1
+    // farmer2
+	private Identity team1;
+	private Identity team2;
 	private String team1_name;
 	private String team2_name;
 	// data
@@ -120,25 +122,25 @@ public class Fight extends Identity {
 	/**
 	 * @return the team1
 	 */
-	public long getTeam1() {
+	public Identity getTeam1() {
 		return team1;
 	}
 	/**
 	 * @param pTeam1 the team1 to set
 	 */
-	public void setTeam1(long pTeam1) {
+	public void setTeam1(Identity pTeam1) {
 		team1 = pTeam1;
 	}
 	/**
 	 * @return the team2
 	 */
-	public long getTeam2() {
+	public Identity getTeam2() {
 		return team2;
 	}
 	/**
 	 * @param pTeam2 the team2 to set
 	 */
-	public void setTeam2(long pTeam2) {
+	public void setTeam2(Identity pTeam2) {
 		team2 = pTeam2;
 	}
 //	/**
@@ -249,5 +251,5 @@ public class Fight extends Identity {
 	public void setTournament(long pTournament) {
 		tournament = pTournament;
 	}
-	
+
 }

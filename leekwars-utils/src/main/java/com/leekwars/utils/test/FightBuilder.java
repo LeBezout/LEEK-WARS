@@ -107,12 +107,12 @@ public class FightBuilder {
 		return this;
 	}
 	public FightBuilder setTeam1(long pId, String pName) {
-		mFight.setTeam1(pId);
+		mFight.setTeam1(new Identity(pId, pName));
 		mFight.setTeam1_name(pName);
 		return this;
 	}
 	public FightBuilder setTeam2(long pId, String pName) {
-		mFight.setTeam2(pId);
+		mFight.setTeam2(new Identity(pId, pName));
 		mFight.setTeam2_name(pName);
 		return this;
 	}

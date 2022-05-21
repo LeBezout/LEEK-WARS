@@ -3,6 +3,10 @@ package com.leekwars.utils.model;
 public class FightReport {
 	private int bonus;
 	private int duration;
+    //farmer1
+    //farmer2
+    //leeks1
+    //leeks2
 	private int win;
 	private int[] flags1;
 	private int[] flags2;

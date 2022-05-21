@@ -209,7 +209,7 @@ public final class LWUtils {
 					case FARMER :
 						return pFight.getFarmers1().get(String.valueOf(pFarmer.getId())) != null ? FightResult.VICTORY : FightResult.DEFEAT;
 					case TEAM :
-						return pFight.getTeam1() == pFarmer.getTeam().getId() ? FightResult.VICTORY : FightResult.DEFEAT;
+						return pFight.getTeam1().getId() == pFarmer.getTeam().getId() ? FightResult.VICTORY : FightResult.DEFEAT;
 					default :
 						return FightResult.UNKNOWN;
 				}
@@ -224,7 +224,7 @@ public final class LWUtils {
 					case FARMER :
 						return pFight.getFarmers2().get(String.valueOf(pFarmer.getId())) != null ? FightResult.VICTORY : FightResult.DEFEAT;
 					case TEAM :
-						return pFight.getTeam2() == pFarmer.getTeam().getId() ? FightResult.VICTORY : FightResult.DEFEAT;
+						return pFight.getTeam2().getId() == pFarmer.getTeam().getId() ? FightResult.VICTORY : FightResult.DEFEAT;
 					default :
 						return FightResult.UNKNOWN;
 				}
