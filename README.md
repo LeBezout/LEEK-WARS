@@ -1,6 +1,6 @@
 # LEEK-WARS
 
-Leek Wars JAVA Utilities for Farmers - version 1.8.1
+Leek Wars JAVA Utilities for Farmers - version 1.8.4
 
 ## Liens
 
@@ -35,6 +35,8 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.1
 * 1.8 : migration Java SE 8 et JUnit 5, correction récupération des trophées suite changement dans l'API v2.25
 * 1.8.1 : correction affichage des flags
 * 1.8.2 : correction suite à _breaking change_ dans l'API de login depuis la 2.27.0
+* 1.8.3 : amélioration HttpUtils suite à erreur "429 Too many request"
+* 1.8.4 : correction suite à _breaking change_ dans l'API de récupération d'un combat d'équipe, Upgrade dependencies
 
 ## Infos développeurs
 
@@ -70,7 +72,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.1
 * Obtenir le classement de l'éleveur : `ranking/get-farmer-rank/[farmer_id]/[order=talent|name|total_level]`
 * Obtenir le classement d'un poireau : `ranking/get-leek-rank/[leek_id]/[order=talent|name|level]`
 * Obtenir les classements Fun : `ranking/fun/[token]`
-* Obtenir la version  courante de l'API : `leek-wars/version`
+* Obtenir la version courante de l'API : `leek-wars/version`
 
 ### ~~Configuration HTTPS~~
 
