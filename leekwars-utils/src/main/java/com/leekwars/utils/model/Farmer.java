@@ -28,7 +28,7 @@ public class Farmer extends Entity {
 	private Identity godfather;
 	private Identity[] godsons;
 	private String color;
-	private int banned;
+	private boolean banned; // boolean since 2.2.9
 	private int won_solo_tournaments;
 	private int won_farmer_tournaments;
 	private int won_team_tournaments;
@@ -41,10 +41,10 @@ public class Farmer extends Entity {
 	private Hat[] hats;
 	private DailyTournament tournament;
 	//private Fight[] fight_history
-	private int in_garden; // since 1.3.0
+	private boolean in_garden; // since 1.3.0 / boolean since 2.2.9
 	private int total_level; // since 1.3.0
 	private int leek_count; // since 1.3.0
-	
+
 	/**
 	 * @return the login
 	 */
@@ -252,13 +252,13 @@ public class Farmer extends Entity {
 	/**
 	 * @return the banned
 	 */
-	public int getBanned() {
+	public boolean getBanned() {
 		return banned;
 	}
 	/**
 	 * @param pBanned the banned to set
 	 */
-	public void setBanned(int pBanned) {
+	public void setBanned(boolean pBanned) {
 		banned = pBanned;
 	}
 	/**
@@ -393,7 +393,7 @@ public class Farmer extends Entity {
 	public void setTournament(DailyTournament pTournament) {
 		tournament = pTournament;
 	}
-	
+
 	/**
 	 * @return the tournaments
 	 */
@@ -429,7 +429,7 @@ public class Farmer extends Entity {
 	 */
 	public void setLeeks(Map<String, LeekSummary> pLeeks) {
 		leeks = pLeeks;
-	}	
+	}
 	/** getLeekFromId
 	 * @param pId
 	 * @return LeekSummary
@@ -442,14 +442,14 @@ public class Farmer extends Entity {
 	 * @return 0 ou 1 ?
 	 * @since 1.3.0
 	 */
-	public int getIn_garden() {
+	public boolean getIn_garden() {
 		return in_garden;
 	}
 	/**
 	 * @param pIn_garden
 	 * @since 1.3.0
 	 */
-	public void setIn_garden(int pIn_garden) {
+	public void setIn_garden(boolean pIn_garden) {
 		in_garden = pIn_garden;
 	}
 
@@ -458,7 +458,7 @@ public class Farmer extends Entity {
 	 * @since 1.4.0
 	 */
 	public boolean isInGarden() {
-		return in_garden == 1;
+		return in_garden;
 	}
 
 	/**
