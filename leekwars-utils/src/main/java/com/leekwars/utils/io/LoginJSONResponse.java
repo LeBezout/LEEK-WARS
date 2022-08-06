@@ -9,10 +9,12 @@ import com.leekwars.utils.model.SimpleJSONResponse;
  */
 public class LoginJSONResponse extends SimpleJSONResponse {
 	private Farmer farmer;
-	private String token;
+	//private String token; // supprimé en 2.31.0
     // farmers: int
+    // message: String
     // notifications[]
     // conversations[]
+    // chats[]
 
 	/**
 	 * @return the farmer
@@ -25,17 +27,5 @@ public class LoginJSONResponse extends SimpleJSONResponse {
 	 */
 	public void setFarmer(Farmer pFarmer) {
 		farmer = pFarmer;
-	}
-	/**
-	 * @return the token
-	 */
-	public String getToken() {
-		return token;
-	}
-	/**
-	 * @param pToken the token to set
-	 */
-	public void setToken(String pToken) {
-		token = pToken;
 	}
 }

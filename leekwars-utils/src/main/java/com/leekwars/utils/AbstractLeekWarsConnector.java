@@ -196,12 +196,13 @@ public abstract class AbstractLeekWarsConnector {
 	 * @throws LWException e
 	 */
 	public final void connect() throws LWException {
-		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/login-token/"+mUsername+'/'+mPassword;
+		final String url = LEEK_WARS_ROOT_URL + "farmer/login";
+        final String data = String.format("login=%s&password=%s&keep_connected=false", mUsername, mPassword);
 		try {
-            final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, NO_PHPSESSID, NO_TOKEN);
+            final HttpResponseWrapper lResponse = HttpUtils.post(url, data, NO_PHPSESSID, NO_TOKEN);
             final LoginJSONResponse lLoginResponse = parseResponse(lResponse, LoginJSONResponse.class);
             mPhpSessionId = lResponse.getCookie("PHPSESSID");
-            mToken = lLoginResponse.getToken();
+            mToken = lResponse.getCookie("token");
             mFarmer = lLoginResponse.getFarmer();
             if (mLogger.isInfoEnabled()) {
                 mLogger.info("TOKEN={}", mToken);
@@ -227,12 +228,12 @@ public abstract class AbstractLeekWarsConnector {
 	/**
 	 * @throws LWException e
 	 */
-	public final void invalidateToken() throws LWException {
+	public final void disconnect() throws LWException {
 		checkConnected();
-		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/disconnect";
+		final String url = LEEK_WARS_ROOT_URL + "farmer/disconnect";
 		try {
-            final HttpResponseWrapper lResponse = HttpUtils.get(lUrl, mPhpSessionId, mToken);
-            SimpleJSONResponse reponse = parseResponse(lResponse, SimpleJSONResponse.class);
+            final HttpResponseWrapper lResponse = HttpUtils.post(url, "", mPhpSessionId, mToken);
+            parseResponse(lResponse, Object[].class);
             // OK
             mToken = null;
             mPhpSessionId = null;

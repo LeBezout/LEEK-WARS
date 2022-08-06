@@ -37,6 +37,8 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 * 1.8.2 : correction suite à _breaking change_ dans l'API de login depuis la 2.27.0
 * 1.8.3 : amélioration HttpUtils suite à erreur "429 Too many request"
 * 1.8.4 : correction suite à _breaking change_ dans l'API de récupération d'un combat d'équipe, Upgrade dependencies
+* 1.8.5 : correction suite à _breaking change_ dans l'API de login depuis la 2.29.0
+* 1.9.0 : correction suite à _breaking change_ dans l'API de login depuis la 2.31.0 (api de login get -> post) + fix "disconnect"
 
 ## Infos développeurs
 
@@ -49,8 +51,8 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
     
 ### Eléments de l'API utilisés
 
-* Connexion, récupération du token : `farmer/login-token/[name]/[password]`
-* Invalidation du token : `farmer/disconnect/[token]`
+* Connexion, récupération du token : `farmer/login` (POST depuis la 2.31.0 de LW)
+* Invalidation du token : `farmer/disconnect` (POST depuis ma 2.31.0 de LW)
 * Récupération/Mise à jour des infos de l'éleveur : `farmer/get/[farmer_id]`
 * Récupérer les infos de l'équipe : `team/get/[team_id]`
 * Récupérer les infos privées de l'équipe : `team/get-private/[team_id]/[token]`
@@ -62,7 +64,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 * Lancement d'un combat solo : `garden/start-solo-fight/[leek_id]/[target_id]/[token]`
 * Lancement d'un combat d'équipe : `garden/start-team-fight/[compo_id]/[target_id]/[token]`
 * Récupérer les infos d'un combat : `fight/get/[fight_id]`
-* Inscription aux tournois éléveurs : `farmer/register-tournament/[token]`
+* Inscription aux tournois éleveurs : `farmer/register-tournament/[token]`
 * Inscription aux tournois solos : `leek/register-tournament/[leek_id]/[token]`
 * Inscription aux tournois d'équipe : `team/register-tournament/[compo_id]/[token]`
 * Récupérer les registres d'un poireau : `leek/get-registers/[leek_id]/[token]`
@@ -73,25 +75,6 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 * Obtenir le classement d'un poireau : `ranking/get-leek-rank/[leek_id]/[order=talent|name|level]`
 * Obtenir les classements Fun : `ranking/fun/[token]`
 * Obtenir la version courante de l'API : `leek-wars/version`
-
-### ~~Configuration HTTPS~~
-
-* ~~Récupérer les fichiers `leekwars-utils/src/main/security/jssecacerts` et `leekwars-utils/src/main/security/lw.jks`~~
-* ~~Les copier dans un dossier. Exemples "res", "resources",  ...~~
-* ~~Rajouter aux options de la JVM :~~
-  * `-Djavax.net.ssl.keyStore=${APP_HOME}/res/lw.jks`
-  * `-Djavax.net.ssl.trustStore=${APP_HOME}/res/jssecacerts`
-* ~~Ou dans un test unitaire :~~
-
-```java
-	@BeforeClass
-	public static void init() {
-		System.setProperty("javax.net.ssl.keyStore", "/chemin/vers/lw.jks");
-		System.setProperty("javax.net.ssl.trustStore", "/chemin/vers/jssecacerts");
-	}
-```
-* ~~_Les certificats LeekWars ont généralement une durée de validité de 3 mois_~~
-* ~~La classe outil `com.leekwars.utils.tools.InstallCert` permet de générer le fichier "trust store"~~
 
 ## How To
 
