@@ -38,7 +38,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 * 1.8.3 : amélioration HttpUtils suite à erreur "429 Too many request"
 * 1.8.4 : correction suite à _breaking change_ dans l'API de récupération d'un combat d'équipe, Upgrade dependencies
 * 1.8.5 : correction suite à _breaking change_ dans l'API de login depuis la 2.29.0
-* 1.9.0 : correction suite à _breaking change_ dans l'API de login depuis la 2.31.0 (api de login get -> post) + fix "disconnect"
+* 1.9.0 : correction suite à _breaking change_ dans l'API depuis la 2.31.0 (get -> post) + fix "disconnect"
 
 ## Infos développeurs
 
@@ -60,9 +60,9 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 * Récupérer le potager d'un poireau : `garden/get-leek-opponents/[leek_id]/[token]` (depuis la 1.92 de LW)
 * Récupérer le potager d'un éleveur : `garden/get-farmer-opponents/[token]` (depuis la 1.92 de LW)
 * Récupérer le potager d'une composition d'équipe : `garden/get-composition-opponents/[compo_id]/[token]` (depuis la 1.92 de LW)
-* Lancement d'un combat éleveur : `garden/start-farmer-fight/[target_id]/[token]`
-* Lancement d'un combat solo : `garden/start-solo-fight/[leek_id]/[target_id]/[token]`
-* Lancement d'un combat d'équipe : `garden/start-team-fight/[compo_id]/[target_id]/[token]`
+* Lancement d'un combat éleveur : `garden/start-farmer-fight` (POST depuis la 2.31.0 de LW)
+* Lancement d'un combat solo : `garden/start-solo-fight` (POST depuis la 2.31.0 de LW)
+* Lancement d'un combat d'équipe : `garden/start-team-fight` (POST depuis la 2.31.0 de LW)
 * Récupérer les infos d'un combat : `fight/get/[fight_id]`
 * Inscription aux tournois éleveurs : `farmer/register-tournament/[token]`
 * Inscription aux tournois solos : `leek/register-tournament/[leek_id]/[token]`

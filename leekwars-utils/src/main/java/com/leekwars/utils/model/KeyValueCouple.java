@@ -9,14 +9,14 @@ import com.leekwars.utils.exceptions.LWException;
 public class KeyValueCouple {
 	private String key;
 	private String value;
-	
+
 	/**
-	 * Constreucteur par défaut
+	 * Constructeur par défaut
 	 */
 	public KeyValueCouple() {
-		
+
 	}
-	
+
 	/**
 	 * Constructeur
 	 * @param pKey
@@ -26,7 +26,7 @@ public class KeyValueCouple {
 		key = pKey;
 		value= pValue;
 	}
-	
+
 	@Override
 	public String toString() {
 		return key + '=' + value;
@@ -57,7 +57,7 @@ public class KeyValueCouple {
 	public void setValue(String pValue) {
 		value = pValue;
 	}
-	
+
 	/**
 	 * @throws LWException si non conforme
 	 */
@@ -75,7 +75,7 @@ public class KeyValueCouple {
 	public void validateForRegister() throws LWException {
 		// Validation de base
 		validate();
-		// REGLE POUR LES REGISTRES : 
+		// REGLE POUR LES REGISTRES :
 		//	- La clé, chaîne qui doit contenir 100 caractères au maximum
 		//	- La valeur, chaîne qui doit contenir 5000 caractères au maximum
 		if (key.length() > 100) {

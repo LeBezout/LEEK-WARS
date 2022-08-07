@@ -1,5 +1,7 @@
 package com.leekwars.utils;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Constantes diverses
  * @author Bezout
@@ -9,7 +11,7 @@ public abstract class LWConst {
     /**
      * Charset par défaut à utiliser
      */
-    public static final String DEFAULT_ENCODING = "UTF-8";
+    public static final String DEFAULT_ENCODING = StandardCharsets.UTF_8.toString();
     /**
      * Tabulation (pour les logs)
      */

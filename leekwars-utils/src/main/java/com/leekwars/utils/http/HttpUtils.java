@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -80,13 +81,30 @@ public final class HttpUtils {
      * @throws LWException
      * @throws HttpException
 	 */
-	public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
-		final HttpURLConnection lConnection = getHttpConnection(pURL, "POST", pPHPSESSID, pToken);
+    public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
+        return invokeHttpMethodWithBody(pURL, "POST", pData, pPHPSESSID, pToken);
+    }
+
+    /** ------- DELETE DATA ---------
+     * @param pURL url to call
+     * @param pData data to send
+     * @param pPHPSESSID cookie value
+     * @param pToken token JWT
+     * @return response wrapper
+     * @throws LWException
+     * @throws HttpException
+     */
+    public static HttpResponseWrapper delete(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
+        return invokeHttpMethodWithBody(pURL, "DELETE", pData, pPHPSESSID, pToken);
+    }
+
+	private static HttpResponseWrapper invokeHttpMethodWithBody(final String pURL, final String pMethod, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
+		final HttpURLConnection lConnection = getHttpConnection(pURL, pMethod, pPHPSESSID, pToken);
 		int lCode;
 		if (pData != null && pData.trim().length() > 0) {
 			try {
 				lConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-				final byte[] lBytes = pData.getBytes(LWConst.DEFAULT_ENCODING);
+				final byte[] lBytes = pData.getBytes(StandardCharsets.UTF_8);
 				lConnection.setRequestProperty("Content-Encoding", LWConst.DEFAULT_ENCODING);
 				lConnection.setRequestProperty("Content-Length", String.valueOf(lBytes.length));
 				LOGGER.debug("Content-Length : {}", lBytes.length);

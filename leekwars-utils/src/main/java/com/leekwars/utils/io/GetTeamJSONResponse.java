@@ -7,9 +7,10 @@ import com.leekwars.utils.model.Team;
  * Informations recues suite à un appel à "team/get".
  * @author Bezout
  */
+@Deprecated // FIXME A SUPPRIMER
 public class GetTeamJSONResponse extends SimpleJSONResponse {
 	private Team team;
-	
+
 	/**
 	 * @return the team
 	 */

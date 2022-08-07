@@ -13,7 +13,7 @@ public enum RankType {
 	/**
 	 * Niveau total d'éleveur
 	 */
-	TOTOAL_LEVEL("total-level"),
+	TOTAL_LEVEL("total-level"),
 	/**
 	 * Talent
 	 */
