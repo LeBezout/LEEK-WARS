@@ -116,7 +116,7 @@ public final class LWUtils {
 	}
 
 	/**
-	 * Conversion d'une date LW exprimé en nb de secondes depuis le 1/1/1970
+	 * Conversion d'une date LW exprimée en nb de secondes depuis le 1/1/1970
 	 * @param pValue nb de secondes
 	 * @return Date
 	 */
@@ -184,12 +184,12 @@ public final class LWUtils {
 				return lLeek;
 			}
 		}
-		throw new LWException(String.format("Leek %s doesn't exists for farmer %s.", pLeekName, pFarmer.getName()));
+		throw new LWException(String.format("Leek %s doesn't exist for farmer %s.", pLeekName, pFarmer.getName()));
 	}
 
 
 	/**
-	 * Détermine le résultat d'un combat par rapport à un éléveur donné
+	 * Détermine le résultat d'un combat par rapport à un éleveur donné
 	 * NE FONCTIONNE QUE POUR LES POIREAUX DU FARMER EN PARAMETRE
 	 * @param pFarmer éleveur récupéré lors du login
 	 * @param pFight données du combat

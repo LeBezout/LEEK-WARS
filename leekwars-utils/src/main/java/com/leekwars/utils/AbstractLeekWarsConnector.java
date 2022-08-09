@@ -313,6 +313,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @since 1.4
 	 */
 	public void setLeekInGarden(final long pLeekId, final boolean pInGarden) throws LWException {
+        checkConnected();
 		// leek/set-in-garden/<leek_id>/<in_garden>/<token>
         final String url = LEEK_WARS_ROOT_URL + "leek/set-in-garden";
         final String data = String.format("leek_id=%s&in_garden=%s", pLeekId, pInGarden);
@@ -426,9 +427,10 @@ public abstract class AbstractLeekWarsConnector {
 	public void registerFarmerForNextTournament() throws LWException {
 		checkConnected();
 		// farmer/register-tournament/token
-		final String lUrl = LEEK_WARS_ROOT_URL + "farmer/register-tournament";
+		final String url = LEEK_WARS_ROOT_URL + "farmer/register-tournament";
         try {
-		    /*HttpResponseWrapper lResponse = */HttpUtils.get(lUrl, mPhpSessionId, mToken);
+		    HttpResponseWrapper lResponse = HttpUtils.post(url, "", mPhpSessionId, mToken);
+            parseResponse(lResponse, Object[].class);
             mLogger.info("Éleveur {} inscrit au tournoi", mFarmer.getName());
         } catch (HttpException e) {
             if ("already_registered".equals(e.getErrorMessage(""))) {
@@ -446,13 +448,14 @@ public abstract class AbstractLeekWarsConnector {
 	public void registerLeeksForNextTournaments() throws LWException {
 		checkConnected();
         mLogger.info(LWConst.LOG_SEPARATOR);
-        mLogger.info(" INSCRIPTION AUX TOURNOIS POUR L'ELEVEUR {}", mFarmer.getName());
+        mLogger.info(" INSCRIPTION AUX TOURNOIS POUR TOUS LES POIREAUX DE L'ELEVEUR {}", mFarmer.getName());
         mLogger.info(LWConst.LOG_SEPARATOR);
 		// chacun des poireaux : leek/register-tournament/leek_id/token
-		final String urlPattern = LEEK_WARS_ROOT_URL + "leek/register-tournament/%d";
+		final String url = LEEK_WARS_ROOT_URL + "leek/register-tournament";
 		for (LeekSummary lLeek : mFarmer.getLeeks().values()) {
 			try {
-                /*HttpResponseWrapper lResponse = */HttpUtils.get(String.format(urlPattern, lLeek.getId()), mPhpSessionId, mToken);
+                HttpResponseWrapper lResponse = HttpUtils.post(url, "leek_id=" + lLeek.getId(), mPhpSessionId, mToken);
+                parseResponse(lResponse, Object[].class);
 		        mLogger.info("Poireau {} inscrit au tournoi", lLeek.getName());
             } catch (HttpException e) {
                 if ("already_registered".equals(e.getErrorMessage(""))) {
@@ -473,14 +476,14 @@ public abstract class AbstractLeekWarsConnector {
 		mLogger.info(LWConst.LOG_SEPARATOR);
 		mLogger.info("INSCRIPTION AUX TOURNOIS POUR L'EQUIPE {}",  lTeamData.getName());
 		mLogger.info(LWConst.LOG_SEPARATOR);
-		String lUrl; // team/register-tournament/composition_id/token
-		final String urlPattern = LEEK_WARS_ROOT_URL + "team/register-tournament/%d";
+		// team/register-tournament/composition_id/token
+		final String url = LEEK_WARS_ROOT_URL + "team/register-tournament";
 		for (TeamComposition lCompo : lTeamData.getCompositions()) {
 			// Si la compo contient au moins 4 membres
 			if (lCompo.getLeeks().length >= 4) {
-				lUrl = String.format(urlPattern, lCompo.getId());
 				try {
-                    /*HttpResponseWrapper lResponse = */HttpUtils.get(lUrl, mPhpSessionId, mToken);
+                    HttpResponseWrapper lResponse = HttpUtils.post(url, "composition_id=" + lCompo.getId(), mPhpSessionId, mToken);
+                    parseResponse(lResponse, Object[].class);
                     mLogger.info("Composition {} inscrite au tournoi", lCompo.getName());
                 } catch (HttpException e) {
                     if ("already_registered".equals(e.getErrorMessage(""))) {
@@ -776,6 +779,7 @@ public abstract class AbstractLeekWarsConnector {
 		if (mFarmer.isInGarden() == pInGarden) {
 			return false;
 		}
+        checkConnected();
 		// farmer/set-in-garden/<in_garden(true/false)>/<token>
 		final String url = LEEK_WARS_ROOT_URL + "farmer/set-in-garden";
         final String data = String.format("leek_id=%s&in_garden=%s", mFarmer.getId(), pInGarden);
