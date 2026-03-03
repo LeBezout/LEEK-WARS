@@ -14,7 +14,6 @@ import com.leekwars.utils.io.GetLWVersionJSONResponse;
 import com.leekwars.utils.io.GetLeekOpponentsJSONResponse;
 import com.leekwars.utils.io.GetRankJSONResponse;
 import com.leekwars.utils.io.GetRegistersJSONResponse;
-import com.leekwars.utils.io.GetTeamJSONResponse;
 import com.leekwars.utils.io.GetTeamOpponentsJSONResponse;
 import com.leekwars.utils.io.LoginJSONResponse;
 import com.leekwars.utils.io.StartFightJSONResponse;
@@ -27,7 +26,6 @@ import com.leekwars.utils.model.Garden;
 import com.leekwars.utils.model.GardenEnemyTeamComposition;
 import com.leekwars.utils.model.KeyValueCouple;
 import com.leekwars.utils.model.LeekSummary;
-import com.leekwars.utils.model.SimpleJSONResponse;
 import com.leekwars.utils.model.Team;
 import com.leekwars.utils.model.TeamComposition;
 import com.leekwars.utils.model.TeamPrivate;
@@ -220,7 +218,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @throws LWException e
 	 */
 	public final void connectIfNeeded() throws LWException {
-		if (mPhpSessionId == null || mToken == null) {
+		if (/*mPhpSessionId == null || */mToken == null) {
 			connect();
 		}
 	}
@@ -247,7 +245,7 @@ public abstract class AbstractLeekWarsConnector {
 	 * @throws LWException e
 	 */
 	public final void checkConnected() throws LWException {
-		if (mPhpSessionId == null || mToken == null) {
+		if (/* mPhpSessionId == null || */mToken == null) {
 			throw new LWException("Not connected !");
 		}
 	}

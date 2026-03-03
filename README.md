@@ -39,6 +39,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 * 1.8.4 : correction suite à _breaking change_ dans l'API de récupération d'un combat d'équipe, Upgrade dependencies
 * 1.8.5 : correction suite à _breaking change_ dans l'API de login depuis la 2.29.0
 * 1.9.0 : correction suite à _breaking change_ dans l'API depuis la 2.31.0 (get -> post) + fix "disconnect"
+* 1.9.1 : correction suite à _breaking change_ PHPSESSID n'existe plus dans les cookies (à priori inutile)
 
 ## Infos développeurs
 
