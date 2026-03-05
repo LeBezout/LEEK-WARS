@@ -32,8 +32,6 @@ public final class HttpUtils {
 
 	private HttpUtils() {}
 
-	//TODO peut être lever des exceptions agnostiques ! (HttpException)
-
 	/**
 	 * Encode un paramètre ou élément de path d'URL
 	 * @param pValue param
@@ -50,14 +48,14 @@ public final class HttpUtils {
 
 	/** ------- GET DATA ---------
 	 * @param pURL url to call
-	 * @param pPHPSESSID cookie value
+	 * @param pSessionId cookie value
      * @param pToken token JWT
 	 * @return response wrapper
 	 * @throws LWException e
      * @throws HttpException e
 	 */
-	public static HttpResponseWrapper get(final String pURL, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
-		final HttpURLConnection lConnection = getHttpConnection(pURL, "GET", pPHPSESSID,  pToken);
+	public static HttpResponseWrapper get(final String pURL, final String pSessionId, final String pToken) throws LWException, HttpException {
+		final HttpURLConnection lConnection = getHttpConnection(pURL, "GET", pSessionId,  pToken);
 		int lCode = 0;
 		try {
 			lConnection.connect();
@@ -75,31 +73,31 @@ public final class HttpUtils {
 	/** ------- POST DATA ---------
 	 * @param pURL url to call
 	 * @param pData data to send
-	 * @param pPHPSESSID cookie value
+	 * @param pSessionId cookie value
      * @param pToken token JWT
 	 * @return response wrapper
      * @throws LWException
      * @throws HttpException
 	 */
-    public static HttpResponseWrapper post(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
-        return invokeHttpMethodWithBody(pURL, "POST", pData, pPHPSESSID, pToken);
+    public static HttpResponseWrapper post(final String pURL, final String pData, final String pSessionId, final String pToken) throws LWException, HttpException {
+        return invokeHttpMethodWithBody(pURL, "POST", pData, pSessionId, pToken);
     }
 
     /** ------- DELETE DATA ---------
      * @param pURL url to call
      * @param pData data to send
-     * @param pPHPSESSID cookie value
+     * @param pSessionId cookie value
      * @param pToken token JWT
      * @return response wrapper
      * @throws LWException
      * @throws HttpException
      */
-    public static HttpResponseWrapper delete(final String pURL, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
-        return invokeHttpMethodWithBody(pURL, "DELETE", pData, pPHPSESSID, pToken);
+    public static HttpResponseWrapper delete(final String pURL, final String pData, final String pSessionId, final String pToken) throws LWException, HttpException {
+        return invokeHttpMethodWithBody(pURL, "DELETE", pData, pSessionId, pToken);
     }
 
-	private static HttpResponseWrapper invokeHttpMethodWithBody(final String pURL, final String pMethod, final String pData, final String pPHPSESSID, final String pToken) throws LWException, HttpException {
-		final HttpURLConnection lConnection = getHttpConnection(pURL, pMethod, pPHPSESSID, pToken);
+	private static HttpResponseWrapper invokeHttpMethodWithBody(final String pURL, final String pMethod, final String pData, final String pSessionId, final String pToken) throws LWException, HttpException {
+		final HttpURLConnection lConnection = getHttpConnection(pURL, pMethod, pSessionId, pToken);
 		int lCode;
 		if (pData != null && pData.trim().length() > 0) {
 			try {
@@ -137,12 +135,12 @@ public final class HttpUtils {
 	 * Initialisation d'une connexion HTTP de type HttpURLConnection
 	 * @param pURl url to call
 	 * @param pMethod (GET/POST)
-	 * @param pPHPSESSID valeur du cookie ou null
+	 * @param pSessionId valeur du cookie ou null
      * @param pToken token JWT
 	 * @return HttpURLConnection
 	 * @throws LWException
 	 */
-	public static HttpURLConnection getHttpConnection(final String pURl, final String pMethod, final String pPHPSESSID, final String pToken) throws LWException {
+	public static HttpURLConnection getHttpConnection(final String pURl, final String pMethod, final String pSessionId, final String pToken) throws LWException {
 		HttpURLConnection connection;
 		try {
 			connection = (HttpURLConnection)new URL(pURl).openConnection();
@@ -155,8 +153,8 @@ public final class HttpUtils {
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setRequestProperty("Accept-Language", HTTP_ACCEPT_LANGUAGE);
-			if (pPHPSESSID != null) {
-				connection.addRequestProperty("Cookie", "PHPSESSID=" + pPHPSESSID);// + "; path=/; domain=leekwars.com; HttpOnly");
+			if (pSessionId != null) {
+                connection.addRequestProperty("Cookie", "__Host-sess=" + pSessionId + "; path=/; secure; HttpOnly");
 			}
             if (pToken != null) {
                 connection.addRequestProperty("Authorization", "Bearer " + pToken);
@@ -205,7 +203,6 @@ public final class HttpUtils {
         if (message.startsWith("{") && message.endsWith("}")) {
             return true;
         }
-
         if (message.startsWith("[") && message.endsWith("]")) {
             return true;
         }

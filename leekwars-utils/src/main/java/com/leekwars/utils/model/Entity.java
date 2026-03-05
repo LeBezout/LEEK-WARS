@@ -6,9 +6,9 @@ package com.leekwars.utils.model;
  */
 public class Entity extends Identity {
 
-	private int level = -1; // par pour le l'eleveur
+	private int level = -1; // par pour l'eleveur
 	private int talent;
-	
+
 	/**
 	 * @return the level
 	 */

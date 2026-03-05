@@ -1,6 +1,6 @@
 # LEEK-WARS
 
-Leek Wars JAVA Utilities for Farmers - version 1.8.4
+Leek Wars JAVA Utilities for Farmers
 
 ## Liens
 
@@ -39,7 +39,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 * 1.8.4 : correction suite à _breaking change_ dans l'API de récupération d'un combat d'équipe, Upgrade dependencies
 * 1.8.5 : correction suite à _breaking change_ dans l'API de login depuis la 2.29.0
 * 1.9.0 : correction suite à _breaking change_ dans l'API depuis la 2.31.0 (get -> post) + fix "disconnect"
-* 1.9.1 : correction suite à _breaking change_ PHPSESSID n'existe plus dans les cookies (à priori inutile)
+* 1.10.0 : correction suite à _breaking change_ PHPSESSID n'existe plus dans les cookies
 
 ## Infos développeurs
 
@@ -47,7 +47,7 @@ Leek Wars JAVA Utilities for Farmers - version 1.8.4
 
 * Workspace en UTF-8
 * Maven 3
-* Java 8
+* Java 11
 * Libs : JUnit 5, slf4j, google gson
     
 ### Eléments de l'API utilisés

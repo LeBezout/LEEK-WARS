@@ -4,7 +4,7 @@
 
 * JDK installé et configuré
 * Maven installé et configuré
-* Un IDE installé  et configuré
+* Un IDE installé et configuré
 
 ## Installer la dépendance Maven
 
@@ -65,8 +65,6 @@ public final class MyUltraFastGarden {
             System.err.println("Erreur, attendu un argument : dossier de génération du rapport");
             System.exit(1);
         }
-		System.setProperty("javax.net.ssl.keyStore", "src/main/resources/lw.jks");
-		System.setProperty("javax.net.ssl.trustStore", "src/main/resources/jssecacerts");
         try {
             final FastGardenParam lParams = new PropertiesFastGardenParamImpl("/fastgarden.properties");
             final File output = new File(new File(args[0], pConnector.getUsername()), TIMESTAMP + ".html");
@@ -87,5 +85,3 @@ public final class MyUltraFastGarden {
     }
 }
 ```
-
-Générer enfin le fichier `src/main/resources/jssecacerts` via la classe outil `com.leekwars.utils.tools.InstallCert`

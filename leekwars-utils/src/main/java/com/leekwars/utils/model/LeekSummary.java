@@ -20,12 +20,8 @@ public class LeekSummary extends Entity {
     //private int frequency;
     //private int tp;
     //private int mp;
-	//private Hat hat; // since 2.27 => (avant int) {
-    //          "id": 1011300,
-    //          "template": 69,
-    //          "hat_template": 1,
-    //          "quantity": 1
-    //        }
+	//private int hat;
+    //private int face;
 
 	/**
 	 * @return the color
